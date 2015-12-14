@@ -560,7 +560,7 @@ window. Use 'x' and then window-number for this.
 
 * Auto Completion
 
-** COMMENT Company Mode
+** Company Mode
 
 This has great many backends for various programming languages and
 works well with gtags, libclang etc. Even elpy mode works with this.
