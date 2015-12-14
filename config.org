@@ -1,0 +1,925 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Parikshit Machwe
+#+STARTUP: outline
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./style.css">
+
+* Introduction
+
+The /org-babel/ mode allows for literate programming, i.e. programming
+within documentation. This is a great way to organize the stuff
+especially the configs which build up over the years. Here is a nice
+video detailing about it.
+[[https://www.youtube.com/watch?v=dljNabciEGg][Literate Programming]]
+
+The other package that I came across recently [[https://github.com/jwiegley/use-package][use-package]]. This is a
+great utility to not only organize the Emacs packages but improving
+the load times by doing lazy loading. Some important notes about this
+package.
++ =:init=: This section gets called everytime irrespective of loading
+  so should be kept minimal.
++ =:config=: This section gets called after the package gets loaded
+  and the package only gets loaded *when* it is required.
++ =:disabled t=: Use this to disable any package. Great for experimentation.
++ =:ensure t=: This makes sure to *install* if the package is not
+  available. Great to have so that the configuration will work on a
+  new machine as is. Use =setq use-package-always-ensure t= for all packages.
++ =:diminish=: Use /diminish/ package to avoid minor mode being
+  printed on mode-line.
++ =:if=: Use this for conditional loading (only GUI or only OS).
+  
+#+BEGIN_SRC emacs-lisp
+  ;; Always install packages if not available
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+* Basic Defaults
+
+Override some basic default options upfont. Some options taken from
+[[https://github.com/danielmai/.emacs.d/blob/master/config.org][here]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; Basic settings
+
+  ;; Answering just 'y' or 'n' will do
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; Keep all backup and auto-save files in one directory
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+  (setq delete-old-versions t
+    kept-new-versions 6
+    kept-old-versions 2
+    version-control t)
+
+  ;; UTF-8 please
+  (setq locale-coding-system 'utf-8) ; pretty
+  (set-terminal-coding-system 'utf-8) ; pretty
+  (set-keyboard-coding-system 'utf-8) ; pretty
+  (set-selection-coding-system 'utf-8) ; please
+  (prefer-coding-system 'utf-8) ; with sugar on top
+
+  ;; Turn off the blinking cursor
+  (blink-cursor-mode -1)
+
+  (setq-default indent-tabs-mode nil)
+  (setq-default indicate-empty-lines t)
+
+  ;; delete the region when typing, just like as we expect nowadays.
+  (delete-selection-mode t)
+
+  ;; -i gets alias definitions from .bash_profile
+  (setq shell-command-switch "-ic")
+
+  ;; show time
+  (display-time)
+
+  ;; winner mode to undo/redo window configurations
+  (winner-mode 1)
+
+#+END_SRC
+
+* Themes and Fonts
+
+** Themes and Fonts
+
+In this section, setting up the themes and fonts.
+
+Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-theme-sanityinc-tomorrow][here]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; themes and fonts
+
+  (set-default-font "Source Code Pro Light 14")
+
+  (use-package monokai-theme
+    :disabled t
+    :init 
+    (load-theme 'monokai t))
+
+  (use-package color-theme-sanityinc-tomorrow
+    :init
+    (progn
+      (load-theme 'sanityinc-tomorrow-night t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
+
+#+END_SRC
+
+** Modeline
+
+Beautify the modeline.
+
+#+BEGIN_SRC emacs-lisp
+  ;; powerline
+
+  (use-package powerline
+    :init
+    (powerline-center-theme))
+
+#+END_SRC
+
+* Org Mode
+
+There is a great beginners guide at [[http://orgmode.org/worg/org-configs/org-customization-guide.html][Org Guide]]. Most of the settings
+below are taken from it.
+
+** Basics
+Some basic settings first of all.
+
+*NOTE:* The source code blocks will not have background when the
+ language is specified due to a bug. More [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-in-org-mode-8][here]]. Original post is
+ [[http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html][here]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; add global settings in a hook
+  ;; add org-mode specific normally
+
+  ;(use-package org
+  ;  :diminish org-indent-mode)
+
+
+  (defun pm/org-mode-hooks()
+    (org-indent-mode 1)
+    (auto-fill-mode 1)
+    (auto-complete-mode)
+    (global-set-key (kbd "C-c l") 'org-store-link)
+    (global-set-key (kbd "C-c a") 'org-agenda))
+
+  (add-hook 'org-mode-hook 'pm/org-mode-hooks)
+
+  ;; Do not subscript for _ and superscript for ^
+  (setq org-use-sub-superscripts nil)
+
+
+  ;; Beautify
+  (custom-set-faces
+   '(org-level-1 ((t (:inherit outline-1 :height 1.20))))
+   '(org-level-2 ((t (:inherit outline-2 :height 1.15))))
+   '(org-level-3 ((t (:inherit outline-3 :height 1.10))))
+   '(org-level-4 ((t (:inherit outline-4 :height 1.05))))
+   '(org-document-title ((t (:underline t :weight bold :height 1.3)))))
+
+  ;(defface org-block-begin-line
+  ;  '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
+  ;  "Face used for the line delimiting the begin of source blocks.")
+  ;
+  ;(defface org-block
+  ;  '((t (:background "#000000")))
+  ;  "Face used for the source block background.")
+  ;
+  ;(defface org-block-end-line
+  ;  '((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
+  ;  "Face used for the line delimiting the end of source blocks.")
+
+#+END_SRC
+
+*** Some pending setups
+**** TODO Setup flyspell and word correction with org mode
+
+** Org Babel
+Some settings specific to org-babel.
+
+#+BEGIN_SRC emacs-lisp
+  ;; add languages to babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (emacs-lisp . t)
+     (sh . t)))
+
+  ;; Always evaluate
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; Beautify within code blocks
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+** Other Packages for Org
+Some other packages specific for org-mode.
+
+*** Org Bullets
+This package uses some UTF-8 characters for org-mode bullets.
+
+#+BEGIN_SRC emacs-lisp
+  ;; org-bullets for nicer bullets :)
+  (use-package org-bullets
+    :config
+    (org-bullets-mode 1))
+
+  ;; not loading by above method
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+END_SRC
+
+*** Org Reveal
+This package lets org-mode files be exported to HTML5 Reveal.js
+presentations. This requires Reveal.js to be installed.
+**** TODO Set this up later
+From here: [[https://github.com/yjwen/org-reveal][org-reveal]]
+
+*** Org Present
+Converts an org document to a org presentation. Keeps level 1 as the
+slide headline and the rest of the stuff is just text.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Org Present
+
+  (use-package org-present
+    :ensure t)
+
+#+END_SRC
+
+*** Org Tree Slide
+It is also similar to the 'org-present' package but it also captures
+the bullets etc. More details [[https://github.com/takaxp/org-tree-slide/blob/master/README.org][here]].
+
+Use F8 to start the presentation. Use C-> and C-< to move through the slides.
+
+#+BEGIN_SRC emacs-lisp
+  ;; org-tree-slide
+
+  (use-package org-tree-slide
+    :config
+    (progn
+      (define-key org-mode-map (kbd "<f8>") 'org-tree-slide-mode)
+      (define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)))
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+*** Org Pandoc
+This allows for export to many different formats.
+**** TODO Set this up
+
+*** Org Journal
+Simple package to write journals.
+
+**** TODO Set this up
+From here: [[http://www.emacswiki.org/emacs/OrgJournal][org-journal]]
+
+*** Htmlize
+
+For source code highlight in exports.
+
+#+BEGIN_SRC emacs-lisp
+  ;; htmlize
+
+  (use-package htmlize
+    :ensure t)
+
+#+END_SRC
+** Org Mobile
+
+* Ido
+
+Ido mode with flex matching does a superior job of finding files than
+Helm. So until flx is ported to helm, using ido for finding files and
+switching buffers.
+
+#+BEGIN_SRC emacs-lisp
+  ;; ido mode
+
+  (use-package ido
+    :init
+    (progn
+      (ido-mode t)
+      (ido-everywhere 1)
+      (setq ido-use-faces nil))
+    :bind (("C-x C-f" . ido-find-file)
+           ("C-x b" . ido-switch-buffer)))
+
+  (use-package flx-ido
+    :init
+    (progn
+      (flx-ido-mode 1)
+      (setq ido-enable-flex-matching t)))
+#+END_SRC
+* Helm
+
+Helm takes the power of Emacs to another level. It makes its presence
+felt in every experience with Emacs. A must have. A very nice tutorial
+to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
+
+Helm needs to be loaded up-front and hence there is no need to use
+/use-package/ for it. Also, there are many settings which could be
+inter-dependent and might create conflicts in use-package. 
+
+*** Install
+Using /use-package/ only for initial installation, if not already installed.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package helm)
+
+    (use-package helm-swoop)
+
+    (use-package helm-gtags
+      :diminish helm-gtags-mode)
+
+#+END_SRC
+
+*** Basic Config
+
+#+BEGIN_SRC emacs-lisp
+  (require 'helm)
+  (require 'helm-config)
+
+  ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+  ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+  ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  (setq helm-split-window-in-side-p       t ; open helm buffer inside current window
+        helm-move-to-line-cycle-in-source t ; move to end or beginning when reaching top or bottom of source.
+        helm-ff-search-library-in-sexp    t ; search for library in `require' and `declare-function' sexp.
+        helm-scroll-amount                8 ; scroll 8 lines other window using M-<next>/M-<prior>
+        helm-ff-file-name-history-use-recentf t)
+
+  (helm-mode 1)
+
+  (helm-autoresize-mode t)
+
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+  (setq helm-apropos-fuzzy-match t)
+  (setq helm-lisp-fuzzy-completion t)
+
+  ;; IDO instead; (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "C-c h g") 'helm-google-suggest)
+
+  (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+
+  ;; helm-mini (using IDO)
+  ;(global-set-key (kbd "C-x b") 'helm-mini)
+  ;(setq helm-buffers-fuzzy-matching t
+  ;      helm-recentf-fuzzy-match    t)
+
+  ; (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+  ; (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
+
+#+END_SRC
+
+*** More Config
+
+#+BEGIN_SRC emacs-lisp
+  ;; helm-swoop and helm-occur
+  (require 'helm-swoop)
+  (global-set-key (kbd "C-c h o") 'helm-occur)
+
+  ;; Change the keybinds to whatever you like :)
+  (global-set-key (kbd "M-i") 'helm-swoop)
+  (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
+  (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
+  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
+
+  ;; When doing isearch, hand the word over to helm-swoop
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+  ;; From helm-swoop to helm-multi-swoop-all
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  ;; When doing evil-search, hand the word over to helm-swoop
+  ;; (define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search)
+
+  ;; Instead of helm-multi-swoop-all, you can also use helm-multi-swoop-current-mode
+  (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
+
+  ;; Move up and down like isearch
+  (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+  (define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
+
+  ;; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-multi-swoop-edit-save t)
+
+  ;; If this value is t, split window inside the current window
+  (setq helm-swoop-split-with-multiple-windows nil)
+
+  ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+  ;(setq helm-swoop-split-direction 'split-window-vertically)
+
+  ;; If nil, you can slightly boost invoke speed in exchange for text color
+  (setq helm-swoop-speed-or-color nil)
+
+  ;; ;; Go to the opposite side of line from the end or beginning of line
+  (setq helm-swoop-move-to-line-cycle t)
+
+  ;; Optional face for line numbers
+  ;; Face name is `helm-swoop-line-number-face`
+  (setq helm-swoop-use-line-number-face t)
+
+
+  ;; helm-gtags
+  (setq
+   helm-gtags-ignore-case t
+   helm-gtags-auto-update t
+   helm-gtags-use-input-at-cursor t
+   helm-gtags-pulse-at-cursor t
+   helm-gtags-prefix-key "\C-cg"
+   helm-gtags-suggested-key-mapping t
+   )
+
+  (require 'helm-gtags)
+  ;; Enable helm-gtags-mode
+  (add-hook 'dired-mode-hook 'helm-gtags-mode)
+  (add-hook 'eshell-mode-hook 'helm-gtags-mode)
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-*") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+
+#+END_SRC
+
+* Multiple Cursors
+
+This is a cool package which allows editing mutliple lines together.
+
+#+BEGIN_SRC emacs-lisp
+  ;; mutliple cursors
+
+  (use-package multiple-cursors
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+           ("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C-<" . mc/mark-all-like-this)))
+
+  (global-set-key (kbd "C-c C-SPC") 'set-rectangular-region-anchor)
+  
+#+END_SRC
+
+* Expand Region
+
+#+BEGIN_SRC emacs-lisp
+  ;; expand region
+
+  (use-package expand-region
+    :bind ("C-=" . er/expand-region))
+
+#+END_SRC
+
+* IBuffer
+
+This needs to be configured properly.
+
+#+BEGIN_SRC emacs-lisp
+  ;; ibuffer
+
+  (use-package ibuffer
+    :bind ("C-x C-b" . ibuffer-other-window)
+    :config
+    (progn
+      (setq ibuffer-saved-filter-groups
+            (quote (("mygroups"
+                     ("dired" (mode . dired-mode))
+                     ("perl" (mode . cperl-mode))
+                     ("erc" (mode . erc-mode))
+                     ("planner" (or
+                                 (name . "^\\*Calendar\\*$")
+                                 (name . "^diary$")
+                                 (mode . muse-mode)))
+                     ("emacs" (or
+                               (name . "^\\*scratch\\*$")
+                               (name . "^\\*Messages\\*$")))
+                     ("gnus" (or
+                              (mode . message-mode)
+                              (mode . bbdb-mode)
+                              (mode . mail-mode)
+                              (mode . gnus-group-mode)
+                              (mode . gnus-summary-mode)
+                              (mode . gnus-article-mode)
+                              (name . "^\\.bbdb$")
+                              (name . "^\\.newsrc-dribble")))))))
+      (setq ibuffer-expert t)
+      (add-hook 'ibuffer-mode-hook
+                '(lambda ()
+                   (ibuffer-auto-mode 1)
+                   (ibuffer-switch-to-saved-filter-groups "mygroups")))))
+
+
+  ;(setq ibuffer-default-sorting-mode 'major-mode)
+  ;(setq ibuffer-show-empty-filter-groups nil)
+#+END_SRC
+
+* Avy
+
+Avy is a newer version of ace-jump-mode and provides far more
+features. Hence, upgrading to this. Some resources:
++ [[https://github.com/abo-abo/avy][avy-mode]]
++ [[http://emacsredux.com/blog/2015/07/19/ace-jump-mode-is-dead-long-live-avy/][Avy on redux]]
+
+Binding M-g g to avy-goto-line instead of normal goto-line.
+
+Also, this is great because it works on all visible buffers, so no
+need to keep switching bufers.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Setup avy
+
+  (use-package avy
+    :bind (("C-;" . avy-goto-char)
+           ("C-:" . avy-goto-word-1)
+           ("M-g g" . avy-goto-line)))
+
+
+#+END_SRC
+
+
+Another package in the same league is ace-window. As per the
+recommendation, mapping it to M-p which is not mapped by default to
+any function. See [[https://github.com/abo-abo/ace-window][ace-window]] for other features like deleting a
+window. Use 'x' and then window-number for this.
+
+#+BEGIN_SRC emacs-lisp
+  ;; ace-window
+
+  (use-package ace-window
+    :bind ("M-p" . ace-window))
+
+#+END_SRC
+
+#+RESULTS:
+
+* Auto Completion
+
+** COMMENT Company Mode
+
+This has great many backends for various programming languages and
+works well with gtags, libclang etc. Even elpy mode works with this.
+[[http://company-mode.github.io/][company-mode]]
+
+Also a useful tip [[http://emacs.stackexchange.com/questions/5664/shell-bash-completion-window][here]] to complete shell using company instead of helm
+(which could be bit irritating as it opens a small buffer below).
+
+#+BEGIN_SRC emacs-lisp
+  ;; Company mode
+
+  (use-package company
+    :init
+    (add-hook 'after-init-hook 'global-company-mode)
+    :config
+    (progn
+      (eval-after-load "shell"
+        '(define-key shell-mode-map (kbd "TAB") #'company-complete))
+      (add-hook 'shell-mode-hook #'company-mode))
+    :diminish company-mode)
+
+#+END_SRC
+
+#+RESULTS:
+
+** Auto complete
+
+Disabling this and will use company mode.
+
+#+BEGIN_SRC emacs-lisp
+  ;; auto-complete
+
+  (use-package auto-complete
+    :disabled t
+    :ensure t
+    :config
+    (progn
+      (add-to-list 'ac-dictionary-directories 
+                   (expand-file-name "~/.emacs.d/elpa/auto-complete-20150618.1949/dict"))
+      (setq ac-comphist-file
+            (expand-file-name "~/.emacs.d/ac-comphist.dat"))
+      (ac-config-default)
+      ; auto-complete does not work with flyspell
+      (ac-flyspell-workaround)))
+
+    ;:diminish auto-complete-mode)
+
+#+END_SRC
+
+** FASD
+
+This looks to be a good and fast way to work on Shell and has an emacs
+package also. Look at it sometime.
+
+**** FASD
+[[https://gitlab.com/emacs-stuff/fasd-shell][fasd-shell]]
+
+* Tramp
+
+Move the settings to OS specific. Shell not working properly for now.
+
+#+BEGIN_SRC emacs-lisp
+  ;; TRAMP for remote editing
+
+  (use-package tramp
+    :init
+    (progn
+      (setq tramp-default-method "plink"
+            tramp-default-user "pmachwe"
+            tramp-default-host "dcamd44")))
+
+#+END_SRC
+
+#+RESULTS:
+
+* Yasnippet
+
+#+BEGIN_SRC emacs-lisp
+  ;; yasnippets
+
+  (use-package yasnippet
+    :ensure t)
+
+#+END_SRC
+
+* SmartParens
+
+Parenthesis matching.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Smart Parens
+
+  (use-package smartparens
+    :init
+    (smartparens-mode 1)
+    :diminish smartparens-mode)
+
+#+END_SRC
+
+#+RESULTS:
+
+* Programming Languages
+** Common Settings 
+
+Some common settings in this section.
+
+#+BEGIN_SRC emacs-lisp
+  ;; common settings for all programming languages
+
+  (defun my/common-prog-hooks()
+    (if window-system (linum-mode 1))
+    (local-set-key (kbd "RET") 'newline-and-indent)
+    (yas-reload-all)
+    (yas-minor-mode 1))
+
+  ;; No tabs
+  (setq-default indent-tabs-mode nil)
+
+
+#+END_SRC
+
+** C
+
+In this section, there will be specific settings for C/C++.
+
+#+BEGIN_SRC emacs-lisp
+  ;; c/c++
+
+  (setq-default c-default-style "stroustrup"
+                c-basic-offset 4)
+
+  ;; Open .h file in cpp mode
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+  (defun my/cpp-hooks()
+  ;  (ggtags-mode 1)
+    (helm-gtags-mode 1)
+    (my/common-prog-hooks))
+
+  ;(add-hook 'c++-mode-hook 'my/cpp-hooks)
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (my/cpp-hooks))))
+
+
+  ;; TODO Setup ggtags
+  ;; TODO Setup company-ggtags
+  ;; TODO Setup flycheck
+  ;; TODO Setup google style check
+  ;; TODO Setup company
+
+#+END_SRC
+** Python
+
+In this section, there will be specific settings for python. Mostly
+related to elpy.
+
+#+BEGIN_SRC emacs-lisp
+  ;; python settings
+
+  (use-package elpy
+    :ensure t)
+
+  ;(use-package highlight-indentation-mode)
+
+  ;(use-package fci)
+
+  (defun my/python-hooks()
+    (my/common-prog-hooks)
+    (elpy-enable)
+    (elpy-mode 1))
+   ; (highlight-indentation-mode)
+    ;(fci-mode 1))
+
+  (setq-default python-indent-offset 4)
+
+  (add-hook 'python-mode-hook 'my/python-hooks)
+
+#+END_SRC
+* OS Specific
+
+** Windows
+On Windows, there a few annoyances that happen with the default
+installation. The Windows installation is done from
+[[http://emacsbinw64.sourceforge.net/][Win Install]].
+
++ Console window opens up. Fix it by retargeting the shortcut to
+  /runemacs.exe/. More on
+  [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Windows-Startup.html][Windows Startup]].
++ Use the shortcut properties to change the start folder or set the
+  variable =default-directory=.
++ Make sure the /HOME/ environment variable is set before starting up
+  Emacs for the first time, otherwise it creates .emacs in a obscure
+  location (on Win7: C:/Users/<login>/AppData/Roaming).
++ If /HOME/ is properly set, then /Dropbox/ will also be there, so
+  MobileOrg should work fine.
++ Even on Win7, create a folder /org/ in /HOME/ folder so that
+  org-mode works fine.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Windows specific settings
+
+  (if (or (string-equal system-type "windows-nt")
+          (string-equal system-type "ms-dos"))
+      (progn
+        (setq default-directory (getenv "HOME"))
+        ; Special settings for Emacs to work on Windows smoothly
+        (remove-hook 'find-file-hooks 'vc-find-file-hook)
+        (setq w32-get-true-file-attributes nil)))
+  
+#+END_SRC
+
+* Custom 
+Shortcuts
+
+The common commands are mapped to single key shortcuts.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Define personal shortcuts and keybindings here (non-package specific)
+
+  ;; Shell
+  (global-set-key (kbd "<f5>") 'shell)
+
+  ;; grep and find
+  (global-set-key (kbd "C-c g g") 'helm-do-zgrep)
+  (global-set-key (kbd "C-c g r") 'rgrep)
+  (global-set-key (kbd "C-c f g") 'find-grep)
+
+  ;; Kill-line from any point
+  (global-set-key (kbd "C-c k") 'kill-whole-line)
+
+  ;; Make switching buffers and opening files single key
+  ;; (using IDO for now
+  ;(global-set-key (kbd "C-.") 'helm-mini)
+  ;(global-set-key (kbd "C-,") 'helm-find-files)
+
+  (global-set-key (kbd "C-.") 'ido-switch-buffer)
+  (global-set-key (kbd "C-,") 'ido-find-file)
+
+  ;; M-v is scroll-down
+  ;; Making M-c (which converts to camel-case)
+  ;;   as scroll-up
+  (global-set-key (kbd "M-c") 'scroll-up)
+
+  ;; C-v is FREE now
+  ;; M-k does some scrolling which is never used
+  (global-set-key (kbd "M-k") 'kill-buffer)
+
+  ;; override for regexp searches
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+
+  ;; reuse C-v for end of buffer
+  ;; especially useful for shell
+  (global-set-key (kbd "C-v") 'end-of-buffer)
+
+  ;; C-/ is for <undo> which also has C-_
+  ;; using this for helm-imenu
+  (global-set-key (kbd "C-/") 'helm-imenu)
+
+  ;; M-o to switch to other buffer
+  (global-set-key (kbd "M-o") (lambda() (interactive) (other-window 1)))
+  (global-set-key (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
+
+
+#+END_SRC
+
+#+RESULTS:
+
+* Items to Fix
+*** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
+
+* Package to look into
+*** abbrev-mode
+*** google-this
+*** lookup
+Some elisp functions to facilitate lookup of queries to various sites
+like Wikipedia, Google etc.
+[[http://ergoemacs.org/emacs/emacs_lookup_ref.html][lookup-setup]]
+*** edit-server
+[[http://www.emacswiki.org/emacs/Edit_with_Emacs][edit-server]]
++ Needs edit-server-htmlize to work with GMail.
++ Also check the markdown mode.
+
+* Some Useful Tips
+
+** Word Navigation
+
++ The * operation of vim could be achieved by
+  =isearch-forward-symbol-at-point= which is bound to *M-s .* and
+  later on normal C-s and C-r should do.
++ Also the /symbol/ igores the '_' or '-' in the word which is really
+  cool.
++ There are navigation commands =forward-symbol= which jumps to the
+  next whitespace. There is no =backward-symbol= and hence a negative
+  prefix argument needs to be given. Interestingly, there are
+  shortcuts that achieve both forward and backward movements C-M-f and
+  C-M-b which basically are =forward-sexp= and =backward-sexp= which
+  work the same way for text.
++ Found some modes /subword/ and /superword/ in Emacs 24.4 which will
+  convert all word related commands to symbols and vice-versa.
++ Look at this sometime: [[http://www.emacswiki.org/emacs/FastNav][FastNav]].
++ Tips with isearch: [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Isearch-Yank.html][isearch-yank]].
+
+|----------+----------------------------------------------------|
+| Shortcut | Binding                                            |
+|----------+----------------------------------------------------|
+| M s .    | * of vim, ignores symbols like - or _              |
+| C-M-f    | forward-sexp                                       |
+| C-M-b    | backward-sexp                                      |
+| M-a      | Move start a sentence                              |
+| M-e      | Move end of sentence                               |
+| C-M-a    | Start of para/function                             |
+| C-M-e    | End of para/function                               |
+|----------+----------------------------------------------------|
+| C-S-f    | Adding Shift to movement commands starts selecting |
+|----------+----------------------------------------------------|
+
+** File Navigation
+
++ =find-file-other-window=: Bound to C-x 4 f.
++ M-PgUp and M-PgDn move the other buffer.
+
+** Kill and Yank
+
+Found a good function [[http://emacs.stackexchange.com/questions/2347/kill-or-copy-current-line-with-minimal-keystrokes][here]] where the normal C-w and M-w will kill or
+copy the whole line if nothing is selected.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Kill/Copy full line if nothing is selected
+
+  (defun slick-cut (beg end)
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (list (line-beginning-position) (line-beginning-position 2)))))
+
+  (advice-add 'kill-region :before #'slick-cut)
+
+  (defun slick-copy (beg end)
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (message "Copied line")
+       (list (line-beginning-position) (line-beginning-position 2)))))
+
+  (advice-add 'kill-ring-save :before #'slick-copy)
+
+#+END_SRC
+
+** General Tips
+
+*** Get the font details
+
+"Place your cursor on the point that you want to change the font, and
+type C-u C-x =, and that will tell you (among other things) the name
+of the fonts at that point."
+
+Taken from [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-in-org-mode-8][stackoverflow]].
