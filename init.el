@@ -1,10 +1,10 @@
 
 ;; Turn off mouse interface early in startup to avoid momentary display
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(tooltip-mode -1)
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
@@ -42,7 +42,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
+    ("0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
  '(package-selected-packages
    (quote
     (org-tree-slide powerline htmlize color-theme-sanityinc-tomorrow elpy smartparens yasnippet company ace-window avy expand-region multiple-cursors helm-gtags helm-swoop helm flx-ido org-present org-bullets use-package))))

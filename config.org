@@ -662,6 +662,16 @@ Parenthesis matching.
 
 #+RESULTS:
 
+* Magit
+
+Magit is the best package to work with Git. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; Magit
+
+  (use-package magit)
+
+#+END_SRC
 * Programming Languages
 ** Common Settings 
 
@@ -774,8 +784,7 @@ installation. The Windows installation is done from
   
 #+END_SRC
 
-* Custom 
-Shortcuts
+* Custom Shortcuts
 
 The common commands are mapped to single key shortcuts.
 
@@ -791,7 +800,8 @@ The common commands are mapped to single key shortcuts.
   (global-set-key (kbd "C-c f g") 'find-grep)
 
   ;; Kill-line from any point
-  (global-set-key (kbd "C-c k") 'kill-whole-line)
+  ;; Not required because C-w will do this
+  ;(global-set-key (kbd "C-c k") 'kill-whole-line)
 
   ;; Make switching buffers and opening files single key
   ;; (using IDO for now
@@ -799,6 +809,9 @@ The common commands are mapped to single key shortcuts.
   ;(global-set-key (kbd "C-,") 'helm-find-files)
 
   (global-set-key (kbd "C-.") 'ido-switch-buffer)
+  ;; use M-o to switch buffer because C-. does not work on Putty
+  (global-set-key (kbd "M-o") 'ido-switch-buffer)
+
   (global-set-key (kbd "C-,") 'ido-find-file)
 
   ;; M-v is scroll-down
@@ -825,13 +838,10 @@ The common commands are mapped to single key shortcuts.
   (global-set-key (kbd "C-/") 'helm-imenu)
 
   ;; M-o to switch to other buffer
-  (global-set-key (kbd "M-o") (lambda() (interactive) (other-window 1)))
-  (global-set-key (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
-
+  ;(global-set-key (kbd "M-o") (lambda() (interactive) (other-window 1)))
+  ;(global-set-key (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
 
 #+END_SRC
-
-#+RESULTS:
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
