@@ -679,6 +679,13 @@ Parenthesis matching.
       (smartparens-mode 1)
       (add-hook 'prog-mode-hook #'smartparens-mode))
     :diminish smartparens-mode)
+
+  ;; when you press RET, the curly braces automatically
+  ;; add another newline
+  (sp-with-modes '(c-mode c++-mode)
+    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                              ("* ||\n[i]" "RET"))))
 #+END_SRC
 
 #+RESULTS:
@@ -756,13 +763,22 @@ In this section, there will be specific settings for C/C++.
                 (my/cpp-hooks))))
 
 
-  ;; TODO Setup ggtags
-  ;; TODO Setup company-ggtags
-  ;; TODO Setup flycheck
   ;; TODO Setup google style check
-  ;; TODO Setup company
-
 #+END_SRC
+
+#+RESULTS:
+
+Adding this to not reconfirm the /compilation/ command.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f7>") (lambda ()
+                                 (interactive)
+                                 (setq-local compilation-read-command nil)
+                                 (call-interactively 'compile)))
+#+END_SRC
+
+#+RESULTS:
+
 ** Python
 
 In this section, there will be specific settings for python. Mostly
