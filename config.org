@@ -597,6 +597,10 @@ company-gtags should do.
                                company-dabbrev)))
     :diminish company-mode)
 
+  (use-package company-c-headers
+    :config
+    (add-to-list 'company-backends 'company-c-headers))
+
 #+END_SRC
 
 #+RESULTS:
@@ -720,8 +724,12 @@ Some common settings in this section.
   ;; No tabs
   (setq-default indent-tabs-mode nil)
 
+  ;; Allow folding of code blocks
+  (add-hook 'c-mode-common-hook   'hs-minor-mode)
 
 #+END_SRC
+
+#+RESULTS:
 
 ** C
 
@@ -987,3 +995,8 @@ of the fonts at that point."
 
 Taken from [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-in-org-mode-8][stackoverflow]].
  
+* Resources
+
+Listing some great resources about setting up Emacs.
+
++ http://tuhdo.github.io/c-ide.html 
