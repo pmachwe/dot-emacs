@@ -90,7 +90,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 #+BEGIN_SRC emacs-lisp
   ;; themes and fonts
 
-  (set-default-font "Source Code Pro Light 14")
+  (set-default-font "Source Code Pro 14")
 
   (use-package monokai-theme
     :disabled t
@@ -107,6 +107,8 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                           :box nil)))
 
 #+END_SRC
+
+#+RESULTS:
 
 ** Modeline
 
