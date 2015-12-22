@@ -662,6 +662,18 @@ Parenthesis matching.
 
 #+END_SRC
 
+* Flycheck
+
+On the fly syntax checking for most languages.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Flycheck
+
+  (use-package flycheck
+    :init
+    (add-hook 'after-init-hook #'global-flycheck-mode))
+
+#+END_SRC
 * Magit
 
 Magit is the best package to work with Git. 
