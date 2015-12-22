@@ -660,8 +660,6 @@ Parenthesis matching.
 
 #+END_SRC
 
-#+RESULTS:
-
 * Magit
 
 Magit is the best package to work with Git. 
@@ -669,9 +667,11 @@ Magit is the best package to work with Git.
 #+BEGIN_SRC emacs-lisp
   ;; Magit
 
-  (use-package magit)
+  (use-package magit
+    :bind ("<f6>" . magit-status))
 
 #+END_SRC
+
 * Programming Languages
 ** Common Settings 
 
@@ -810,9 +810,6 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
   ;; Shell
   (define-key my-keys-minor-mode-map (kbd "<f5>") 'shell)
 
-  ;; Magit Status
-  (define-key my-keys-minor-mode-map (kbd "<f6>") 'magit-status)
-
   ;; grep and find
   (define-key my-keys-minor-mode-map (kbd "C-c g g") 'helm-do-zgrep)
   (define-key my-keys-minor-mode-map (kbd "C-c g r") 'rgrep)
@@ -904,13 +901,15 @@ like Wikipedia, Google etc.
 | M-e      | Move end of sentence                               |
 | C-M-a    | Start of para/function                             |
 | C-M-e    | End of para/function                               |
+| M-m      | Reach start of indented statement                  |
 |----------+----------------------------------------------------|
 | C-S-f    | Adding Shift to movement commands starts selecting |
 |----------+----------------------------------------------------|
 
 ** File Navigation
 
-+ =find-file-other-window=: Bound to C-x 4 f.
++ =find-file-other-window=: Bound to C-x 4 f. Have mapped this to
+  "M-J" as this is very useful.
 + M-PgUp and M-PgDn move the other buffer.
 
 ** Kill and Yank
@@ -939,6 +938,13 @@ copy the whole line if nothing is selected.
   (advice-add 'kill-ring-save :before #'slick-copy)
 
 #+END_SRC
+
+** Helm
+
+*** Copy from menu
+
+"C-c C-y" will copy the menu item currently highlighted in helm. Very
+useful.
 
 ** General Tips
 
