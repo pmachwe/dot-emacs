@@ -587,7 +587,7 @@ company-gtags should do.
       (eval-after-load "shell"
         '(define-key shell-mode-map (kbd "TAB") #'company-complete))
       (add-hook 'shell-mode-hook #'company-mode)
-      (define-key prog-mode-hook #'company-complete)
+      (define-key prog-mode-hook (kbd "TAB") #'company-complete)
       (setq company-backends '(company-elisp
                                company-ropemacs
                                company-gtags
