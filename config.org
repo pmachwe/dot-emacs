@@ -210,11 +210,13 @@ This package uses some UTF-8 characters for org-mode bullets.
   ;; org-bullets for nicer bullets :)
   (use-package org-bullets
     :config
-    (org-bullets-mode 1))
-
-  ;; not loading by above method
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (progn
+      (org-bullets-mode 1)
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** Org Reveal
 This package lets org-mode files be exported to HTML5 Reveal.js
@@ -657,10 +659,13 @@ Parenthesis matching.
 
   (use-package smartparens
     :init
-    (smartparens-mode 1)
+    (progn
+      (smartparens-mode 1)
+      (add-hook 'prog-mode-hook #'smartparens-mode))
     :diminish smartparens-mode)
-
 #+END_SRC
+
+#+RESULTS:
 
 * Flycheck
 
