@@ -573,6 +573,9 @@ works well with gtags, libclang etc. Even elpy mode works with this.
 Also a useful tip [[http://emacs.stackexchange.com/questions/5664/shell-bash-completion-window][here]] to complete shell using company instead of helm
 (which could be bit irritating as it opens a small buffer below).
 
+If clang is available, could also use company-clang but mostly
+company-gtags should do.
+
 #+BEGIN_SRC emacs-lisp
   ;; Company mode
 
@@ -583,12 +586,21 @@ Also a useful tip [[http://emacs.stackexchange.com/questions/5664/shell-bash-com
     (progn
       (eval-after-load "shell"
         '(define-key shell-mode-map (kbd "TAB") #'company-complete))
-      (add-hook 'shell-mode-hook #'company-mode))
+      (add-hook 'shell-mode-hook #'company-mode)
+      (define-key prog-mode-hook #'company-complete)
+      (setq company-backends '(company-elisp
+                               company-ropemacs
+                               company-gtags
+                               company-dabbrev-code
+                               company-keywords
+                               company-files
+                               company-dabbrev)))
     :diminish company-mode)
 
 #+END_SRC
 
 #+RESULTS:
+: t
 
 ** Auto complete
 
