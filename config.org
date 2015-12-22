@@ -535,12 +535,12 @@ need to keep switching bufers.
   ;; Setup avy
 
   (use-package avy
-    :bind (("C-;" . avy-goto-char)
-           ("C-:" . avy-goto-word-1)
+    :bind (("C-c :" . avy-goto-char)
+           ("C-c ;" . avy-goto-word-1)
            ("M-g g" . avy-goto-line)))
-
-
 #+END_SRC
+
+#+RESULTS:
 
 
 Another package in the same league is ace-window. As per the
@@ -788,60 +788,73 @@ installation. The Windows installation is done from
 
 The common commands are mapped to single key shortcuts.
 
+Note: Some of the keybindings of the form C-<special char>
+(e.g. C-.). Apparantly, the terminal emulators pass the ASCII value of
+the character minus 64. For some special character this leads to
+negative values and hence the terminal emulators do not understand
+these.
+
+Hence, converting such keybindings to the form C-c <special char> or
+M-<char>.
+
+Note: A good suggestion is to create a minor-mode and change create
+the custom keybindings in the minor mode. This should help avoid any
+clashes and also all the custom keybindings could be turned off in one
+go with the minor mode. This idea is taken from [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][here]].
+
 #+BEGIN_SRC emacs-lisp
   ;; Define personal shortcuts and keybindings here (non-package specific)
 
+  (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
   ;; Shell
-  (global-set-key (kbd "<f5>") 'shell)
+  (define-key my-keys-minor-mode-map (kbd "<f5>") 'shell)
+
+  ;; Magit Status
+  (define-key my-keys-minor-mode-map (kbd "<f6>") 'magit-status)
 
   ;; grep and find
-  (global-set-key (kbd "C-c g g") 'helm-do-zgrep)
-  (global-set-key (kbd "C-c g r") 'rgrep)
-  (global-set-key (kbd "C-c f g") 'find-grep)
+  (define-key my-keys-minor-mode-map (kbd "C-c g g") 'helm-do-zgrep)
+  (define-key my-keys-minor-mode-map (kbd "C-c g r") 'rgrep)
+  (define-key my-keys-minor-mode-map (kbd "C-c f g") 'find-grep)
+  (define-key my-keys-minor-mode-map (kbd "C-c /") 'helm-imenu)
 
-  ;; Kill-line from any point
-  ;; Not required because C-w will do this
-  ;(global-set-key (kbd "C-c k") 'kill-whole-line)
+  ;; override for regexp searches
+  (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
+  (define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
+  (define-key my-keys-minor-mode-map (kbd "C-M-s") 'isearch-forward)
+  (define-key my-keys-minor-mode-map (kbd "C-M-r") 'isearch-backward)
+
+  ;; especially useful for shell
+  (define-key my-keys-minor-mode-map (kbd "C-c .") 'end-of-buffer)
+
+  ;; M-o to switch to other buffer
+  ;(define-key my-keys-minor-mode-map (kbd "M-o") (lambda() (interactive) (other-window 1)))
+  ;(define-key my-keys-minor-mode-map (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
 
   ;; Make switching buffers and opening files single key
   ;; (using IDO for now
-  ;(global-set-key (kbd "C-.") 'helm-mini)
-  ;(global-set-key (kbd "C-,") 'helm-find-files)
+  ;(define-key my-keys-minor-mode-map (kbd "C-.") 'helm-mini)
+  ;(define-key my-keys-minor-mode-map (kbd "C-,") 'helm-find-files)
 
-  (global-set-key (kbd "C-.") 'ido-switch-buffer)
-  ;; use M-o to switch buffer because C-. does not work on Putty
-  (global-set-key (kbd "M-o") 'ido-switch-buffer)
+  (define-key my-keys-minor-mode-map (kbd "M-s") 'ido-find-file)
+  (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-switch-buffer)
+  (define-key my-keys-minor-mode-map (kbd "M-k") 'kill-buffer-and-window)
 
-  (global-set-key (kbd "C-,") 'ido-find-file)
+  (define-minor-mode my-keys-minor-mode
+    "A minor mode so that my key settings override annoying major modes."
+    t " my-keys" 'my-keys-minor-mode-map)
 
-  ;; M-v is scroll-down
-  ;; Making M-c (which converts to camel-case)
-  ;;   as scroll-up
-  (global-set-key (kbd "M-c") 'scroll-up)
+  (my-keys-minor-mode 1)
 
-  ;; C-v is FREE now
-  ;; M-k does some scrolling which is never used
-  (global-set-key (kbd "M-k") 'kill-buffer)
+  ;; Note that you may need to turn this off in the minibuffer:
+  (defun my-minibuffer-setup-hook ()
+    (my-keys-minor-mode 0))
 
-  ;; override for regexp searches
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-
-  ;; reuse C-v for end of buffer
-  ;; especially useful for shell
-  (global-set-key (kbd "C-v") 'end-of-buffer)
-
-  ;; C-/ is for <undo> which also has C-_
-  ;; using this for helm-imenu
-  (global-set-key (kbd "C-/") 'helm-imenu)
-
-  ;; M-o to switch to other buffer
-  ;(global-set-key (kbd "M-o") (lambda() (interactive) (other-window 1)))
-  ;(global-set-key (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
-
+  (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 #+END_SRC
+
+#+RESULTS:
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
@@ -933,3 +946,4 @@ type C-u C-x =, and that will tell you (among other things) the name
 of the fonts at that point."
 
 Taken from [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-in-org-mode-8][stackoverflow]].
+ 
