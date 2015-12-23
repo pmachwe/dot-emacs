@@ -40,13 +40,16 @@ Override some basic default options upfont. Some options taken from
 #+BEGIN_SRC emacs-lisp
   ;; Basic settings
 
+  ;; Give emacs a custom file to add its own stuff
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (load custom-file)
+
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
   ;; Keep all backup and auto-save files in one directory
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))	
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))	
   (setq delete-old-versions t
     kept-new-versions 6
     kept-old-versions 2
@@ -303,6 +306,7 @@ switching buffers.
       (flx-ido-mode 1)
       (setq ido-enable-flex-matching t)))
 #+END_SRC
+
 * Helm
 
 Helm takes the power of Emacs to another level. It makes its presence
@@ -702,6 +706,7 @@ On the fly syntax checking for most languages.
     (add-hook 'after-init-hook #'global-flycheck-mode))
 
 #+END_SRC
+
 * Magit
 
 Magit is the best package to work with Git. 
