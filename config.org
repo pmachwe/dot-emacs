@@ -467,7 +467,7 @@ This is a cool package which allows editing mutliple lines together.
            ("C-c C-<" . mc/mark-all-like-this)))
 
   (global-set-key (kbd "C-c C-SPC") 'set-rectangular-region-anchor)
-  
+
 #+END_SRC
 
 * Expand Region
@@ -587,7 +587,7 @@ company-gtags should do.
       (eval-after-load "shell"
         '(define-key shell-mode-map (kbd "TAB") #'company-complete))
       (add-hook 'shell-mode-hook #'company-mode)
-      (define-key prog-mode-hook (kbd "TAB") #'company-complete)
+      (define-key prog-mode-map (kbd "TAB") #'company-complete)
       (setq company-backends '(company-elisp
                                company-ropemacs
                                company-gtags
@@ -957,6 +957,7 @@ like Wikipedia, Google etc.
 | C-M-a    | Start of para/function                             |
 | C-M-e    | End of para/function                               |
 | M-m      | Reach start of indented statement                  |
+| C-M-SPC  | Start marking from current position                |
 |----------+----------------------------------------------------|
 | C-S-f    | Adding Shift to movement commands starts selecting |
 |----------+----------------------------------------------------|
@@ -966,6 +967,7 @@ like Wikipedia, Google etc.
 + =find-file-other-window=: Bound to C-x 4 f. Have mapped this to
   "M-J" as this is very useful.
 + M-PgUp and M-PgDn move the other buffer.
++ C-x C-SPC will go to previous mark
 
 ** Kill and Yank
 
