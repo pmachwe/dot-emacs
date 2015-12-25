@@ -1056,4 +1056,5 @@ Taken from [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-i
 
 Listing some great resources about setting up Emacs.
 
-+ http://tuhdo.github.io/c-ide.html 
++ [[http://tuhdo.github.io/c-ide.html][Emacs as C IDE]]
++ [[http://daemianmack.com/magit-cheatsheet.html][Magit CheatSheet]]
