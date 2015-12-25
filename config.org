@@ -224,8 +224,19 @@ This package uses some UTF-8 characters for org-mode bullets.
 *** Org Reveal
 This package lets org-mode files be exported to HTML5 Reveal.js
 presentations. This requires Reveal.js to be installed.
-**** TODO Set this up later
+
 From here: [[https://github.com/yjwen/org-reveal][org-reveal]]
+
+#+BEGIN_SRC emacs-lisp
+  ;; Org-reveal
+
+  (use-package ox-reveal
+    :init
+    (setq org-reveal-root "file:///Users/pmachwe/Install/reveal.js/reveal.js-3.2.0"))
+
+#+END_SRC
+
+#+RESULTS:
 
 *** Org Present
 Converts an org document to a org presentation. Keeps level 1 as the
