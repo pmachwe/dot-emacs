@@ -158,7 +158,6 @@ Some basic settings first of all.
   ;; Do not subscript for _ and superscript for ^
   (setq org-use-sub-superscripts nil)
 
-
   ;; Beautify
   (custom-set-faces
    '(org-level-1 ((t (:inherit outline-1 :height 1.20))))
@@ -707,6 +706,26 @@ On the fly syntax checking for most languages.
 
 #+END_SRC
 
+* Sr-speedbar
+
+This is a cool way to quickly visualize open buffers or files in the
+directory. Also, it could extend to show functions in many
+progaramming languages.
+
+#+BEGIN_SRC emacs-lisp
+  ;; sr-speedbar
+
+  (use-package sr-speedbar
+    :bind ("<f1>" . sr-speedbar-toggle)
+    :config
+    (progn
+      (speedbar-add-supported-extension ".c")
+     (add-to-list 'speedbar-fetch-etags-parse-list
+              '("\\.c" . speedbar-parse-c-or-c++tag))))
+#+END_SRC
+
+#+RESULTS:
+
 * Magit
 
 Magit is the best package to work with Git. 
@@ -718,6 +737,19 @@ Magit is the best package to work with Git.
     :bind ("<f6>" . magit-status))
 
 #+END_SRC
+
+* Perforce
+
+Used at work.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Perforce
+
+  (use-package p4)
+
+#+END_SRC
+
+#+RESULTS:
 
 * Programming Languages
 ** Common Settings 
