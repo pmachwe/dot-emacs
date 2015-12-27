@@ -738,6 +738,17 @@ progaramming languages.
 
 #+RESULTS:
 
+* God Mode
+
+Handy while browsing stuff (something like Vim's command mode).
+
+#+BEGIN_SRC emacs-lisp
+  ;; God Mode
+
+  (use-package god-mode
+    :bind ("<f2>" . god-mode))
+#+END_SRC
+
 * Magit
 
 Magit is the best package to work with Git. 
@@ -946,6 +957,11 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
   (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-switch-buffer)
   (define-key my-keys-minor-mode-map (kbd "M-k") 'kill-buffer-and-window)
 
+  ;; avy
+  (define-key my-keys-minor-mode-map (kbd "C-c :") 'avy-goto-char)
+  (define-key my-keys-minor-mode-map (kbd "C-c ;") 'avy-goto-word-1)
+  (define-key my-keys-minor-mode-map (kbd "M-g g") 'avy-goto-line)
+
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " my-keys" 'my-keys-minor-mode-map)
@@ -960,6 +976,7 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
 #+END_SRC
 
 #+RESULTS:
+| my-minibuffer-setup-hook | ido-minibuffer-setup | pl/minibuffer-setup | winner-save-unconditionally | rfn-eshadow-setup-minibuffer | minibuffer-history-isearch-setup | minibuffer-history-initialize |
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
