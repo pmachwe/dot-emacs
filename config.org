@@ -571,7 +571,7 @@ window. Use 'x' and then window-number for this.
   ;; ace-window
 
   (use-package ace-window
-    :bind ("M-p" . ace-window))
+    :bind ("M-O" . ace-window))
 
 #+END_SRC
 
@@ -956,6 +956,7 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
   (define-key my-keys-minor-mode-map (kbd "M-J") 'ido-find-file-other-window)
   (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-switch-buffer)
   (define-key my-keys-minor-mode-map (kbd "M-k") 'kill-buffer-and-window)
+  (define-key my-keys-minor-mode-map (kbd "M-K") 'kill-buffer)
 
   ;; avy
   (define-key my-keys-minor-mode-map (kbd "C-c :") 'avy-goto-char)
