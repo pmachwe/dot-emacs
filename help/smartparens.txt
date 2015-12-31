@@ -1,0 +1,56 @@
+sp-forward-sexp (&optional arg)                 ;; C-M-f
+sp-backward-sexp (&optional arg)                ;; C-M-b
+sp-down-sexp (&optional arg)                    ;; C-M-d
+sp-backward-down-sexp (&optional arg)           ;; C-M-a
+sp-up-sexp (&optional arg)                      ;; C-M-e
+sp-backward-up-sexp (&optional arg)             ;; C-M-u
+sp-next-sexp (&optional arg)                    ;; C-M-n
+sp-previous-sexp (&optional arg)                ;; C-M-p
+sp-beginning-of-sexp (&optional arg)            ;; C-S-d
+sp-end-of-sexp (&optional arg)                  ;; C-S-a
+sp-beginning-of-next-sexp (&optional arg)       ;; none
+sp-beginning-of-previous-sexp (&optional arg)   ;; none
+sp-end-of-next-sexp (&optional arg)             ;; none
+sp-end-of-previous-sexp (&optional arg)         ;; none
+
+sp-kill-sexp (&optional arg)                        ;; C-M-k
+sp-backward-kill-sexp (&optional arg)               ;; C-- C-M-k
+
+sp-copy-sexp (&optional arg)                        ;; C-M-w
+sp-backward-copy-sexp (&optional arg)               ;; C-- C-M-w
+
+sp-unwrap-sexp (&optional arg)                      ;; M-<delete>
+sp-backward-unwrap-sexp (&optional arg)             ;; M-<backspace>
+
+sp-transpose-sexp                                   ;; C-M-t
+
+sp-splice-sexp (&optional arg)                      ;; M-D
+sp-splice-sexp-killing-forward (&optional arg)      ;; C-M-<delete>
+sp-splice-sexp-killing-backward (&optional arg)     ;; C-M-<backspace>
+sp-splice-sexp-killing-around (&optional arg)       ;; C-S-<backspace>
+
+sp-convolute-sexp (&optional arg)                   ;; none
+sp-absorb-sexp (&optional arg)                      ;; none
+sp-emit-sexp (&optional arg)                        ;; none
+sp-extract-before-sexp (&optional arg)              ;; none
+sp-extract-after-sexp (&optional arg)               ;; none
+
+sp-split-sexp (arg)                                 ;; none
+sp-join-sexp (&optional arg)                        ;; none
+
+sp-rewrap-sexp (&optional arg)                      ;; none
+sp-swap-enclosing-sexp (&optional arg)              ;; none
+
+sp-forward-slurp-sexp (&optional arg)               ;; C-<right>
+sp-forward-barf-sexp (&optional arg)                ;; C-<left>
+sp-backward-slurp-sexp (&optional arg)              ;; C-M-<left>
+sp-backward-barf-sexp (&optional arg)               ;; C-M-<right>
+
+sp-add-to-next-sexp (&optional arg)                 ;; none
+sp-add-to-previous-sexp (&optional arg)             ;; none
+
+sp-select-next-thing (&optional arg)                ;; C-M-]
+sp-select-previous-thing (&optional arg)            ;; C-[
+
+sp-select-next-thing-exchange (&optional arg)       ;; C-]
+sp-select-previous-thing-exchange (&optional arg)   ;; C-- C-]

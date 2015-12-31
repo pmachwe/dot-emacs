@@ -794,9 +794,12 @@ Some common settings in this section.
   ;; Allow folding of code blocks
   (add-hook 'c-mode-common-hook   'hs-minor-mode)
 
+  ;; add to all
+  (add-hook 'prog-mode-hook 'my/common-prog-hooks)
 #+END_SRC
 
 #+RESULTS:
+| my/common-prog-hooks | smartparens-mode |
 
 ** C
 
@@ -866,6 +869,20 @@ related to elpy.
   (add-hook 'python-mode-hook 'my/python-hooks)
 
 #+END_SRC
+
+** Elisp
+
+Some settings for Elisp.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Setup smartparens keybindings and use the stricter mode
+  (add-hook 'emacs-lisp-mode-hook '(lambda ()
+                                     (require 'smartparens-config)
+                                     (sp-use-smartparens-bindings)
+                                     (smartparens-global-strict-mode)))
+
+#+END_SRC
+
 * OS Specific
 
 ** Windows
@@ -918,6 +935,9 @@ the custom keybindings in the minor mode. This should help avoid any
 clashes and also all the custom keybindings could be turned off in one
 go with the minor mode. This idea is taken from [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][here]].
 
+Another good suggestion is to use C-. as a prefix (in the same way as
+C-c and define many more keybindings).
+
 #+BEGIN_SRC emacs-lisp
   ;; Define personal shortcuts and keybindings here (non-package specific)
 
@@ -925,6 +945,7 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
 
   ;; Shell
   (define-key my-keys-minor-mode-map (kbd "<f5>") 'shell)
+  (define-key my-keys-minor-mode-map (kbd "S-<f5>") 'eshell)
 
   ;; grep and find
   (define-key my-keys-minor-mode-map (kbd "C-c g g") 'helm-do-zgrep)
@@ -963,6 +984,12 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
   (define-key my-keys-minor-mode-map (kbd "C-c ;") 'avy-goto-word-1)
   (define-key my-keys-minor-mode-map (kbd "M-g g") 'avy-goto-line)
 
+  ;; C-. h <key> will be all help related bindings
+  (setq emacs-help-dir "~/.emacs.d/help/")
+  (define-key my-keys-minor-mode-map (kbd "C-. h S") '(lambda()
+                                                        (interactive)
+                                                       (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
+
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " my-keys" 'my-keys-minor-mode-map)
@@ -975,9 +1002,6 @@ go with the minor mode. This idea is taken from [[http://stackoverflow.com/quest
 
   (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 #+END_SRC
-
-#+RESULTS:
-| my-minibuffer-setup-hook | ido-minibuffer-setup | pl/minibuffer-setup | winner-save-unconditionally | rfn-eshadow-setup-minibuffer | minibuffer-history-isearch-setup | minibuffer-history-initialize |
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
