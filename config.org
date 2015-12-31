@@ -998,6 +998,10 @@ keybindings are unused. Using C-m for now.
                                                         (interactive)
                                                         (find-file-other-window (concat emacs-help-dir "magit.org"))))
 
+  (define-key my-keys-minor-mode-map (kbd "C-m h C") '(lambda()
+                                                        (interactive)
+                                                        (find-file-other-window (concat user-emacs-directory "config.org"))))
+
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " my-keys" 'my-keys-minor-mode-map)
