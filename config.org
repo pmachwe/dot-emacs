@@ -990,6 +990,10 @@ C-c and define many more keybindings).
                                                         (interactive)
                                                        (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
 
+  (define-key my-keys-minor-mode-map (kbd "C-. h M") '(lambda()
+                                                        (interactive)
+                                                        (find-file-other-window (concat emacs-help-dir "magit.org"))))
+
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " my-keys" 'my-keys-minor-mode-map)
