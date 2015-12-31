@@ -879,7 +879,7 @@ Some settings for Elisp.
   (add-hook 'emacs-lisp-mode-hook '(lambda ()
                                      (require 'smartparens-config)
                                      (sp-use-smartparens-bindings)
-                                     (smartparens-global-strict-mode)))
+                                     (smartparens-strict-mode)))
 
 #+END_SRC
 
@@ -936,7 +936,11 @@ clashes and also all the custom keybindings could be turned off in one
 go with the minor mode. This idea is taken from [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][here]].
 
 Another good suggestion is to use C-. as a prefix (in the same way as
-C-c and define many more keybindings).
+C-c and define many more keybindings). These might not work in some
+terminals. Some other prefixes that
+could be used are C-m which is also bound to
+newline-and-indent. Others are C-h <j|o|q|u|x|y|z> as these
+keybindings are unused. Using C-m for now.
 
 #+BEGIN_SRC emacs-lisp
   ;; Define personal shortcuts and keybindings here (non-package specific)
@@ -984,13 +988,13 @@ C-c and define many more keybindings).
   (define-key my-keys-minor-mode-map (kbd "C-c ;") 'avy-goto-word-1)
   (define-key my-keys-minor-mode-map (kbd "M-g g") 'avy-goto-line)
 
-  ;; C-. h <key> will be all help related bindings
+  ;; C-m h <key> will be all help related bindings
   (setq emacs-help-dir "~/.emacs.d/help/")
-  (define-key my-keys-minor-mode-map (kbd "C-. h S") '(lambda()
+  (define-key my-keys-minor-mode-map (kbd "C-m h S") '(lambda()
                                                         (interactive)
                                                        (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
 
-  (define-key my-keys-minor-mode-map (kbd "C-. h M") '(lambda()
+  (define-key my-keys-minor-mode-map (kbd "C-m h M") '(lambda()
                                                         (interactive)
                                                         (find-file-other-window (concat emacs-help-dir "magit.org"))))
 
