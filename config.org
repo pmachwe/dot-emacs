@@ -599,10 +599,7 @@ company-gtags should do.
     (add-hook 'after-init-hook 'global-company-mode)
     :config
     (progn
-      (eval-after-load "shell"
-        '(define-key shell-mode-map (kbd "TAB") #'company-complete))
       (add-hook 'shell-mode-hook #'company-mode)
-      (define-key prog-mode-map (kbd "TAB") #'company-complete)
       (setq company-backends '(company-elisp
                                company-ropemacs
                                company-gtags
@@ -616,6 +613,10 @@ company-gtags should do.
     :config
     (add-to-list 'company-backends 'company-c-headers))
 
+  ;; Creates problems with yas-expand
+  ;;     (define-key prog-mode-map (kbd "TAB") #'company-complete)
+  ;;     (eval-after-load "shell"
+  ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
 #+END_SRC
 
 #+RESULTS:
@@ -990,15 +991,15 @@ keybindings are unused. Using C-m for now.
 
   ;; C-m h <key> will be all help related bindings
   (setq emacs-help-dir "~/.emacs.d/help/")
-  (define-key my-keys-minor-mode-map (kbd "C-m h S") '(lambda()
+  (define-key my-keys-minor-mode-map (kbd "C-. h S") '(lambda()
                                                         (interactive)
                                                        (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
 
-  (define-key my-keys-minor-mode-map (kbd "C-m h M") '(lambda()
+  (define-key my-keys-minor-mode-map (kbd "C-. h M") '(lambda()
                                                         (interactive)
                                                         (find-file-other-window (concat emacs-help-dir "magit.org"))))
 
-  (define-key my-keys-minor-mode-map (kbd "C-m h C") '(lambda()
+  (define-key my-keys-minor-mode-map (kbd "C-. h C") '(lambda()
                                                         (interactive)
                                                         (find-file-other-window (concat user-emacs-directory "config.org"))))
 
