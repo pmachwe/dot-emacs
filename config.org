@@ -784,7 +784,7 @@ Some common settings in this section.
   ;; common settings for all programming languages
 
   (defun my/common-prog-hooks()
-    (if window-system (linum-mode 1))
+  ;  (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
     (yas-reload-all)
     (yas-minor-mode 1))

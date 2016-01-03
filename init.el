@@ -33,3 +33,11 @@
 
 ;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+;; Load the work-specific file which cannot be uploaded to Github
+(setq work-el "~/.emacs.d/work.el")
+(if (file-exists-p work-el)
+    (load-file work-el))
+
+(provide 'init)
+;;; init.el ends here
