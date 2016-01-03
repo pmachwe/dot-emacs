@@ -43,7 +43,7 @@ Override some basic default options upfont. Some options taken from
   ;; Give emacs a custom file to add its own stuff
   ;; Using "HOME" because user-emacs-directory just returns ~/.emacs.d
   ;; which does not work on Windows
-  (setq custom-file (concat (getenv "HOME") "custom.el"))
+  (setq custom-file (concat (getenv "HOME") "/custom.el"))
   (load custom-file 'noerror)
 
   ;; Answering just 'y' or 'n' will do
