@@ -292,6 +292,13 @@ For source code highlight in exports.
 
 #+END_SRC
 ** Org Mobile
+** Org Capture and Refile
+
+#+BEGIN_SRC emacs-lisp
+  ;; Setup a shortcut for org-capture
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+#+END_SRC
 
 * Ido
 
