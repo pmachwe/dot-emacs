@@ -957,7 +957,9 @@ C-c and define many more keybindings). These might not work in some
 terminals. Some other prefixes that
 could be used are C-m which is also bound to
 newline-and-indent. Others are C-h <j|o|q|u|x|y|z> as these
-keybindings are unused. Using C-m for now.
+keybindings are unused. Using C-. for now.
+
+Using "h" for help, "c" for personal configurations.
 
 #+BEGIN_SRC emacs-lisp
   ;; Define personal shortcuts and keybindings here (non-package specific)
@@ -1019,6 +1021,10 @@ keybindings are unused. Using C-m for now.
                                                         (interactive)
                                                         (find-file-other-window (concat user-emacs-directory "config.org"))))
 
+  ;; Change fonts sometimes
+  (define-key my-keys-minor-mode-map (kbd "C-. c f") '(lambda(font size)
+                                                    (interactive "sFont: \nsSize: ")
+                                                    (set-default-font (concat font " " size))))
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " my-keys" 'my-keys-minor-mode-map)
