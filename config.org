@@ -766,6 +766,29 @@ Handy while browsing stuff (something like Vim's command mode).
     :bind ("<f2>" . god-mode))
 #+END_SRC
 
+* Visual Regexp
+
+The packages allows visual feedback while replacing some regular
+expression. The package with steroids allows python style regular
+expressions. It also allow expressions to insert values (say SNo to
+items in increasing order).
+
+#+BEGIN_SRC emacs-lisp
+  ;; visual regexp
+
+  (use-package visual-regexp)
+  (use-package visual-regexp-steroids
+    :bind (("C-c r" . vr/replace)
+           ( "C-c q" . vr/query-replace)
+           ( "C-c m" . vr/mc-mark)           ; if you use multiple-cursors
+           ( "C-s" . vr/isearch-forward)     ; C-M-s
+           ( "C-r" . vr/isearch-backward)))) ; C-M-r
+
+#+END_SRC
+
+#+RESULTS:
+: vr/isearch-backward
+
 * Magit
 
 Magit is the best package to work with Git. 
@@ -977,8 +1000,9 @@ Using "h" for help, "c" for personal configurations.
   (define-key my-keys-minor-mode-map (kbd "C-c /") 'helm-imenu)
 
   ;; override for regexp searches
-  (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
-  (define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
+  ;; using visual-regexp
+  ;(define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
+  ;(define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
   (define-key my-keys-minor-mode-map (kbd "C-M-s") 'isearch-forward)
   (define-key my-keys-minor-mode-map (kbd "C-M-r") 'isearch-backward)
 
