@@ -779,10 +779,10 @@ items in increasing order).
   (use-package visual-regexp)
   (use-package visual-regexp-steroids
     :bind (("C-c r" . vr/replace)
-           ( "C-c q" . vr/query-replace)
-           ( "C-c m" . vr/mc-mark)           ; if you use multiple-cursors
-           ( "C-s" . vr/isearch-forward)     ; C-M-s
-           ( "C-r" . vr/isearch-backward)))) ; C-M-r
+           ("C-c q" . vr/query-replace)
+           ("C-c m" . vr/mc-mark)           ; if you use multiple-cursors
+           ("C-s" . vr/isearch-forward)     ; C-M-s
+           ("C-r" . vr/isearch-backward)))  ; C-M-r
 
 #+END_SRC
 
