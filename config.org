@@ -123,10 +123,13 @@ Beautify the modeline.
   ;; powerline
 
   (use-package powerline
+    :if window-system
     :init
     (powerline-center-theme))
 
 #+END_SRC
+
+#+RESULTS:
 
 * Org Mode
 
