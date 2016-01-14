@@ -773,11 +773,16 @@ expression. The package with steroids allows python style regular
 expressions. It also allow expressions to insert values (say SNo to
 items in increasing order).
 
+NOTE - Disabling this as this is very slow to search.
+
 #+BEGIN_SRC emacs-lisp
   ;; visual regexp
 
-  (use-package visual-regexp)
+  (use-package visual-regexp
+    :disabled)
+
   (use-package visual-regexp-steroids
+    :disabled
     :bind (("C-c r" . vr/replace)
            ("C-c q" . vr/query-replace)
            ("C-c m" . vr/mc-mark)           ; if you use multiple-cursors
@@ -923,6 +928,15 @@ Some settings for Elisp.
 
 #+END_SRC
 
+** Haskell
+
+#+BEGIN_SRC emacs-lisp
+  ;; Haskell Mode
+  (use-package haskell-mode)
+#+END_SRC
+
+#+RESULTS:
+
 * OS Specific
 
 ** Windows
@@ -1000,9 +1014,8 @@ Using "h" for help, "c" for personal configurations.
   (define-key my-keys-minor-mode-map (kbd "C-c /") 'helm-imenu)
 
   ;; override for regexp searches
-  ;; using visual-regexp
-  ;(define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
-  ;(define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
+  (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
+  (define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
   (define-key my-keys-minor-mode-map (kbd "C-M-s") 'isearch-forward)
   (define-key my-keys-minor-mode-map (kbd "C-M-r") 'isearch-backward)
 
@@ -1170,3 +1183,4 @@ Listing some great resources about setting up Emacs.
 
 + [[http://tuhdo.github.io/c-ide.html][Emacs as C IDE]]
 + [[http://daemianmack.com/magit-cheatsheet.html][Magit CheatSheet]]
+
