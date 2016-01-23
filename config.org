@@ -999,6 +999,25 @@ are some pointers for the settings below:
 
 #+END_SRC
 
+* Key chords
+
+Key chords look promising. Try these out.
+
+#+BEGIN_SRC emacs-lisp
+  ;; key-chords
+  ;; using \ which is similar to Leader key in vim
+  ;; which is on right so the second key is on left
+  (use-package key-chord
+    :config
+    (progn
+      (key-chord-mode 1)
+      (key-chord-define-global "\\w" 'avy-goto-word-1)
+      (key-chord-define-global "\\a" 'ace-window)
+      (key-chord-define-global "\\s" 'isearch-forward-symbol-at-point)
+      (key-chord-define-global "\\b" 'ido-switch-buffer)
+      (key-chord-define-global "\\f" 'ido-find-file)))
+#+END_SRC
+
 * OS Specific
 
 ** Windows
