@@ -1018,8 +1018,19 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\\f" 'ido-find-file)
       (key-chord-define-global "\\g" 'keyboard-quit)
       (key-chord-define-global "\\x" 'helm-M-x)
-      (key-chord-define-global "\\z" 'undo)))
+      (key-chord-define-global "\\z" 'undo)
+      (key-chord-define-global "\'w" 'avy-goto-word-1)
+      (key-chord-define-global "\'a" 'ace-window)
+      (key-chord-define-global "\'s" 'isearch-forward-symbol-at-point)
+      (key-chord-define-global "\'b" 'ido-switch-buffer)
+      (key-chord-define-global "\'f" 'ido-find-file)
+      (key-chord-define-global "\'g" 'keyboard-quit)
+      (key-chord-define-global "\'x" 'helm-M-x)
+      (key-chord-define-global "\'z" 'undo)))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 * OS Specific
 
