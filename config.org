@@ -951,7 +951,13 @@ Some settings for Elisp.
 
 #+BEGIN_SRC emacs-lisp
   ;; Haskell Mode
-  (use-package haskell-mode)
+  (defun my/haskell-hooks()
+    (my/common-prog-hooks)
+    (interactive-haskell-mode))
+
+  (use-package haskell-mode
+    :config
+    (add-hook 'haskell-mode-hook 'my/haskell-hooks))
 
   ;; Use Hasklig instead of FIRA when required
   (defun pm/set-hasklig-codes ()
@@ -959,6 +965,9 @@ Some settings for Elisp.
     (pm/set-fira-codes)
     (set-default-font "Hasklig 13"))
 #+END_SRC
+
+#+RESULTS:
+: pm/set-hasklig-codes
 
 * FIRA
 
