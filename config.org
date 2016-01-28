@@ -1037,8 +1037,13 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\'f" 'ido-find-file)
       (key-chord-define-global "\'g" 'keyboard-quit)
       (key-chord-define-global "\'x" 'helm-M-x)
-      (key-chord-define-global "\'z" 'undo)))
+      (key-chord-define-global "\'z" 'undo)
+      (key-chord-define-global "\[a" 'beginning-of-defun)
+      (key-chord-define-global "\[e" 'end-of-defun)))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 * OS Specific
 
