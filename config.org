@@ -86,6 +86,9 @@ Override some basic default options upfont. Some options taken from
   (custom-set-faces
    '(highlight ((t (:background nil :foreground nil :bold t)))))
   (global-hl-line-mode 1)
+
+  ;; always show the function
+  (which-func-mode 1)
 #+END_SRC
 
 * Themes and Fonts
@@ -132,9 +135,17 @@ Beautify the modeline.
     :init
     (powerline-center-theme))
 
-#+END_SRC
+  ;; smart-mode-line
+  (use-package smart-mode-line-powerline-theme)
 
-#+RESULTS:
+  (use-package smart-mode-line
+    :init
+    (setq sml/no-confirm-load-theme t)
+    :config
+    (setq sml/theme 'powerline)
+    (sml/setup))
+
+#+END_SRC
 
 * Org Mode
 
@@ -1028,9 +1039,6 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\'x" 'helm-M-x)
       (key-chord-define-global "\'z" 'undo)))
 #+END_SRC
-
-#+RESULTS:
-: t
 
 * OS Specific
 
