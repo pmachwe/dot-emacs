@@ -526,7 +526,10 @@ This is a cool package which allows editing mutliple lines together.
   ;; expand region
 
   (use-package expand-region
-    :bind ("C-=" . er/expand-region))
+    :bind (("C-=" . er/expand-region)
+           ("C-c = -" . er/contract-region)
+           ("C-c = =" . er/mark-symbol)
+           ("C-c = f" . er/mark-defun)))
 
 #+END_SRC
 
@@ -713,7 +716,9 @@ Move the settings to OS specific. Shell not working properly for now.
   ;; yasnippets
 
   (use-package yasnippet
-    :ensure t)
+    :ensure t
+    :init
+    (yas-reload-all))
 
 #+END_SRC
 
@@ -849,7 +854,6 @@ Some common settings in this section.
   (defun my/common-prog-hooks()
   ;  (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
-    (yas-reload-all)
     (yas-minor-mode 1))
 
   ;; No tabs
@@ -861,9 +865,6 @@ Some common settings in this section.
   ;; add to all
   (add-hook 'prog-mode-hook 'my/common-prog-hooks)
 #+END_SRC
-
-#+RESULTS:
-| my/common-prog-hooks | smartparens-mode |
 
 ** C
 
