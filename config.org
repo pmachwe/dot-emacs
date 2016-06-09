@@ -717,7 +717,7 @@ Move the settings to OS specific. Shell not working properly for now.
 
   (use-package yasnippet
     :ensure t
-    :init
+    :config
     (yas-reload-all))
 
 #+END_SRC
