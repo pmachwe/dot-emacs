@@ -110,6 +110,16 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (load-theme 'monokai t))
 
   (use-package color-theme-sanityinc-tomorrow
+    :disabled
+    :init
+    (progn
+      (load-theme 'sanityinc-tomorrow-night t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
+
+  (use-package leuven-theme
     :init
     (progn
       (load-theme 'sanityinc-tomorrow-night t)
@@ -139,6 +149,7 @@ Beautify the modeline.
   (use-package smart-mode-line-powerline-theme)
 
   (use-package smart-mode-line
+    :disabled
     :init
     (setq sml/no-confirm-load-theme t)
     :config
@@ -166,10 +177,10 @@ Some basic settings first of all.
   ;(use-package org
   ;  :diminish org-indent-mode)
 
-
+  ;; disabling org-indent-mode and auto-fill-mode
   (defun pm/org-mode-hooks()
     (org-indent-mode 1)
-    (auto-fill-mode 1)
+    ;(auto-fill-mode 1)
     (global-set-key (kbd "C-c l") 'org-store-link)
     (global-set-key (kbd "C-c a") 'org-agenda))
 
@@ -234,7 +245,9 @@ This package uses some UTF-8 characters for org-mode bullets.
 
 #+BEGIN_SRC emacs-lisp
   ;; org-bullets for nicer bullets :)
+  ;; disabling because does not work well with leuven theme
   (use-package org-bullets
+    :disabled
     :config
     (progn
       (org-bullets-mode 1)
@@ -613,8 +626,6 @@ window. Use 'x' and then window-number for this.
 
 #+END_SRC
 
-#+RESULTS:
-
 * Auto Completion
 
 ** Company Mode
@@ -743,9 +754,6 @@ Parenthesis matching.
     (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                               ("* ||\n[i]" "RET"))))
 #+END_SRC
-
-#+RESULTS:
-
 * Flycheck
 
 On the fly syntax checking for most languages.
