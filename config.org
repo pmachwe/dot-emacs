@@ -102,7 +102,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 #+BEGIN_SRC emacs-lisp
   ;; themes and fonts
 
-  (set-default-font "Source Code Pro 14")
+  (set-default-font "InputMono 11")
 
   (use-package monokai-theme
     :disabled t
@@ -122,7 +122,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
   (use-package leuven-theme
     :init
     (progn
-      (load-theme 'sanityinc-tomorrow-night t)
+      (load-theme 'leuven t)
       (set-face-attribute `mode-line nil
                           :box nil)
       (set-face-attribute `mode-line-inactive nil
