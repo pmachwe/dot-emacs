@@ -850,6 +850,20 @@ Used at work.
 
 #+RESULTS:
 
+* Highlight Diff
+A visual aid to view the differences from the repository.
+
+#+BEGIN_SRC emacs-lisp
+  ;; highlight differences from repo
+
+  (use-package diff-hl
+    :config
+    (diff-hl-mode 1)
+    (diff-hl-dired-mode 1)
+    (diff-hl-flydiff-mode 1))
+#+END_SRC
+
+
 * Programming Languages
 ** Common Settings 
 
