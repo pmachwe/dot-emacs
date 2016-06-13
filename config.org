@@ -863,6 +863,16 @@ A visual aid to view the differences from the repository.
     (diff-hl-flydiff-mode 1))
 #+END_SRC
 
+* Workgroups
+Session manager for Emacs. Experimental for now.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Emacs session manager
+
+  (use-package workgroups2
+    :config
+    (workgroups-mode 1))
+#+END_SRC
 
 * Programming Languages
 ** Common Settings 
