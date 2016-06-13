@@ -606,12 +606,10 @@ need to keep switching bufers.
 
   (use-package avy
     :bind (("C-c :" . avy-goto-char)
+           ("C-;" . avy-goto-char)
            ("C-c ;" . avy-goto-word-1)
            ("M-g g" . avy-goto-line)))
 #+END_SRC
-
-#+RESULTS:
-
 
 Another package in the same league is ace-window. As per the
 recommendation, mapping it to M-p which is not mapped by default to
@@ -622,7 +620,8 @@ window. Use 'x' and then window-number for this.
   ;; ace-window
 
   (use-package ace-window
-    :bind ("M-O" . ace-window))
+    :bind (("M-O" . ace-window)
+           ("C-o" . ace-window)))
 
 #+END_SRC
 
