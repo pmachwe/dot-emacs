@@ -40,8 +40,14 @@
 (defvar work-el "~/.emacs.d/work.el"
   "Work specific settings.")
 
-(if (file-exists-p work-el)
-    (load-file work-el))
+(defvar work-org "~/.emacs.d/work.org"
+  "Work specific settings in 'org-mode'.")
+
+;; Load org if available or else try el
+(if (file-exists-p work-org)
+    (org-babel-load-file work-org)
+  (if (file-exists-p work-el)
+      (load-file work-el)))
 
 (provide 'init)
 ;;; init.el ends here
