@@ -12,7 +12,10 @@ Some functions to setup different themes.
     "Setup a light theme."
     (interactive)
     (load-theme 'leuven)
-    (set-frame-font "Input Mono Light 11"))
+    (if (member "InputMono" (font-family-list))
+        (set-frame-font "InputMono 11")
+      (if (member "Input Mono" (font-family-list))
+          (set-frame-font "Input Mono 11"))))
 
   (defun my/setup-dark-theme ()
     "Setup a dark theme."
@@ -195,6 +198,7 @@ Hence, adding the advice to find the P4CLIENT from .p4config to this function so
         (setq ref-path (my/get-client-from-config))
         (setenv "P4CLIENT" ref-path))))
 
+  (require 'p4)
   (defadvice p4-call-command (before my-set-p4-client())
     (my/set-client))
   (ad-activate 'p4-call-command)
@@ -228,10 +232,10 @@ The functions below are very useful for dispatching jobs to other machines.
 
 #+BEGIN_SRC emacs-lisp
   (defvar my/dispatch-cmd-name "qsub"
-    'Use this command to dispach to grid machines')
+    "Use this command to dispach to grid machines")
 
   (defun my/dispatch-scr-on-grid(scr)
-    'Fire the script on the grid'
+    "Fire the script on the grid"
     (interactive "fEnter the script")
     (let (cmd-name)
       (setq cmd-name (format "%s %s" my/dispatch-cmd-name scr))
