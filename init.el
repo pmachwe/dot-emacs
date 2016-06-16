@@ -33,6 +33,8 @@
 
 ;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+;; Load utility functions
+(org-babel-load-file (concat user-emacs-directory "functions.org"))
 
 ;; Load the work-specific file which cannot be uploaded to Github
 (defvar work-el "~/.emacs.d/work.el"

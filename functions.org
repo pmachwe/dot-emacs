@@ -1,0 +1,236 @@
+#+TITLE: Collection of Utility Functions
+#+AUHOR: Parikshit Machwe
+
+
+* Compilation
+
+The compilation buffer pops up and disturbs the work flow. Hence, display only a small compilation window and let it disapper if no error is found. The small window is also
+applicable for grep like processes which also use the compilation buffer.
+
+#+BEGIN_SRC elisp
+
+  ;; copied from: http://emacs.stackexchange.com/questions/62/hide-compilation-window
+  ; from enberg on #emacs
+  (defun my/compilation-finish-function(buf str)
+    (if (null (string-match ".*exited abnormally.*" (buffer-string)))
+        ;;no errors, make the compilation window go away in a few seconds
+        (progn
+          (run-at-time
+           "5 sec" nil 'delete-windows-on
+           (get-buffer-create "*compilation*"))
+          (message "No Compilation Errors!"))
+      (progn
+        (unless (get-buffer-window (get-buffer-create "*compilation*"))
+          (split-window-sensibly)
+          (other-window 1)
+          (switch-to-buffer (get-buffer-create "*compilation*"))
+          (other-window -1))
+        (message "Compilation Unsuccessful"))))
+  (add-hook 'compilation-finish-functions 'my/compilation-finish-function)
+
+  ;; Copied from
+  ;; http://stackoverflow.com/questions/17659212/dont-display-compilation-buffer-in-emacs-until-the-process-exits-with-error-o
+  (require 'cl)
+  (defadvice compilation-start
+    (around inhibit-display
+        (command &optional mode name-function highlight-regexp)) 
+    (if (not (string-match "^\\(find\\|grep\\)" command))
+        (flet ((display-buffer)
+           (set-window-point)
+           (goto-char)) 
+      (fset 'display-buffer 'ignore)
+      (fset 'goto-char 'ignore)
+      (fset 'set-window-point 'ignore)
+      (save-window-excursion 
+        ad-do-it))
+      ad-do-it))
+  (ad-activate 'compilation-start)
+  (add-hook' compilation-start-hook 'my/compilation-start-function)
+
+#+END_SRC
+
+* GTAGS
+
+Routine to find the GTAGS file upstream and set the appropriate GTAGSROOT.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Setup GTAGSROOT when first called find-tags
+  (defun my/set-gtags-root()
+    (interactive)
+    (let (root-path)
+      (setq root-path (file-name-directory (find-file-in-heirarchy (buffer-file-name) "GTAGS")))
+      (if (string-blank-p root-path)
+          ()
+        (progn
+          (message (concat "Setting GTAGSROOT to " root-path))
+          (setenv "GTAGSROOT" root-path)))))
+
+  (defadvice find-tag (before my-set-gtags-root)
+    "Find the GTAGSROOT if not already set."
+    (progn
+      (my/set-gtags-root)))
+  (ad-activate 'find-tag)
+
+  (defadvice helm-gtags-dwim (before my-set-gtags-root2)
+    (my/set-gtags-root))
+  (ad-activate 'helm-gtags-dwim)
+
+  ;;(defadvice find-tag (after my-set-file-truename)
+  ;;  (setq find-file-visit-truename 't))
+
+#+END_SRC
+
+* Analysis
+
+Some functions to analyze big log files.
+
+This function breaks a log file into two buffers around a given regexp.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/split-buffer-on-regexp(regexp)
+    (interactive "sEnter regexp:")
+    (let (buf1 buf2 str1 str2)
+      (save-excursion
+        (goto-char (point-min))
+        (search-forward-regexp regexp)
+        (setq str1 (buffer-substring-no-properties (point-min) (point)))
+        (setq str2 (buffer-substring-no-properties (point) (point-max))))
+      (setq buf1 (get-buffer-create (concat (buffer-name) "-buf1")))
+      (setq buf2 (get-buffer-create (concat (buffer-name) "-buf2")))
+      (with-current-buffer buf1
+        (erase-buffer)
+        (insert str1))
+      (with-current-buffer buf2
+        (erase-buffer)
+        (insert str2))
+      (switch-to-buffer buf1)
+      (split-window-sensibly)
+      (other-window 1)
+      (switch-to-buffer buf2)
+      (goto-char (point-min))
+      (other-window -1)))
+
+#+END_SRC
+
+This function extracts out the text between two given regexp into a separate buffer.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/text-between-regexp (regexp1 regexp2)
+    "Extract out the text between two regexps in to a buffer."
+    (interactive "sEnter regexp1:\nsEnter regexp2:")
+    (let (buf start-point end-point text)
+      (save-excursion
+        (goto-char (point-min))
+        (search-forward-regexp regexp1)
+        (setq start-point (point))
+        (search-forward-regexp regexp2)
+        (setq end-point (point))
+        (setq text (buffer-substring-no-properties start-point end-point)))
+      (setq buf (get-buffer-create (concat (buffer-name) "-buf1")))
+      (with-current-buffer buf
+        (erase-buffer)
+        (insert text))
+      (split-window-sensibly)
+      (other-window 1)
+      (switch-to-buffer buf)
+      (goto-char (point-min))))
+
+#+END_SRC
+
+* General Utility
+
+** Find files in hierarchy
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun parent-directory (dir)
+    (unless (equal "/" dir)
+      (file-name-directory (directory-file-name dir))))
+
+  (defun find-file-in-heirarchy (current-dir fname)
+    "Search for a file named FNAME upwards through the directory hierarchy, starting from CURRENT-DIR" 
+    (let ((file (concat current-dir fname))
+          (parent (parent-directory (expand-file-name current-dir))))
+      (if (file-exists-p file)
+          file
+        (when parent
+          (find-file-in-heirarchy parent fname)))))
+
+#+END_SRC
+
+* Perforce
+
+Some Perforce related utility functions.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/get-client-from-config()
+    "Find .p4config upwards"
+    (interactive)
+    (let (file ref-path)
+      (setq file (find-file-in-heirarchy (buffer-file-name) ".p4config"))
+      (if (file-exists-p file)
+          (progn 
+  ;          (message "Found file %s" file)
+            (find-file file)
+            (goto-char 1)
+            (search-forward "=")
+            (setq ref-path (buffer-substring-no-properties (point) (line-end-position)))
+            (message "Your ref-path is %s" ref-path)
+            (kill-buffer (current-buffer))
+            ref-path) ; return ref-path name
+        nil)))
+
+  (defun my/set-client()
+    "Set P4CLIENT environment variable"
+    (interactive)
+    (let (ref-path)
+      (progn
+        (setq ref-path (my/get-client-from-config))
+        (setenv "P4CLIENT" ref-path))))
+
+  ;; TODO: Write a macro to set P4CLIENT automatically before any P4 call
+  (defadvice p4-edit (before my-set-p4-client())
+    (my/set-client))
+  (ad-activate 'p4-edit)
+
+#+END_SRC
+
+* Theme
+
+Some functions to setup different themes.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/setup-light-theme ()
+    "Setup a light theme."
+    (interactive)
+    (load-theme 'leuven)
+    (set-frame-font "Input Mono Light 11"))
+
+  (defun my/setup-dark-theme ()
+    "Setup a dark theme."
+    (interactive)
+    (load-theme 'sanityinc-tomorrow-night)
+    (set-background-color "black")
+    (set-frame-font "Ubuntu Mono 11"))
+
+#+END_SRC
+* Dispatch
+
+The functions below are very useful for dispatching jobs to other machines.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my/dispatch-cmd-name "qsub"
+    'Use this command to dispach to grid machines')
+
+  (defun my/dispatch-scr-on-grid(scr)
+    'Fire the script on the grid'
+    (interactive "fEnter the script")
+    (let (cmd-name)
+      (setq cmd-name (format "%s %s" my/dispatch-cmd-name scr))
+      (shell-command cmd-name)))
+#+END_SRC

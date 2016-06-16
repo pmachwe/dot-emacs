@@ -763,9 +763,12 @@ On the fly syntax checking for most languages.
 #+BEGIN_SRC emacs-lisp
   ;; Flycheck
 
+  ;; Also set to not mess up the standard navigation which is
+  ;; used to navigate compilation errors
   (use-package flycheck
     :init
-    (add-hook 'after-init-hook #'global-flycheck-mode))
+    (add-hook 'after-init-hook #'global-flycheck-mode)
+    (setq flycheck-standard-error-navigation nil))
 
 #+END_SRC
 
