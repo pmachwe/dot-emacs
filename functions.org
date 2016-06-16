@@ -165,6 +165,9 @@ This function extracts out the text between two given regexp into a separate buf
 
 Some Perforce related utility functions.
 
+The package 'p4.el' uses the command =p4-call-command= to implement all the other commands like p4-edit, p4-diff etc.
+Hence, adding the advice to find the P4CLIENT from .p4config to this function so that it works with all p4 commands.
+
 #+BEGIN_SRC emacs-lisp
 
   (defun my/get-client-from-config()
@@ -192,10 +195,9 @@ Some Perforce related utility functions.
         (setq ref-path (my/get-client-from-config))
         (setenv "P4CLIENT" ref-path))))
 
-  ;; TODO: Write a macro to set P4CLIENT automatically before any P4 call
-  (defadvice p4-edit (before my-set-p4-client())
+  (defadvice p4-call-command (before my-set-p4-client())
     (my/set-client))
-  (ad-activate 'p4-edit)
+  (ad-activate 'p4-call-command)
 
 #+END_SRC
 
