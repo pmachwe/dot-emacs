@@ -102,7 +102,9 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 #+BEGIN_SRC emacs-lisp
   ;; themes and fonts
 
-  (set-default-font "InputMono 11")
+  ;; Move this setup to work.el as it is dependent on the
+  ;; environment, eg font-names are different on Linux than Win
+  ;(set-default-font "InputMono 11")
 
   (use-package monokai-theme
     :disabled t
@@ -120,6 +122,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                           :box nil)))
 
   (use-package leuven-theme
+    :disabled
     :init
     (progn
       (load-theme 'leuven t)
