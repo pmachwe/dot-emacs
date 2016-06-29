@@ -876,6 +876,7 @@ Session manager for Emacs. Experimental for now.
   ;; Emacs session manager
 
   (use-package workgroups2
+    :disabled
     :config
     (workgroups-mode 1))
 #+END_SRC

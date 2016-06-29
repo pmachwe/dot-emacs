@@ -71,6 +71,12 @@ applicable for grep like processes which also use the compilation buffer.
   (ad-activate 'compilation-start)
   (add-hook' compilation-start-hook 'my/compilation-start-function)
 
+  ;; Some minor settings
+  ;; Follow the compilation output buffer
+  (setq compilation-scroll-output t)
+  ;; Goto first error
+  (setq compilation-scroll-output 'first-error)
+
 #+END_SRC
 
 * GTAGS
