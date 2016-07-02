@@ -881,6 +881,18 @@ Session manager for Emacs. Experimental for now.
     (workgroups-mode 1))
 #+END_SRC
 
+* Undo Tree
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; undo-tree
+  (use-package undo-tree
+    :config
+    (setq global-undo-tree-mode t)
+    (setq undo-tree-visualizer-diff t))
+
+#+END_SRC
+
 * Programming Languages
 ** Common Settings 
 
