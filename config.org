@@ -772,7 +772,8 @@ On the fly syntax checking for most languages.
 
 #+END_SRC
 
-* Sr-speedbar
+* Directory Visualizer
+** Sr-speedbar
 
 This is a cool way to quickly visualize open buffers or files in the
 directory. Also, it could extend to show functions in many
@@ -782,6 +783,7 @@ progaramming languages.
   ;; sr-speedbar
 
   (use-package sr-speedbar
+    :disabled
     :bind ("<f1>" . sr-speedbar-toggle)
     :config
     (progn
@@ -790,7 +792,18 @@ progaramming languages.
               '("\\.c" . speedbar-parse-c-or-c++tag))))
 #+END_SRC
 
-#+RESULTS:
+** Neotree
+
+Trying out neotree.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; neotree
+  (use-package neotree
+    :bind ("<f1>" . neotree-toggle))
+
+#+END_SRC
+
 
 * God Mode
 
