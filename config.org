@@ -159,7 +159,15 @@ Beautify the modeline.
     (setq sml/theme 'powerline)
     (sml/setup))
 
+  ;; from spacemacs
+  (use-package spaceline
+    :config
+    (require 'spaceline-config)
+    (spaceline-spacemacs-theme)
+    (setq spaceline-helm-mode 1)
+    (setq spaceline-info-mode 1))
 #+END_SRC
+
 
 * Org Mode
 
@@ -179,6 +187,8 @@ Some basic settings first of all.
 
   ;(use-package org
   ;  :diminish org-indent-mode)
+
+  ;(diminish 'org-indent-mode)
 
   ;; disabling org-indent-mode and auto-fill-mode
   (defun pm/org-mode-hooks()
@@ -270,7 +280,7 @@ From here: [[https://github.com/yjwen/org-reveal][org-reveal]]
   ;; Org-reveal
 
   (use-package ox-reveal
-    :init
+    :config
     (setq org-reveal-root "file:///Users/pmachwe/Install/reveal.js/reveal.js-3.2.0"))
 
 #+END_SRC
@@ -284,8 +294,7 @@ slide headline and the rest of the stuff is just text.
 #+BEGIN_SRC emacs-lisp
   ;; Org Present
 
-  (use-package org-present
-    :ensure t)
+  (use-package org-present)
 
 #+END_SRC
 
@@ -383,12 +392,12 @@ inter-dependent and might create conflicts in use-package.
 Using /use-package/ only for initial installation, if not already installed.
 
 #+BEGIN_SRC emacs-lisp
-    (use-package helm)
+  (use-package helm)
 
-    (use-package helm-swoop)
+  (use-package helm-swoop)
 
-    (use-package helm-gtags
-      :diminish helm-gtags-mode)
+  (use-package helm-gtags
+    :diminish helm-gtags-mode)
 
 #+END_SRC
 
@@ -729,9 +738,9 @@ Move the settings to OS specific. Shell not working properly for now.
   ;; yasnippets
 
   (use-package yasnippet
-    :ensure t
     :config
-    (yas-reload-all))
+    (yas-reload-all)
+    :diminish yas-minor-mode)
 
 #+END_SRC
 
@@ -768,7 +777,8 @@ On the fly syntax checking for most languages.
   (use-package flycheck
     :init
     (add-hook 'after-init-hook #'global-flycheck-mode)
-    (setq flycheck-standard-error-navigation nil))
+    (setq flycheck-standard-error-navigation nil)
+    :diminish flycheck-mode)
 
 #+END_SRC
 
@@ -978,8 +988,7 @@ related to elpy.
 #+BEGIN_SRC emacs-lisp
   ;; python settings
 
-  (use-package elpy
-    :ensure t)
+  (use-package elpy)
 
   ;(use-package highlight-indentation-mode)
 
@@ -1254,6 +1263,8 @@ Using "h" for help, "c" for personal configurations.
     (my-keys-minor-mode 0))
 
   (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+
+  (diminish 'my-keys-minor-mode)
 #+END_SRC
 
 * Items to Fix
