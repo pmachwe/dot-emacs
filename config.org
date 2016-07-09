@@ -140,34 +140,35 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 Beautify the modeline.
 
 #+BEGIN_SRC emacs-lisp
-  ;; powerline
+    ;; powerline
 
-  (use-package powerline
-    :disabled
-    :if window-system
-    :init
-    (powerline-center-theme))
+    (use-package powerline
+      :disabled
+      :if window-system
+      :init
+      (powerline-center-theme))
 
-  ;; smart-mode-line
-  (use-package smart-mode-line-powerline-theme)
+    ;; smart-mode-line
+    (use-package smart-mode-line-powerline-theme)
 
-  (use-package smart-mode-line
-    :disabled
-    :init
-    (setq sml/no-confirm-load-theme t)
-    :config
-    (setq sml/theme 'powerline)
-    (sml/setup))
+    (use-package smart-mode-line
+      :disabled
+      :init
+      (setq sml/no-confirm-load-theme t)
+      :config
+      (setq sml/theme 'powerline)
+      (sml/setup))
 
-  ;; from spacemacs
-  (use-package spaceline
-    :config
-    (require 'spaceline-config)
-    (spaceline-spacemacs-theme)
-    (setq spaceline-helm-mode 1)
-    (setq spaceline-info-mode 1))
+    ;; from spacemacs
+    (use-package spaceline
+      :config
+      (require 'spaceline-config)
+      (spaceline-spacemacs-theme)
+      (spaceline-helm-mode 1)
+      (spaceline-info-mode 1)
+      (spaceline-toggle-anzu-on))
+
 #+END_SRC
-
 
 * Org Mode
 
@@ -528,6 +529,24 @@ Using /use-package/ only for initial installation, if not already installed.
 
 #+END_SRC
 
+* Info+
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Info+
+  (use-package info+)
+
+#+END_SRC
+
+* Interaction Log
+
+#+BEGIN_SRC emacs-lisp
+
+;; Interaction Log
+(use-package interaction-log)
+
+#+END_SRC
+
 * Multiple Cursors
 
 This is a cool package which allows editing mutliple lines together.
@@ -814,7 +833,6 @@ Trying out neotree.
 
 #+END_SRC
 
-
 * God Mode
 
 Handy while browsing stuff (something like Vim's command mode).
@@ -853,6 +871,19 @@ NOTE - Disabling this as this is very slow to search.
 
 #+RESULTS:
 : vr/isearch-backward
+
+* Anzu
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Anzu
+  (use-package anzu
+    :init
+    (global-anzu-mode +1)
+    (global-set-key [remap query-replace] 'anzu-query-replace)
+    (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
+
+#+END_SRC
 
 * Magit
 
