@@ -8,23 +8,29 @@ Some functions to setup different themes.
 
 #+BEGIN_SRC emacs-lisp
 
+  (defcustom my/light-theme-name 'leuven
+    "Name of the light theme.")
+
+  (defcustom my/dark-theme-name 'sanityinc-tomorrow-night
+    "Name of the dark theme.")
+
   (defun my/setup-light-theme ()
     "Setup a light theme."
     (interactive)
-    (load-theme 'leuven)
-    (if (member "InputMono" (font-family-list))
-        (set-frame-font "InputMono 11")
-      (if (member "Input Mono" (font-family-list))
-          (set-frame-font "Input Mono 11"))))
+    (disable-theme my/dark-theme-name)
+    (load-theme my/light-theme-name))
 
   (defun my/setup-dark-theme ()
     "Setup a dark theme."
     (interactive)
-    (load-theme 'sanityinc-tomorrow-night)
-    (set-background-color "black")
-    (set-frame-font "Ubuntu Mono 11"))
+    (disable-theme my/light-theme-name)
+    (load-theme my/dark-theme-name)
+    (set-background-color "black"))
 
 #+END_SRC
+
+#+RESULTS:
+: my/setup-dark-theme
 
 * General Utility
 
