@@ -750,24 +750,6 @@ package also. Look at it sometime.
 **** FASD
 [[https://gitlab.com/emacs-stuff/fasd-shell][fasd-shell]]
 
-* Tramp
-
-Move the settings to OS specific. Shell not working properly for now.
-
-#+BEGIN_SRC emacs-lisp
-  ;; TRAMP for remote editing
-
-  (use-package tramp
-    :init
-    (progn
-      (setq tramp-default-method "plink"
-            tramp-default-user "pmachwe"
-            tramp-default-host "dcamd44")))
-
-#+END_SRC
-
-#+RESULTS:
-
 * Yasnippet
 
 #+BEGIN_SRC emacs-lisp
