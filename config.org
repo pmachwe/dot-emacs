@@ -131,9 +131,17 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
       (set-face-attribute `mode-line-inactive nil
                           :box nil)))
 
-#+END_SRC
+  (use-package material-theme
+    :disabled
+    :init
+    (progn
+      (load-theme 'leuven t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
 
-#+RESULTS:
+#+END_SRC
 
 ** Modeline
 
