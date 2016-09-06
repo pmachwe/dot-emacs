@@ -354,6 +354,15 @@ For source code highlight in exports.
 #+RESULTS:
 : ((org-agenda-files :maxlevel . 6))
 
+* Markdown Mode
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Markdown mode
+  (use-package markdown-mode)
+
+#+END_SRC
+
 * Ido
 
 Ido mode with flex matching does a superior job of finding files than
