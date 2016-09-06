@@ -1,6 +1,8 @@
-/auto-save-list/.saves-961-Parikshits-Mac-mini.local~
-/config.el
-/ido.last
-/custom.el
-/.#ido.last
-/ac-comphist.dat
+auto-save-list/
+backups/
+elpa/
+functions.el
+work.el
+work.org
+config.el
+ido.last
