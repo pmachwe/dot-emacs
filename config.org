@@ -135,9 +135,17 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     :init
     (load-theme 'eclipse t))
 
-#+END_SRC
+  (use-package material-theme
+    :disabled
+    :init
+    (progn
+      (load-theme 'material t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
 
-#+RESULTS:
+#+END_SRC
 
 ** Modeline
 
@@ -364,6 +372,15 @@ For source code highlight in exports.
 
 #+RESULTS:
 : ((org-agenda-files :maxlevel . 6))
+
+* Markdown Mode
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Markdown mode
+  (use-package markdown-mode)
+
+#+END_SRC
 
 * Ido
 
@@ -782,24 +799,6 @@ package also. Look at it sometime.
 
 **** FASD
 [[https://gitlab.com/emacs-stuff/fasd-shell][fasd-shell]]
-
-* Tramp
-
-Move the settings to OS specific. Shell not working properly for now.
-
-#+BEGIN_SRC emacs-lisp
-  ;; TRAMP for remote editing
-
-  (use-package tramp
-    :init
-    (progn
-      (setq tramp-default-method "plink"
-            tramp-default-user "pmachwe"
-            tramp-default-host "dcamd44")))
-
-#+END_SRC
-
-#+RESULTS:
 
 * Yasnippet
 
