@@ -145,6 +145,13 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
       (set-face-attribute `mode-line-inactive nil
                           :box nil)))
 
+  (use-package afternoon-theme
+    :disabled
+    :init
+    (load-theme 'afternoon t)
+    (set-face-attribute 'mode-line nil
+                        :family 'unspecified))
+
 #+END_SRC
 
 ** Modeline
