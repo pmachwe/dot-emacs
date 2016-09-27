@@ -175,7 +175,7 @@ Beautify the modeline.
     :init
     (setq sml/no-confirm-load-theme t)
     :config
-    (setq sml/theme 'powerline)
+    (setq sml/theme 'light-powerline)
     (sml/setup))
 
   ;; from spacemacs
@@ -399,8 +399,7 @@ switching buffers.
   ;; ido mode
 
   (use-package ido
-    :init
-    :disabled
+    :config
     (progn
       (ido-mode t)
       (ido-everywhere 1)
@@ -409,12 +408,21 @@ switching buffers.
            ("C-x b" . ido-switch-buffer)))
 
   (use-package flx-ido
-    :disabled
-    :init
+    :config
     (progn
       (flx-ido-mode 1)
       (setq ido-enable-flex-matching t)))
+
+  (use-package ido-vertical-mode
+    :config
+    (progn
+      (ido-vertical-mode 1)
+      (setq ido-vertical-show-count t)
+      (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 * Helm
 
@@ -426,60 +434,40 @@ Helm needs to be loaded up-front and hence there is no need to use
 /use-package/ for it. Also, there are many settings which could be
 inter-dependent and might create conflicts in use-package. 
 
-*** Install
-Using /use-package/ only for initial installation, if not already installed.
-
 #+BEGIN_SRC emacs-lisp
-  (use-package helm)
 
-  (use-package helm-swoop)
+  (use-package helm
+    :bind(("M-x" . helm-M-x)
+          ("M-y" . helm-show-kill-ring)
+          ("C-c h g" . helm-google-suggest)
+          :map helm-map
+          ([tab] . helm-execute-persistent-action) ; rebind tab to run persistent action
+          ("C-i" . helm-execute-persistent-action) ; make TAB works in terminal
+          ("C-z" . helm-select-action)) ; list actions using C-z
+    :config
+    (progn
+      (require 'helm-config)
+      ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+      ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+      ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+      (global-set-key (kbd "C-c h") 'helm-command-prefix)
+      (global-unset-key (kbd "C-x c"))
+      (when (executable-find "curl")
+        (setq helm-google-suggest-use-curl-p t))
 
-  (use-package helm-gtags
-    :diminish helm-gtags-mode)
+      (setq helm-split-window-in-side-p       t ; open helm buffer inside current window
+            helm-move-to-line-cycle-in-source t ; move to end or beginning when reaching top or bottom of source.
+            helm-ff-search-library-in-sexp    t ; search for library in `require' and `declare-function' sexp.
+            helm-scroll-amount                8 ; scroll 8 lines other window using M-<next>/M-<prior>
+            helm-ff-file-name-history-use-recentf t)
 
-#+END_SRC
-
-*** Basic Config
-
-#+BEGIN_SRC emacs-lisp
-  (require 'helm)
-  (require 'helm-config)
-
-  (defun my/setup-helm-basic() 
-    ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-    ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-    ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-    (global-set-key (kbd "C-c h") 'helm-command-prefix)
-    (global-unset-key (kbd "C-x c"))
-
-    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-    (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
-    (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t))
-
-    (setq helm-split-window-in-side-p       t ; open helm buffer inside current window
-          helm-move-to-line-cycle-in-source t ; move to end or beginning when reaching top or bottom of source.
-          helm-ff-search-library-in-sexp    t ; search for library in `require' and `declare-function' sexp.
-          helm-scroll-amount                8 ; scroll 8 lines other window using M-<next>/M-<prior>
-          helm-ff-file-name-history-use-recentf t)
-
-    (helm-mode 1)
-
-    (helm-autoresize-mode t)
-
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
-
-    (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-    (setq helm-apropos-fuzzy-match t)
-    (setq helm-lisp-fuzzy-completion t)
-
-    ;; IDO instead; (global-set-key (kbd "C-x C-f") 'helm-find-files)
-    (global-set-key (kbd "C-c h g") 'helm-google-suggest)
-
-    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages))
+      (helm-mode 1)
+      (helm-autoresize-mode t)
+      (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+      (setq helm-apropos-fuzzy-match t)
+      (setq helm-lisp-fuzzy-completion t)
+      (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages))
+    :diminish helm-mode)
 
   ;; helm-mini (using IDO)
   ;(global-set-key (kbd "C-x b") 'helm-mini)
@@ -489,114 +477,100 @@ Using /use-package/ only for initial installation, if not already installed.
   ; (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
   ; (define-key minibuffer-local-map (kbd "C-c C-l") 'helm-minibuffer-history)
 
-#+END_SRC
-
-*** More Config
-
-#+BEGIN_SRC emacs-lisp
   ;; helm-swoop and helm-occur
-  (require 'helm-swoop)
-
-  (defun my/helm-advanced()
-    (global-set-key (kbd "C-c h o") 'helm-occur)
-
-    ;; Change the keybinds to whatever you like :)
-    (global-set-key (kbd "M-i") 'helm-swoop)
-    (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
-    (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
-    (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
-
-    ;; When doing isearch, hand the word over to helm-swoop
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    ;; From helm-swoop to helm-multi-swoop-all
-    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
-    ;; When doing evil-search, hand the word over to helm-swoop
-    ;; (define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search)
-
-    ;; Instead of helm-multi-swoop-all, you can also use helm-multi-swoop-current-mode
-    (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
-
-    ;; Move up and down like isearch
-    (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
-    (define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
-    (define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
-
-    ;; Save buffer when helm-multi-swoop-edit complete
-    (setq helm-multi-swoop-edit-save t)
-
-    ;; If this value is t, split window inside the current window
-    (setq helm-swoop-split-with-multiple-windows nil)
-
-    ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
-                                          ;(setq helm-swoop-split-direction 'split-window-vertically)
-
-    ;; If nil, you can slightly boost invoke speed in exchange for text color
-    (setq helm-swoop-speed-or-color nil)
-
-    ;; ;; Go to the opposite side of line from the end or beginning of line
-    (setq helm-swoop-move-to-line-cycle t)
-
-    ;; Optional face for line numbers
-    ;; Face name is `helm-swoop-line-number-face`
-    (setq helm-swoop-use-line-number-face t)
+  (use-package helm-swoop
+    :bind (("C-c h o" . helm-occur)
+           ("M-i" . helm-swoop)
+           ("M-I" . helm-swoop-back-to-last-point)
+           ("C-c M-i" . helm-multi-swoop)
+           ("C-x M-i" . helm-multi-swoop-all)
+           :map isearch-mode-map
+           ;; When doing isearch, hand the word over to helm-swoop
+           ("M-i" . helm-swoop-from-isearch)
+           :map helm-swoop-map
+           ;; From helm-swoop to helm-multi-swoop-all
+           ("M-i" . helm-multi-swoop-all-from-helm-swoop)
+           ;; Instead of helm-multi-swoop-all, you can also use helm-multi-swoop-current-mode
+           ("M-m" . helm-multi-swoop-current-mode-from-helm-swoop)
+           ;; Move up and down like isearch
+           ("C-r" . helm-previous-line)
+           ("C-s" . helm-next-line)
+           ("C-r" . helm-previous-line)
+           ("C-s" . helm-next-line))
+    :config
+    (progn
+      ;; Save buffer when helm-multi-swoop-edit complete
+      (setq helm-multi-swoop-edit-save t)
+      ;; If this value is t, split window inside the current window
+      (setq helm-swoop-split-with-multiple-windows nil)
+      ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+      ;(setq helm-swoop-split-direction 'split-window-vertically)
+      ;; If nil, you can slightly boost invoke speed in exchange for text color
+      (setq helm-swoop-speed-or-color nil)
+      ;; Go to the opposite side of line from the end or beginning of line
+      (setq helm-swoop-move-to-line-cycle t)
+      ;; Optional face for line numbers
+      ;; Face name is `helm-swoop-line-number-face`
+      (setq helm-swoop-use-line-number-face t)))
 
 
-    ;; helm-gtags
-    (setq
-     helm-gtags-ignore-case t
-     helm-gtags-auto-update t
-     helm-gtags-use-input-at-cursor t
-     helm-gtags-pulse-at-cursor t
-     helm-gtags-prefix-key "\C-cg"
-     helm-gtags-suggested-key-mapping t
-     )
-
-    (require 'helm-gtags)
-    ;; Enable helm-gtags-mode
-    (add-hook 'dired-mode-hook 'helm-gtags-mode)
-    (add-hook 'eshell-mode-hook 'helm-gtags-mode)
-    (add-hook 'c-mode-hook 'helm-gtags-mode)
-    (add-hook 'c++-mode-hook 'helm-gtags-mode)
-    (add-hook 'asm-mode-hook 'helm-gtags-mode)
-
-    (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
-    (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
-    (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-    (define-key helm-gtags-mode-map (kbd "M-*") 'helm-gtags-pop-stack)
-    (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-    (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
-
+  ;; helm-gtags
+  (use-package helm-gtags
+    :config
+    (progn
+      (setq
+       helm-gtags-ignore-case t
+       helm-gtags-auto-update t
+       helm-gtags-use-input-at-cursor t
+       helm-gtags-pulse-at-cursor t
+       helm-gtags-prefix-key "\C-cg"
+       helm-gtags-suggested-key-mapping t)
+      (add-hook 'dired-mode-hook 'helm-gtags-mode)
+      (add-hook 'eshell-mode-hook 'helm-gtags-mode)
+      (add-hook 'c-mode-hook 'helm-gtags-mode)
+      (add-hook 'c++-mode-hook 'helm-gtags-mode)
+      (add-hook 'asm-mode-hook 'helm-gtags-mode))
+    :bind(
+          :map helm-gtags-mode-map
+               ("C-c g a" . helm-gtags-tags-in-this-function)
+               ("C-j" . helm-gtags-select)
+               ("M-." . helm-gtags-dwim)
+               ("M-*" . helm-gtags-pop-stack)
+               ("C-c <" . helm-gtags-previous-history)
+               ("C-c >" . helm-gtags-next-history))
+    :diminish helm-gtags-mode)
 #+END_SRC
 
 * Ivy
 
 This is a newer package which is clutter-free and atleast in that sense better than helm. But need to check the functionality. Hence, using for experimentation.
 
+Good package but disabled until all options understood and ready to replace helm.
+
 #+BEGIN_SRC emacs-lisp
 
   ;; Ivy
-  (use-package ivy)
-  (use-package swiper)
-  (use-package counsel)
+  ;(use-package ivy)
+  ;(use-package swiper)
+  ;(use-package counsel)
 
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (global-set-key (kbd "C-s") 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ;(ivy-mode 1)
+  ;(setq ivy-use-virtual-buffers t)
+  ;(global-set-key (kbd "C-s") 'swiper)
+  ;(global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;(global-set-key (kbd "<f6>") 'ivy-resume)
+  ;(global-set-key (kbd "M-x") 'counsel-M-x)
+  ;(global-set-key (kbd "C-x C-f") 'counsel-find-file)
   ;(global-set-key (kbd "<f7> f") 'counsel-describe-function)
   ;(global-set-key (kbd "<f7> v") 'counsel-describe-variable)
   ;(global-set-key (kbd "<f7> i") 'counsel-info-lookup-symbol)
   ;(global-set-key (kbd "<f7> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+  ;(global-set-key (kbd "C-c g") 'counsel-git)
+  ;(global-set-key (kbd "C-c j") 'counsel-git-grep)
+  ;(global-set-key (kbd "C-c k") 'counsel-ag)
+  ;(global-set-key (kbd "C-x l") 'counsel-locate)
+  ;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ;(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 #+END_SRC
 
@@ -965,8 +939,6 @@ Used at work.
 
 #+END_SRC
 
-#+RESULTS:
-
 * Highlight Diff
 A visual aid to view the differences from the repository.
 
@@ -1292,7 +1264,7 @@ Using "h" for help, "c" for personal configurations.
   (define-key my-keys-minor-mode-map (kbd "C-c /") 'helm-imenu)
 
   ;; override for regexp searches
-  '(define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
+  (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
   (define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
   (define-key my-keys-minor-mode-map (kbd "C-M-s") 'isearch-forward)
   (define-key my-keys-minor-mode-map (kbd "C-M-r") 'isearch-backward)
