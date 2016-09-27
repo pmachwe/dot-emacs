@@ -123,7 +123,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 
   (use-package leuven-theme
     :disabled
-    :init
+    :config
     (progn
       (load-theme 'leuven t)
       (set-face-attribute `mode-line nil
@@ -132,7 +132,8 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                           :box nil)))
 
   (use-package eclipse-theme
-    :init
+    :disabled
+    :config
     (load-theme 'eclipse t))
 
   (use-package material-theme
@@ -146,8 +147,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                           :box nil)))
 
   (use-package afternoon-theme
-    :disabled
-    :init
+    :config
     (load-theme 'afternoon t)
     (set-face-attribute 'mode-line nil
                         :family 'unspecified))
@@ -175,7 +175,7 @@ Beautify the modeline.
     :init
     (setq sml/no-confirm-load-theme t)
     :config
-    (setq sml/theme 'light-powerline)
+    (setq sml/theme 'powerline)
     (sml/setup))
 
   ;; from spacemacs
@@ -385,7 +385,8 @@ For source code highlight in exports.
 #+BEGIN_SRC emacs-lisp
 
   ;; Markdown mode
-  (use-package markdown-mode)
+  (use-package markdown-mode
+    :defer t)
 
 #+END_SRC
 
@@ -421,8 +422,20 @@ switching buffers.
       (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
 #+END_SRC
 
-#+RESULTS:
-: t
+* Smex
+
+This might be faster than helm-M-x, so trying out.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Smex
+  (use-package smex
+    :bind(("M-x" . smex)
+          ("M-X" . smex-major-mode-commands))
+    :config
+    (smex-initialize))
+
+#+END_SRC
 
 * Helm
 
@@ -430,14 +443,11 @@ Helm takes the power of Emacs to another level. It makes its presence
 felt in every experience with Emacs. A must have. A very nice tutorial
 to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 
-Helm needs to be loaded up-front and hence there is no need to use
-/use-package/ for it. Also, there are many settings which could be
-inter-dependent and might create conflicts in use-package. 
-
 #+BEGIN_SRC emacs-lisp
 
   (use-package helm
-    :bind(("M-x" . helm-M-x)
+    :bind(
+          ; smex for now ;("M-x" . helm-M-x)
           ("M-y" . helm-show-kill-ring)
           ("C-c h g" . helm-google-suggest)
           :map helm-map
@@ -1089,6 +1099,7 @@ Some settings for Elisp.
     (interactive-haskell-mode))
 
   (use-package haskell-mode
+    :defer t
     :config
     (add-hook 'haskell-mode-hook 'my/haskell-hooks))
 
@@ -1183,9 +1194,6 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\[a" 'beginning-of-defun)
       (key-chord-define-global "\[e" 'end-of-defun)))
 #+END_SRC
-
-#+RESULTS:
-: t
 
 * OS Specific
 
