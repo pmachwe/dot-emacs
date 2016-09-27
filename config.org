@@ -312,8 +312,6 @@ From here: [[https://github.com/yjwen/org-reveal][org-reveal]]
 
 #+END_SRC
 
-#+RESULTS:
-
 *** Org Present
 Converts an org document to a org presentation. Keeps level 1 as the
 slide headline and the rest of the stuff is just text.
@@ -430,6 +428,7 @@ This might be faster than helm-M-x, so trying out.
 
   ;; Smex
   (use-package smex
+    :disabled
     :bind(("M-x" . smex)
           ("M-X" . smex-major-mode-commands))
     :config
@@ -447,7 +446,7 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 
   (use-package helm
     :bind(
-          ; smex for now ;("M-x" . helm-M-x)
+          ("M-x" . helm-M-x)
           ("M-y" . helm-show-kill-ring)
           ("C-c h g" . helm-google-suggest)
           :map helm-map
@@ -476,7 +475,22 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
       (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
       (setq helm-apropos-fuzzy-match t)
       (setq helm-lisp-fuzzy-completion t)
-      (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages))
+      (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+
+      ;; Beautify
+      (set-face-attribute 'helm-selection nil
+                      :background nil
+                      :foreground nil
+                      :bold t)
+  
+      (set-face-attribute 'helm-source-header nil
+                          :background nil
+                          :foreground nil
+                          :underline t
+                          :italic t
+                          :bold t
+                          :height 1.3
+                          :family "Sans Serif"))
     :diminish helm-mode)
 
   ;; helm-mini (using IDO)
@@ -550,6 +564,8 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
                ("C-c >" . helm-gtags-next-history))
     :diminish helm-gtags-mode)
 #+END_SRC
+
+#+RESULTS:
 
 * Ivy
 
