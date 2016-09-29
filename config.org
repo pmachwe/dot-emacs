@@ -481,13 +481,14 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
       (set-face-attribute 'helm-selection nil
                       :background nil
                       :foreground nil
-                      :bold t)
-  
+                      :bold t
+                      :italic t
+                      :underline t)
+
       (set-face-attribute 'helm-source-header nil
                           :background nil
                           :foreground nil
                           :underline t
-                          :italic t
                           :bold t
                           :height 1.3
                           :family "Sans Serif"))
@@ -1243,6 +1244,25 @@ Need to have this at the top to set appropriate environment.
         (remove-hook 'find-file-hooks 'vc-find-file-hook)
         (setq w32-get-true-file-attributes nil)))
   
+#+END_SRC
+
+** Mac
+
+When connecting to Mac through VNC, the Meta key does not get mapped correctly. The following function rectifies the issue.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Taken from:
+  ;; http://ergoemacs.org/emacs/emacs_hyper_super_keys.html
+  ;; Mapping Hyper key causes problems, hence commented
+
+  (defun my/mac-vnc-setup()
+    (interactive)
+    (setq mac-command-modifier 'meta) ; make cmd key do Meta
+    (setq mac-option-modifier 'super) ; make opt key do Super
+    (setq mac-control-modifier 'control)) ; make Control key do Control
+    ;(setq ns-function-modifier 'hyper)  ; make Fn key do Hyper
+
 #+END_SRC
 
 * Custom Shortcuts
