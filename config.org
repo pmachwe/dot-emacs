@@ -398,22 +398,25 @@ switching buffers.
   ;; ido mode
 
   (use-package ido
+    :disabled t
     :config
     (progn
       (ido-mode t)
       (ido-everywhere 1)
-      (ido-use-virtual-buffers t)
+      (setq ido-use-virtual-buffers t)
       (setq ido-use-faces nil))
     :bind (("C-x C-f" . ido-find-file)
            ("C-x b" . ido-switch-buffer)))
 
   (use-package flx-ido
+    :disabled t
     :config
     (progn
       (flx-ido-mode 1)
       (setq ido-enable-flex-matching t)))
 
   (use-package ido-vertical-mode
+    :disabled t
     :config
     (progn
       (ido-vertical-mode 1)
@@ -429,7 +432,7 @@ This might be faster than helm-M-x, so trying out.
 
   ;; Smex
   (use-package smex
-    :disabled
+    :disabled t
     :bind(("M-x" . smex)
           ("M-X" . smex-major-mode-commands))
     :config
@@ -446,6 +449,7 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 #+BEGIN_SRC emacs-lisp
 
   (use-package helm
+    :disabled t
     :bind(
           ("M-x" . helm-M-x)
           ("M-y" . helm-show-kill-ring)
@@ -505,6 +509,7 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 
   ;; helm-swoop and helm-occur
   (use-package helm-swoop
+    :disabled t
     :bind (("C-c h o" . helm-occur)
            ("M-i" . helm-swoop)
            ("M-I" . helm-swoop-back-to-last-point)
@@ -542,6 +547,7 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 
   ;; helm-gtags
   (use-package helm-gtags
+    :disabled t
     :config
     (progn
       (setq
@@ -579,25 +585,26 @@ Good package but disabled until all options understood and ready to replace helm
 
   ;; Ivy
   (use-package ivy
-    :disabled t
-    :bind(("C-c C-r" . ivy-resume)
-          ([f6] . ivy-resume))
-    :config
+    :bind(("C-c C-r" . ivy-resume))
+    :init
     (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t))
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-re-builders-alist
+          ;; allow input not in order
+          '((t   . ivy--regex-ignore-order))))
 
   (use-package swiper
-    :disabled t
     :bind("M-i" . swiper))
 
   (use-package counsel
-    :disabled t
     :bind(("M-x" . counsel-M-x)
           ("C-x C-f" . counsel-find-file)
-          ("<f7> f" . counsel-describe-function)
-          ("<f7> v" . counsel-describe-variable)
-          ("<f7> i" . counsel-info-lookup-symbol)
-          ("<f7> u" . counsel-unicode-char)
+          ("M-y" . counsel-yank-pop)
+          ("C-. h f" . counsel-describe-function)
+          ("C-. h v" . counsel-describe-variable)
+          ("C-. h i" . counsel-info-lookup-symbol)
+          ("C-. h u" . counsel-unicode-char)
           ("C-c g" . counsel-git)
           ("C-c j" . counsel-git-grep)
           ("C-c k" . counsel-ag)
@@ -873,7 +880,7 @@ progaramming languages.
   ;; sr-speedbar
 
   (use-package sr-speedbar
-    :disabled
+    :disabled t
     :bind ("<f1>" . sr-speedbar-toggle)
     :config
     (progn
@@ -918,10 +925,10 @@ NOTE - Disabling this as this is very slow to search.
   ;; visual regexp
 
   (use-package visual-regexp
-    :disabled)
+    :disabled t)
 
   (use-package visual-regexp-steroids
-    :disabled
+    :disabled t
     :bind (("C-c r" . vr/replace)
            ("C-c q" . vr/query-replace)
            ("C-c m" . vr/mc-mark)           ; if you use multiple-cursors
@@ -939,7 +946,7 @@ NOTE - Disabling this as this is very slow to search.
 
   ;; Anzu
   (use-package anzu
-    :disabled
+    :disabled t
     :init
     (global-anzu-mode +1)
     (global-set-key [remap query-replace] 'anzu-query-replace)
@@ -990,7 +997,7 @@ Session manager for Emacs. Experimental for now.
   ;; Emacs session manager
 
   (use-package workgroups2
-    :disabled
+    :disabled t
     :config
     (workgroups-mode 1))
 #+END_SRC
@@ -1001,11 +1008,13 @@ Session manager for Emacs. Experimental for now.
 
   ;; undo-tree
   (use-package undo-tree
-    :config
+    :init
     (setq global-undo-tree-mode t)
     (setq undo-tree-visualizer-diff t))
 
 #+END_SRC
+
+#+RESULTS:
 
 * Programming Languages
 ** Common Settings 
