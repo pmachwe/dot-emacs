@@ -88,7 +88,13 @@ Override some basic default options upfont. Some options taken from
   (global-hl-line-mode 1)
 
   ;; always show the function
-  (which-func-mode 1)
+  (which-function-mode 1)
+
+  ;; no bells please
+  (defun my-bell-func()) ;; empty
+  (setq ring-bell-function 'my-bell-func)
+  (setq visible-bell nil)
+
 #+END_SRC
 
 * Themes and Fonts
@@ -147,12 +153,21 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                           :box nil)))
 
   (use-package afternoon-theme
+    :disabled t
     :config
     (load-theme 'afternoon t)
     (set-face-attribute 'mode-line nil
                         :family 'unspecified))
 
+  (use-package arjen-grey-theme
+    :config
+    (load-theme 'arjen-grey t)
+    (set-face-attribute 'which-func nil
+                        :foreground "SkyBlue1"))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** Modeline
 
@@ -162,12 +177,14 @@ Beautify the modeline.
   ;; powerline
 
   (use-package powerline
+    :disabled t
     :if window-system
     :init
     (powerline-center-theme))
 
   ;; smart-mode-line
-  (use-package smart-mode-line-powerline-theme)
+  (use-package smart-mode-line-powerline-theme
+    :disabled t)
 
   (use-package smart-mode-line
     :disabled t
@@ -180,8 +197,10 @@ Beautify the modeline.
 
   ;; from spacemacs
   (use-package spaceline
-    :disabled
+    :disabled t
     :if window-system
+    :init
+    (setq powerline-default-separator 'utf-8)
     :config
     (require 'spaceline-config)
     (spaceline-spacemacs-theme)
@@ -192,6 +211,18 @@ Beautify the modeline.
   ;; for mac
   (setq ns-use-srgb-colorspace nil)
 
+#+END_SRC
+
+#+RESULTS:
+
+** Icons
+
+Display nice icons in Emacs. Looks at the documentation at [[https://github.com/domtronn/all-the-icons.el][all-the-icons]].
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; all-the-icons
+  (use-package all-the-icons)
 #+END_SRC
 
 #+RESULTS:
@@ -852,6 +883,21 @@ Parenthesis matching.
     (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                               ("* ||\n[i]" "RET"))))
 #+END_SRC
+
+* Rainbow Delimiters
+
+Nice way to highlight delimiters especially for LISP.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; rainbow delimiters
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'lisp-mode-hook
+              (lambda()
+                (rainbow-delimiters-mode))))
+#+END_SRC
+
 * Flycheck
 
 On the fly syntax checking for most languages.
@@ -954,6 +1000,18 @@ NOTE - Disabling this as this is very slow to search.
 
 #+END_SRC
 
+* Which Key
+
+Nice suggestions for key completions in a separate buffer.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; which-key
+  (use-package which-key
+    :config
+    (which-key-mode))
+
+#+END_SRC
 * Magit
 
 Magit is the best package to work with Git. 
@@ -1318,7 +1376,7 @@ Using "h" for help, "c" for personal configurations.
   (define-key my-keys-minor-mode-map (kbd "C-c g g") 'helm-do-zgrep)
   (define-key my-keys-minor-mode-map (kbd "C-c g r") 'rgrep)
   (define-key my-keys-minor-mode-map (kbd "C-c f g") 'find-grep)
-  (define-key my-keys-minor-mode-map (kbd "C-c /") 'helm-imenu)
+  (define-key my-keys-minor-mode-map (kbd "C-c /") 'counsel-imenu)
 
   ;; override for regexp searches
   (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
@@ -1383,6 +1441,9 @@ Using "h" for help, "c" for personal configurations.
 
   (diminish 'my-keys-minor-mode)
 #+END_SRC
+
+#+RESULTS:
+|   |
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
