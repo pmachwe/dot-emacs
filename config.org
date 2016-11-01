@@ -913,9 +913,9 @@ Nice way to highlight delimiters especially for LISP.
   ;; rainbow delimiters
   (use-package rainbow-delimiters
     :config
-    (add-hook 'lisp-mode-hook
+    (add-hook 'emacs-lisp-mode-hook
               (lambda()
-                (rainbow-delimiters-mode))))
+                (rainbow-delimiters-mode 1))))
 #+END_SRC
 
 * Flycheck
