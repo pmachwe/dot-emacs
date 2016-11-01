@@ -133,6 +133,10 @@ Routine to find the GTAGS file upstream and set the appropriate GTAGSROOT.
     (my/set-gtags-root))
   (ad-activate 'helm-gtags-dwim)
 
+  (defadvice counsel-gtags-dwim (before my-set-gtags-root3)
+    (my/set-gtags-root))
+  (ad-activate 'counsel-gtags-dwim)
+
   ;;(defadvice find-tag (after my-set-file-truename)
   ;;  (setq find-file-visit-truename 't))
 

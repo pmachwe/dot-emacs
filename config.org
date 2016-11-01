@@ -644,7 +644,27 @@ Good package but disabled until all options understood and ready to replace helm
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
+  ;; counsel-gtags is not on MELPA, hence setting up manually
+  (defun my/setup-counsel-gtags()
+    (interactive)
+    (let (f)
+      (setq f "/Users/pmachwe/.emacs.d/fromgit/emacs-counsel-gtags/counsel-gtags.el")
+      (if (file-exists-p f)
+          (progn
+            (message "Found counsel-gtags, loading..")
+            (load-file f)
+            ;; add to c/c++
+            (add-hook 'c-mode-hook 'counsel-gtags-mode)
+            (add-hook 'c++-mode-hook counsel-gtags-mode)
+            ;; setup shortcuts
+            (global-set-key (kbd "M-.") 'counsel-gtags-dwim)
+            (global-set-key (kbd "M-*") 'counsel-gtags-pop)))))
+
+  (my/setup-counsel-gtags)
 #+END_SRC
+
+#+RESULTS:
+: counsel-gtags-pop
 
 * Info+
 
@@ -1112,7 +1132,7 @@ In this section, there will be specific settings for C/C++.
 
   (defun my/cpp-hooks()
   ;  (ggtags-mode 1)
-    (helm-gtags-mode 1)
+    (counsel-gtags-mode 1)
     (my/common-prog-hooks))
 
   ;(add-hook 'c++-mode-hook 'my/cpp-hooks)
