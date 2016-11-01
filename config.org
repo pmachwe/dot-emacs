@@ -664,7 +664,7 @@ Good package but disabled until all options understood and ready to replace helm
 #+END_SRC
 
 #+RESULTS:
-: counsel-gtags-pop
+: my/setup-counsel-gtags
 
 * Info+
 
@@ -1289,7 +1289,7 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\\b" 'ido-switch-buffer)
       (key-chord-define-global "\\f" 'ido-find-file)
       (key-chord-define-global "\\g" 'keyboard-quit)
-      (key-chord-define-global "\\x" 'helm-M-x)
+      (key-chord-define-global "\\x" 'counsel-M-x)
       (key-chord-define-global "\\z" 'undo)
       (key-chord-define-global "\'w" 'avy-goto-word-1)
       (key-chord-define-global "\'a" 'ace-window)
@@ -1297,7 +1297,7 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\'b" 'ido-switch-buffer)
       (key-chord-define-global "\'f" 'ido-find-file)
       (key-chord-define-global "\'g" 'keyboard-quit)
-      (key-chord-define-global "\'x" 'helm-M-x)
+      (key-chord-define-global "\'x" 'counsel-M-x)
       (key-chord-define-global "\'z" 'undo)
       (key-chord-define-global "\[a" 'beginning-of-defun)
       (key-chord-define-global "\[e" 'end-of-defun)))
@@ -1393,7 +1393,7 @@ Using "h" for help, "c" for personal configurations.
   (define-key my-keys-minor-mode-map (kbd "S-<f5>") 'eshell)
 
   ;; grep and find
-  (define-key my-keys-minor-mode-map (kbd "C-c g g") 'helm-do-zgrep)
+  (define-key my-keys-minor-mode-map (kbd "C-c g g") 'counsel-grep)
   (define-key my-keys-minor-mode-map (kbd "C-c g r") 'rgrep)
   (define-key my-keys-minor-mode-map (kbd "C-c f g") 'find-grep)
   (define-key my-keys-minor-mode-map (kbd "C-c /") 'counsel-imenu)
