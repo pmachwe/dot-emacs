@@ -258,3 +258,18 @@ The functions below are very useful for dispatching jobs to other machines.
       (shell-command cmd-name)))
 #+END_SRC
 
+* Github Packages
+
+A simple utility function to get some packages directly from github if not available on MELPA.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/get-git-repo (url name)
+    (interactive "sEnter URL: \nsEnter name: ")
+    (let (full-name cmd)
+      (setq full-name (concat "~/.emacs.d/fromgit/" name))
+      (setq cmd (concat "git clone " url " " full-name))
+      (shell-command cmd)
+      (add-to-list 'load-path full-name)))
+#+END_SRC
+

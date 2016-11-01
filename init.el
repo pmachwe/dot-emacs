@@ -47,5 +47,10 @@
   (if (file-exists-p work-el)
       (load-file work-el)))
 
+;; Load non-MELPA packages
+(my/get-git-repo "https://github.com/pmachwe/quick-search.git" "quick-search")
+;(my/get-git-repo "https://github.com/pmachwe/org-log-util.git" "org-log-util")
+(my/get-git-repo "https://github.com/syohex/emacs-counsel-gtags.git" "emacs-counsel-gtags")
+
 (provide 'init)
 ;;; init.el ends here
