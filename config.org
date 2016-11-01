@@ -648,7 +648,7 @@ Good package but disabled until all options understood and ready to replace helm
   (defun my/setup-counsel-gtags()
     (interactive)
     (let (f)
-      (setq f "/Users/pmachwe/.emacs.d/fromgit/emacs-counsel-gtags/counsel-gtags.el")
+      (setq f "~/.emacs.d/fromgit/emacs-counsel-gtags/counsel-gtags.el")
       (if (file-exists-p f)
           (progn
             (message "Found counsel-gtags, loading..")
