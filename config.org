@@ -160,6 +160,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                         :family 'unspecified))
 
   (use-package arjen-grey-theme
+    :disabled t
     :config
     (load-theme 'arjen-grey t)
     (set-face-attribute 'which-func nil
@@ -167,7 +168,6 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
 #+END_SRC
 
 #+RESULTS:
-: t
 
 ** Modeline
 
@@ -1464,6 +1464,22 @@ Using "h" for help, "c" for personal configurations.
 
 #+RESULTS:
 |   |
+
+* Shutils
+
+Install and custom shortcuts for shutil package.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; shutil
+  (my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
+
+  (when (require 'shutil nil 'noerror)
+    (global-key-binding (kbd "C-. s b") 'shutil-switch-to-buffer)
+    (global-key-binding (kbd "<f5>") 'shutil-get-new-shell)
+    (global-key-binding (kbd "C-. s |") 'shutil-split-vertically))
+
+#+END_SRC
 
 * Items to Fix
 *** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
