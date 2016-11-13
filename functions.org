@@ -264,12 +264,18 @@ A simple utility function to get some packages directly from github if not avail
 
 #+BEGIN_SRC emacs-lisp
 
+  (defvar my/git-repo-dir "~/.emacs.d/fromgit/"
+    "Location where Emacs packages through git are installed.")
+
   (defun my/get-git-repo (url name)
+    "Get a git repo from URL and save it at NAME."
     (interactive "sEnter URL: \nsEnter name: ")
-    (let (full-name cmd)
-      (setq full-name (concat "~/.emacs.d/fromgit/" name))
-      (setq cmd (concat "git clone " url " " full-name))
-      (shell-command cmd)
+    (let* ((full-name (concat my/git-repo-dir  name))
+           (cmd (concat "git clone " url " " full-name)))
+      (unless (file-exists-p full-name)
+        (shell-command cmd))
       (add-to-list 'load-path full-name)))
+
 #+END_SRC
+
 
