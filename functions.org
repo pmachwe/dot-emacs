@@ -276,6 +276,17 @@ A simple utility function to get some packages directly from github if not avail
         (shell-command cmd))
       (add-to-list 'load-path full-name)))
 
+
+  (defun my/update-git-repo ()
+    "Update the installed git repo packages"
+    (interactive)
+    (let* ((file-list (directory-files my/git-repo-dir t "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)")))
+      (dolist (f file-list)
+        (when (file-exists-p (concat f "/.git"))
+          (let ((cmd (concat "cd " f "; git pull origin master ; cd -")))
+            (message (concat "Updating " f))
+            (shell-command cmd))))))
+
 #+END_SRC
 
 
