@@ -620,7 +620,8 @@ Good package but disabled until all options understood and ready to replace helm
     :init
     (ivy-mode 1)
     :config
-    (setq ivy-use-virtual-buffers t)
+    ;(setq ivy-use-virtual-buffers t) ;; not working properly
+    (setq ivy-extra-directories nil) ;; do not show ../  and ./
     (setq ivy-re-builders-alist
           ;; allow input not in order
           '((t   . ivy--regex-ignore-order))))
@@ -664,7 +665,7 @@ Good package but disabled until all options understood and ready to replace helm
 #+END_SRC
 
 #+RESULTS:
-: my/setup-counsel-gtags
+: counsel-gtags-pop
 
 * Info+
 
@@ -1089,6 +1090,24 @@ Session manager for Emacs. Experimental for now.
     :init
     (setq global-undo-tree-mode t)
     (setq undo-tree-visualizer-diff t))
+
+#+END_SRC
+
+#+RESULTS:
+
+* Shell Mode
+
+Customize shell-mode.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; shell-mode
+
+  (defun my/shell-mode-hooks ()
+    "Configure shell-mode."
+    (define-key shell-mode-map (kbd "C-j") 'comint-send-input))
+
+  (add-hook 'shell-mode-hook 'my/shell-mode-hooks)
 
 #+END_SRC
 
