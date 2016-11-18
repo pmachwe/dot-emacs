@@ -290,3 +290,10 @@ A simple utility function to get some packages directly from github if not avail
 #+END_SRC
 
 
+* Provide functions
+
+#+BEGIN_SRC emacs-lisp
+  (provide 'my/functions)
+#+END_SRC
+
+
