@@ -1472,12 +1472,12 @@ Install and custom shortcuts for shutil package.
 #+BEGIN_SRC emacs-lisp
 
   ;; shutil
-  (my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
+  ;(my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
 
-  (when (require 'shutil nil 'noerror)
-    (global-key-binding (kbd "C-. s b") 'shutil-switch-to-buffer)
-    (global-key-binding (kbd "<f5>") 'shutil-get-new-shell)
-    (global-key-binding (kbd "C-. s |") 'shutil-split-vertically))
+  ;(when (require 'shutil nil 'noerror)
+  ;  (global-key-binding (kbd "C-. s b") 'shutil-switch-to-buffer)
+  ;  (global-key-binding (kbd "<f5>") 'shutil-get-new-shell)
+  ;  (global-key-binding (kbd "C-. s |") 'shutil-split-vertically))
 
 #+END_SRC
 
