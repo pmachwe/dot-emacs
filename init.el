@@ -51,6 +51,14 @@
 ;; Load non-MELPA packages
 (my/get-git-repo "https://github.com/pmachwe/quick-search.git" "quick-search")
 (my/get-git-repo "https://github.com/syohex/emacs-counsel-gtags.git" "emacs-counsel-gtags")
+(my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
+
+;; Move in different file later
+;; shutil shortcuts
+(when (require 'shutil nil 'noerror)
+  (global-set-key (kbd "C-. s b") 'shutil-switch-to-buffer)  
+  (global-set-key (kbd "C-. s n") 'shutil-get-new-shell)
+  (global-set-key (kbd "C-. s |") 'shutil-split-vertically))
 
 (provide 'init)
 ;;; init.el ends here
