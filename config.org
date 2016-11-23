@@ -774,9 +774,8 @@ need to keep switching bufers.
   ;; Setup avy
 
   (use-package avy
-    :bind (("C-c :" . avy-goto-char)
-           ("C-;" . avy-goto-char)
-           ("C-c ;" . avy-goto-word-1)
+    :bind (("C-." . avy-goto-word-1)
+           ("C-c ." . avy-goto-char)
            ("M-g g" . avy-goto-line)))
 #+END_SRC
 
@@ -1427,6 +1426,20 @@ Using "h" for help, "c" for personal configurations.
    ("M-k" . kill-buffer-and-window)
    ("M-K" . kill-buffer))
 
+  ;; Avy
+  (bind-keys*
+   ("C-." . avy-goto-word-1)
+   ("C-c ." . avy-goto-char)
+   ("M-g g" . avy-goto-line))
+
+  ;; Free up C-h for backspace
+  (bind-key "C-?" help-map)
+
+  ;; Use C-h for backspace as it is more ergonomic
+  (bind-keys*
+   ("C-h" . backward-delete-char)
+   ("M-h" . backward-kill-word))
+
   ;; Misc
   (bind-key "C-c /" 'counsel-imenu)
 
@@ -1446,13 +1459,6 @@ Using "h" for help, "c" for personal configurations.
                   (interactive "sFont: \nsSize: ")
                   (set-default-font (concat font " " size)))))
 
-  ;; Free up C-h for backspace
-  (bind-key "C-?" help-map)
-
-  ;; Use C-h for backspace as it is more ergonomic
-  (bind-keys*
-   ("C-h" . backward-delete-char)
-   ("M-h" . backward-kill-word))
 
 #+END_SRC
 
