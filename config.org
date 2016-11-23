@@ -1407,7 +1407,8 @@ Using "h" for help, "c" for personal configurations.
 
   (bind-keys
    ("<f5>" . shell)
-   ("S-<f5>" . eshell))
+   ("S-<f5>" . eshell)
+   ("C-c M-!" . eshell-command))
 
   ;; Search
   (bind-keys*
