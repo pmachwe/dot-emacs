@@ -633,15 +633,15 @@ Good package but disabled until all options understood and ready to replace helm
     :bind(("M-x" . counsel-M-x)
           ("C-x C-f" . counsel-find-file)
           ("M-y" . counsel-yank-pop)
-          ("C-. h f" . counsel-describe-function)
-          ("C-. h v" . counsel-describe-variable)
-          ("C-. h i" . counsel-info-lookup-symbol)
-          ("C-. h u" . counsel-unicode-char)
+          ("C-? f" . counsel-describe-function)
+          ("C-? v" . counsel-describe-variable)
+          ("C-? i" . counsel-info-lookup-symbol)
+          ("C-? u" . counsel-unicode-char)
           ("C-c g" . counsel-git)
           ("C-c j" . counsel-git-grep)
-          ("C-c k" . counsel-ag)
-          ("C-x l" . counsel-locate)
-          ("C-S-o" . counsel-rhythmbox)
+          ;("C-c k" . counsel-ag)
+          ;("C-x l" . counsel-locate)
+          ;("C-S-o" . counsel-rhythmbox)
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
@@ -1403,86 +1403,58 @@ keybindings are unused. Using C-. for now.
 Using "h" for help, "c" for personal configurations.
 
 #+BEGIN_SRC emacs-lisp
-  ;; Define personal shortcuts and keybindings here (non-package specific)
 
-  (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+  ;; use bind-key to bind personal keys
 
-  ;; Shell
-  (define-key my-keys-minor-mode-map (kbd "<f5>") 'shell)
-  (define-key my-keys-minor-mode-map (kbd "S-<f5>") 'eshell)
+  (bind-keys
+   ("<f5>" . shell)
+   ("S-<f5>" . eshell))
 
-  ;; grep and find
-  (define-key my-keys-minor-mode-map (kbd "C-c g g") 'counsel-grep)
-  (define-key my-keys-minor-mode-map (kbd "C-c g r") 'rgrep)
-  (define-key my-keys-minor-mode-map (kbd "C-c f g") 'find-grep)
-  (define-key my-keys-minor-mode-map (kbd "C-c /") 'counsel-imenu)
+  ;; Search
+  (bind-keys*
+   ("C-s" . isearch-forward-regexp)
+   ("C-r" . isearch-backward-regexp)
+   ("C-M-s" . isearch-forward)
+   ("C-M-r" . isearch-backward))
 
-  ;; override for regexp searches
-  (define-key my-keys-minor-mode-map (kbd "C-s") 'isearch-forward-regexp)
-  (define-key my-keys-minor-mode-map (kbd "C-r") 'isearch-backward-regexp)
-  (define-key my-keys-minor-mode-map (kbd "C-M-s") 'isearch-forward)
-  (define-key my-keys-minor-mode-map (kbd "C-M-r") 'isearch-backward)
+  ;; C-. to M-s . ?
 
-  ;; especially useful for shell
-  (define-key my-keys-minor-mode-map (kbd "C-c .") 'end-of-buffer)
+  ;; Buffer related
+  (bind-keys*
+   ("M-j" . counsel-find-file)
+   ("M-J" . ido-find-file-other-window)
+   ("M-o" . ido-switch-buffer)
+   ("M-k" . kill-buffer-and-window)
+   ("M-K" . kill-buffer))
 
-  ;; M-o to switch to other buffer
-  ;(define-key my-keys-minor-mode-map (kbd "M-o") (lambda() (interactive) (other-window 1)))
-  ;(define-key my-keys-minor-mode-map (kbd "M-S-o") (lambda() (interactive) (other-window 2)))
+  ;; Misc
+  (bind-key "C-c /" 'counsel-imenu)
 
-  ;; Make switching buffers and opening files single key
-  ;; (using IDO for now
-  ;(define-key my-keys-minor-mode-map (kbd "C-.") 'helm-mini)
-  ;(define-key my-keys-minor-mode-map (kbd "C-,") 'helm-find-files)
-
-  ;; indent-new-comment-line (C-M-j) was also bound to M-j
-  ;; using it for file opening
-  (define-key my-keys-minor-mode-map (kbd "M-j") 'ido-find-file)
-  (define-key my-keys-minor-mode-map (kbd "M-J") 'ido-find-file-other-window)
-  (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-switch-buffer)
-  (define-key my-keys-minor-mode-map (kbd "M-k") 'kill-buffer-and-window)
-  (define-key my-keys-minor-mode-map (kbd "M-K") 'kill-buffer)
-
-  ;; avy
-  (define-key my-keys-minor-mode-map (kbd "C-c :") 'avy-goto-char)
-  (define-key my-keys-minor-mode-map (kbd "C-c ;") 'avy-goto-word-1)
-  (define-key my-keys-minor-mode-map (kbd "M-g g") 'avy-goto-line)
-
-  ;; C-m h <key> will be all help related bindings
+  ;; Simple utils
   (setq emacs-help-dir "~/.emacs.d/help/")
-  (define-key my-keys-minor-mode-map (kbd "C-. h S") '(lambda()
-                                                        (interactive)
-                                                       (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
+  (bind-keys
+   ("C-? h S" . (lambda()
+                  (interactive)
+                  (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
+   ("C-? h M" . (lambda()
+                  (interactive)
+                  (ind-file-other-window (concat emacs-help-dir "magit.org"))))
+   ("C-? h C" . (lambda()
+                  (interactive)
+                  (find-file-other-window (concat user-emacs-directory "config.org"))))
+   ("C-? c f" . (lambda(font size)
+                  (interactive "sFont: \nsSize: ")
+                  (set-default-font (concat font " " size)))))
 
-  (define-key my-keys-minor-mode-map (kbd "C-. h M") '(lambda()
-                                                        (interactive)
-                                                        (find-file-other-window (concat emacs-help-dir "magit.org"))))
+  ;; Free up C-h for backspace
+  (bind-key "C-?" help-map)
 
-  (define-key my-keys-minor-mode-map (kbd "C-. h C") '(lambda()
-                                                        (interactive)
-                                                        (find-file-other-window (concat user-emacs-directory "config.org"))))
+  ;; Use C-h for backspace as it is more ergonomic
+  (bind-keys*
+   ("C-h" . backward-delete-char)
+   ("M-h" . backward-kill-word))
 
-  ;; Change fonts sometimes
-  (define-key my-keys-minor-mode-map (kbd "C-. c f") '(lambda(font size)
-                                                    (interactive "sFont: \nsSize: ")
-                                                    (set-default-font (concat font " " size))))
-  (define-minor-mode my-keys-minor-mode
-    "A minor mode so that my key settings override annoying major modes."
-    t " my-keys" 'my-keys-minor-mode-map)
-
-  (my-keys-minor-mode 1)
-
-  ;; Note that you may need to turn this off in the minibuffer:
-  (defun my-minibuffer-setup-hook ()
-    (my-keys-minor-mode 0))
-
-  (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
-
-  (diminish 'my-keys-minor-mode)
 #+END_SRC
-
-#+RESULTS:
-|   |
 
 * Shutils
 

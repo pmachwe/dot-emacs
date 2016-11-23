@@ -57,9 +57,10 @@
 ;; Move in different file later
 ;; shutil shortcuts
 (when (require 'shutil nil 'noerror)
-  (global-set-key (kbd "C-. s b") 'shutil-switch-to-buffer)
-  (global-set-key (kbd "C-. s n") 'shutil-get-new-shell)
-  (global-set-key (kbd "C-. s |") 'shutil-split-vertically))
+  (bind-key "<f5>" 'shutil-get-new-shell)
+  (bind-key "C-c s b" 'shutil-switch-to-buffer)
+  (bind-key "C-c s n" 'shutil-get-new-shell)
+  (bind-key "C-c s |" 'shutil-split-vertically))
 
 (provide 'init)
 ;;; init.el ends here
