@@ -1414,9 +1414,10 @@ Using "h" for help, "c" for personal configurations.
    ("C-s" . isearch-forward-regexp)
    ("C-r" . isearch-backward-regexp)
    ("C-M-s" . isearch-forward)
-   ("C-M-r" . isearch-backward))
-
-  ;; C-. to M-s . ?
+   ("C-M-r" . isearch-backward)
+   ("C-," . isearch-forward-symbol-at-point)
+   ("C-c ," . highlight-symbol-at-point)
+   ("C-c C-," . unhighlight-regexp))
 
   ;; Buffer related
   (bind-keys*
@@ -1446,21 +1447,27 @@ Using "h" for help, "c" for personal configurations.
   ;; Simple utils
   (setq emacs-help-dir "~/.emacs.d/help/")
   (bind-keys
-   ("C-? h S" . (lambda()
+   ("C-c ? h S" . (lambda()
                   (interactive)
-                  (find-file-other-window (concat emacs-help-dir "smartparens.txt"))))
-   ("C-? h M" . (lambda()
+                  (find-file-other-window
+                   (concat emacs-help-dir "smartparens.txt"))))
+   ("C-c ? h M" . (lambda()
                   (interactive)
-                  (ind-file-other-window (concat emacs-help-dir "magit.org"))))
-   ("C-? h C" . (lambda()
+                  (ind-file-other-window
+                   (concat emacs-help-dir "magit.org"))))
+   ("C-c ? h C" . (lambda()
                   (interactive)
-                  (find-file-other-window (concat user-emacs-directory "config.org"))))
-   ("C-? c f" . (lambda(font size)
+                  (find-file-other-window
+                   (concat user-emacs-directory "config.org"))))
+   ("C-c ? c f" . (lambda(font size)
                   (interactive "sFont: \nsSize: ")
                   (set-default-font (concat font " " size)))))
 
 
 #+END_SRC
+
+#+RESULTS:
+| lambda | (font size) | (interactive sFont: \nsSize: ) | (set-default-font (concat font   size)) |
 
 * Shutils
 
