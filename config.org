@@ -639,6 +639,7 @@ Good package but disabled until all options understood and ready to replace helm
           ("C-? u" . counsel-unicode-char)
           ("C-c g" . counsel-git)
           ("C-c j" . counsel-git-grep)
+          ("C-c /" . counsel-imenu)
           ;("C-c k" . counsel-ag)
           ;("C-x l" . counsel-locate)
           ;("C-S-o" . counsel-rhythmbox)
@@ -1428,7 +1429,7 @@ Using "h" for help, "c" for personal configurations.
    ("M-k" . kill-buffer-and-window)
    ("M-K" . kill-buffer))
 
-  ;; Avy
+  ;; Avy - again due to org-mode pollution
   (bind-keys*
    ("C-." . avy-goto-word-1)
    ("C-c ." . avy-goto-char)
@@ -1441,9 +1442,6 @@ Using "h" for help, "c" for personal configurations.
   (bind-keys*
    ("C-h" . backward-delete-char)
    ("M-h" . backward-kill-word))
-
-  ;; Misc
-  (bind-key "C-c /" 'counsel-imenu)
 
   ;; Simple utils
   (setq emacs-help-dir "~/.emacs.d/help/")
@@ -1466,40 +1464,6 @@ Using "h" for help, "c" for personal configurations.
 
 
 #+END_SRC
-
-#+RESULTS:
-| lambda | (font size) | (interactive sFont: \nsSize: ) | (set-default-font (concat font   size)) |
-
-* Shutils
-
-Install and custom shortcuts for shutil package.
-
-#+BEGIN_SRC emacs-lisp
-
-  ;; shutil
-  ;(my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
-
-  ;(when (require 'shutil nil 'noerror)
-  ;  (global-key-binding (kbd "C-. s b") 'shutil-switch-to-buffer)
-  ;  (global-key-binding (kbd "<f5>") 'shutil-get-new-shell)
-  ;  (global-key-binding (kbd "C-. s |") 'shutil-split-vertically))
-
-#+END_SRC
-
-* Items to Fix
-*** TODO diminish not working as it is not identifying minor-modes like helm-mode, org-indent-mode
-
-* Package to look into
-*** abbrev-mode
-*** google-this
-*** lookup
-Some elisp functions to facilitate lookup of queries to various sites
-like Wikipedia, Google etc.
-[[http://ergoemacs.org/emacs/emacs_lookup_ref.html][lookup-setup]]
-*** edit-server
-[[http://www.emacswiki.org/emacs/Edit_with_Emacs][edit-server]]
-+ Needs edit-server-htmlize to work with GMail.
-+ Also check the markdown mode.
 
 * Some Useful Tips
 
@@ -1587,10 +1551,21 @@ type C-u C-x =, and that will tell you (among other things) the name
 of the fonts at that point."
 
 Taken from [[http://stackoverflow.com/questions/26290924/fontify-r-code-blocks-in-org-mode-8][stackoverflow]].
- 
 * Resources
 
 Listing some great resources about setting up Emacs.
 
 + [[http://tuhdo.github.io/c-ide.html][Emacs as C IDE]]
 + [[http://daemianmack.com/magit-cheatsheet.html][Magit CheatSheet]]
+
+* Package to look into
+*** abbrev-mode
+*** google-this
+*** lookup
+Some elisp functions to facilitate lookup of queries to various sites
+like Wikipedia, Google etc.
+[[http://ergoemacs.org/emacs/emacs_lookup_ref.html][lookup-setup]]
+*** edit-server
+[[http://www.emacswiki.org/emacs/Edit_with_Emacs][edit-server]]
++ Needs edit-server-htmlize to work with GMail.
++ Also check the markdown mode.
