@@ -463,7 +463,6 @@ This might be faster than helm-M-x, so trying out.
 
   ;; Smex
   (use-package smex
-    :disabled t
     :bind(("M-x" . smex)
           ("M-X" . smex-major-mode-commands))
     :config
@@ -664,9 +663,6 @@ Good package but disabled until all options understood and ready to replace helm
 
   (my/setup-counsel-gtags)
 #+END_SRC
-
-#+RESULTS:
-: counsel-gtags-pop
 
 * Info+
 
