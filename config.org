@@ -252,8 +252,8 @@ Some basic settings first of all.
   (defun pm/org-mode-hooks()
     (org-indent-mode 1)
     ;(auto-fill-mode 1)
-    (global-set-key (kbd "C-c l") 'org-store-link)
-    (global-set-key (kbd "C-c a") 'org-agenda))
+    (bind-key "C-c l" 'org-store-link)
+    (bind-key "C-c a" 'org-agenda))
 
   (add-hook 'org-mode-hook 'pm/org-mode-hooks)
 
@@ -325,8 +325,6 @@ This package uses some UTF-8 characters for org-mode bullets.
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
 #+END_SRC
 
-#+RESULTS:
-: t
 
 *** Org Reveal
 This package lets org-mode files be exported to HTML5 Reveal.js
@@ -402,7 +400,7 @@ For source code highlight in exports.
   ;; Setup a shortcut for org-capture
 
   (setq org-default-notes-file (concat org-directory "/notes.org"))
-  (global-set-key (kbd "C-c c") 'org-capture)
+  (bind-key "C-c c" 'org-capture)
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
 #+END_SRC
 
@@ -658,8 +656,8 @@ Good package but disabled until all options understood and ready to replace helm
             (add-hook 'c-mode-hook 'counsel-gtags-mode)
             (add-hook 'c++-mode-hook counsel-gtags-mode)
             ;; setup shortcuts
-            (global-set-key (kbd "M-.") 'counsel-gtags-dwim)
-            (global-set-key (kbd "M-*") 'counsel-gtags-pop)))))
+            (bind-key "M-." 'counsel-gtags-dwim)
+            (bind-key "M-*" 'counsel-gtags-pop)))))
 
   (my/setup-counsel-gtags)
 #+END_SRC
@@ -695,7 +693,7 @@ This is a cool package which allows editing mutliple lines together.
            ("C-<" . mc/mark-previous-like-this)
            ("C-c C-<" . mc/mark-all-like-this)))
 
-  (global-set-key (kbd "C-c C-SPC") 'set-rectangular-region-anchor)
+  (bind-key "C-c C-SPC" 'set-rectangular-region-anchor)
 
 #+END_SRC
 
@@ -1165,13 +1163,11 @@ In this section, there will be specific settings for C/C++.
 Adding this to not reconfirm the /compilation/ command.
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f7>") (lambda ()
-                                 (interactive)
-                                 (setq-local compilation-read-command nil)
-                                 (call-interactively 'compile)))
+  (bind-key  "<f7>" (lambda ()
+                      (interactive)
+                      (setq-local compilation-read-command nil)
+                      (call-interactively 'compile)))
 #+END_SRC
-
-#+RESULTS:
 
 ** Python
 
