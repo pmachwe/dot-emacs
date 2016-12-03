@@ -1449,6 +1449,9 @@ Using "h" for help, "c" for personal configurations.
    ("C-h" . backward-delete-char)
    ("M-h" . backward-kill-word))
 
+  (bind-keys*
+   ("C-. h e" . view-echo-area-messages))
+
   ;; Simple utils
   (setq emacs-help-dir "~/.emacs.d/help/")
   (bind-keys
@@ -1470,6 +1473,9 @@ Using "h" for help, "c" for personal configurations.
 
 
 #+END_SRC
+
+#+RESULTS:
+| lambda | (font size) | (interactive sFont: \nsSize: ) | (set-default-font (concat font   size)) |
 
 * Some Useful Tips
 
