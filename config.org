@@ -1086,7 +1086,18 @@ Session manager for Emacs. Experimental for now.
   (use-package workgroups2
     :disabled t
     :config
-    (workgroups-mode 1))
+#+END_SRC
+
+* Golden Ratio
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; golden ratio
+  (use-package golden-ratio
+    :config
+    (golden-ratio-mode 1)
+    (setq golden-ratio-auto-scale t))
+
 #+END_SRC
 
 * Undo Tree
