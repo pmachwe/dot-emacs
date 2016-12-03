@@ -1096,6 +1096,7 @@ Session manager for Emacs. Experimental for now.
 
   ;; golden ratio
   (use-package golden-ratio
+    :disabled t
     :config
     (golden-ratio-mode 1)
     (setq golden-ratio-auto-scale t))
