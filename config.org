@@ -1086,6 +1086,8 @@ Session manager for Emacs. Experimental for now.
   (use-package workgroups2
     :disabled t
     :config
+    (workgroups-mode 1))
+
 #+END_SRC
 
 * Golden Ratio
