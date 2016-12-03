@@ -197,16 +197,13 @@ Beautify the modeline.
 
   ;; from spacemacs
   (use-package spaceline
-    :disabled t
     :if window-system
     :init
     (setq powerline-default-separator 'utf-8)
     :config
     (require 'spaceline-config)
     (spaceline-spacemacs-theme)
-    (spaceline-helm-mode 1)
-    (spaceline-info-mode 1)
-    (spaceline-toggle-anzu-on))
+    (spaceline-info-mode 1))
 
   ;; for mac
   (setq ns-use-srgb-colorspace nil)
@@ -438,7 +435,6 @@ switching buffers.
            ("C-x b" . ido-switch-buffer)))
 
   (use-package flx-ido
-    :disabled t
     :config
     (progn
       (flx-ido-mode 1)
@@ -452,6 +448,8 @@ switching buffers.
       (setq ido-vertical-show-count t)
       (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
 #+END_SRC
+
+#+RESULTS:
 
 * Smex
 
@@ -603,8 +601,20 @@ to set up Helm at [[http://tuhdo.github.io/helm-intro.html][Helm Intro]].
 
 #+RESULTS:
 
-* Ivy
+* Imenu List
 
+Show imenu entries in a separate buffer on the side.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; imenu-list
+
+  (use-package imenu-list
+    :bind ("<f2>" . imenu-list-minor-mode))
+
+#+END_SRC
+
+* Ivy
 This is a newer package which is clutter-free and atleast in that sense better than helm. But need to check the functionality. Hence, using for experimentation.
 
 Good package but disabled until all options understood and ready to replace helm.
@@ -661,6 +671,9 @@ Good package but disabled until all options understood and ready to replace helm
 
   (my/setup-counsel-gtags)
 #+END_SRC
+
+#+RESULTS:
+: counsel-gtags-pop
 
 * Info+
 
@@ -769,8 +782,8 @@ need to keep switching bufers.
   ;; Setup avy
 
   (use-package avy
-    :bind (("C-." . avy-goto-word-1)
-           ("C-c ." . avy-goto-char)
+    :bind (("C-;" . avy-goto-word-1)
+           ("C-c ;" . avy-goto-char)
            ("M-g g" . avy-goto-line)))
 #+END_SRC
 
@@ -970,6 +983,7 @@ Handy while browsing stuff (something like Vim's command mode).
   ;; God Mode
 
   (use-package god-mode
+    :disabled t
     :bind ("<f2>" . god-mode))
 #+END_SRC
 
@@ -1423,8 +1437,8 @@ Using "h" for help, "c" for personal configurations.
 
   ;; Avy - again due to org-mode pollution
   (bind-keys*
-   ("C-." . avy-goto-word-1)
-   ("C-c ." . avy-goto-char)
+   ("C-;" . avy-goto-word-1)
+   ("C-c ;" . avy-goto-char)
    ("M-g g" . avy-goto-line))
 
   ;; Free up C-h for backspace
