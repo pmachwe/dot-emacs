@@ -610,7 +610,10 @@ Show imenu entries in a separate buffer on the side.
   ;; imenu-list
 
   (use-package imenu-list
-    :bind ("<f2>" . imenu-list-minor-mode))
+    :bind ("<f2>" . imenu-list-minor-mode)
+    :config
+    (setq imenu-list-focus-after-activation t)
+    (setq imenu-list-auto-resize t))
 
 #+END_SRC
 
@@ -671,9 +674,6 @@ Good package but disabled until all options understood and ready to replace helm
 
   (my/setup-counsel-gtags)
 #+END_SRC
-
-#+RESULTS:
-: counsel-gtags-pop
 
 * Info+
 
