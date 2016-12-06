@@ -165,9 +165,12 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (load-theme 'arjen-grey t)
     (set-face-attribute 'which-func nil
                         :foreground "SkyBlue1"))
-#+END_SRC
 
-#+RESULTS:
+  (use-package spacemacs-theme
+    :init
+    (load-theme 'spacemacs-dark t))
+
+#+END_SRC
 
 ** Modeline
 
@@ -199,7 +202,7 @@ Beautify the modeline.
   (use-package spaceline
     :if window-system
     :init
-    (setq powerline-default-separator 'utf-8)
+    (setq powerline-default-separator 'wave)
     :config
     (require 'spaceline-config)
     (spaceline-spacemacs-theme)
@@ -315,7 +318,6 @@ This package uses some UTF-8 characters for org-mode bullets.
   ;; org-bullets for nicer bullets :)
   ;; disabling because does not work well with leuven theme
   (use-package org-bullets
-    :disabled
     :config
     (progn
       (org-bullets-mode 1)
@@ -634,7 +636,8 @@ Good package but disabled until all options understood and ready to replace helm
     (setq ivy-extra-directories nil) ;; do not show ../  and ./
     (setq ivy-re-builders-alist
           ;; allow input not in order
-          '((t   . ivy--regex-ignore-order))))
+          '((t   . ivy--regex-ignore-order)))
+    :diminish ivy-mode)
 
   (use-package swiper
     :bind("M-i" . swiper))
@@ -670,7 +673,8 @@ Good package but disabled until all options understood and ready to replace helm
             (add-hook 'c++-mode-hook counsel-gtags-mode)
             ;; setup shortcuts
             (bind-key "M-." 'counsel-gtags-dwim)
-            (bind-key "M-*" 'counsel-gtags-pop)))))
+            (bind-key "M-*" 'counsel-gtags-pop))))
+    (diminish counsel-gtags-mode))
 
   (my/setup-counsel-gtags)
 #+END_SRC
@@ -1466,6 +1470,9 @@ Using "h" for help, "c" for personal configurations.
   (bind-keys*
    ("C-. h e" . view-echo-area-messages))
 
+  ;; Another binding for M-x
+  (bind-key* "M-m" 'execute-extended-command)
+
   ;; Simple utils
   (setq emacs-help-dir "~/.emacs.d/help/")
   (bind-keys
@@ -1488,8 +1495,6 @@ Using "h" for help, "c" for personal configurations.
 
 #+END_SRC
 
-#+RESULTS:
-| lambda | (font size) | (interactive sFont: \nsSize: ) | (set-default-font (concat font   size)) |
 
 * Some Useful Tips
 
