@@ -1430,7 +1430,7 @@ Using "h" for help, "c" for personal configurations.
 
   ;; use bind-key to bind personal keys
 
-  (bind-keys
+  (bind-keys*
    ("<f5>" . shell)
    ("S-<f5>" . eshell)
    ("C-c M-!" . eshell-command))
@@ -1460,7 +1460,7 @@ Using "h" for help, "c" for personal configurations.
    ("M-g g" . avy-goto-line))
 
   ;; Free up C-h for backspace
-  (bind-key "C-?" help-map)
+  (bind-key* "C-?" help-map)
 
   ;; Use C-h for backspace as it is more ergonomic
   (bind-keys*
@@ -1468,33 +1468,34 @@ Using "h" for help, "c" for personal configurations.
    ("M-h" . backward-kill-word))
 
   (bind-keys*
-   ("C-. h e" . view-echo-area-messages))
+   ("C-. h v" . view-echo-area-messages))
 
   ;; Another binding for M-x
   (bind-key* "M-m" 'execute-extended-command)
 
   ;; Simple utils
-  (setq emacs-help-dir "~/.emacs.d/help/")
-  (bind-keys
-   ("C-c ? h S" . (lambda()
+  (defvar emacs-help-dir "~/.emacs.d/help/"
+    "Save help files here.")
+
+  (bind-keys*
+   ("C-. h S" . (lambda()
                   (interactive)
                   (find-file-other-window
                    (concat emacs-help-dir "smartparens.txt"))))
-   ("C-c ? h M" . (lambda()
+   ("C-. h M" . (lambda()
                   (interactive)
                   (ind-file-other-window
                    (concat emacs-help-dir "magit.org"))))
-   ("C-c ? h C" . (lambda()
+   ("C-. h C" . (lambda()
                   (interactive)
                   (find-file-other-window
                    (concat user-emacs-directory "config.org"))))
-   ("C-c ? c f" . (lambda(font size)
+   ("C-. c f" . (lambda(font size)
                   (interactive "sFont: \nsSize: ")
                   (set-default-font (concat font " " size)))))
 
 
 #+END_SRC
-
 
 * Some Useful Tips
 
