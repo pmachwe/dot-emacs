@@ -95,6 +95,23 @@ Override some basic default options upfont. Some options taken from
   (setq ring-bell-function 'my-bell-func)
   (setq visible-bell nil)
 
+  ;; http://endlessparentheses.com/faster-pop-to-mark-command.html
+  ;; Go up last positions using C-u C-SPC C-SPC
+  ;; instead of C-u C-SPC C-u C-SPC
+  (setq set-mark-command-repeat-pop t)
+
+  ;; If same marks are saved in the ring, pop out the same ones
+  (defun my/multi-pop-to-mark (orig-fun &rest args)
+    "Call ORIG-FUN until the cursor moves.
+  Try the repeated popping up to 10 times."
+    (let ((p (point)))
+      (dotimes (i 10)
+        (when (= p (point))
+          (apply orig-fun args)))))
+
+  (advice-add 'pop-to-mark-command :around
+              #'my/multi-pop-to-mark)
+
 #+END_SRC
 
 * Themes and Fonts
@@ -271,6 +288,9 @@ Some basic settings first of all.
   ;; Org-directory
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
+
+  ;; Use unicode char instead of ...
+  (setq org-ellipsis "↴")
 
   ;(defface org-block-begin-line
   ;  '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
@@ -1346,6 +1366,16 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\[e" 'end-of-defun)))
 #+END_SRC
 
+* Beacon
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; beacon for better viewing of cursor
+  (use-package beacon
+    :config
+    (beacon-mode 1))
+
+#+END_SRC
 * OS Specific
 
 ** Windows
