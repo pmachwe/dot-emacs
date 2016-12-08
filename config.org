@@ -1500,9 +1500,6 @@ Using "h" for help, "c" for personal configurations.
   (bind-keys*
    ("C-. h v" . view-echo-area-messages))
 
-  ;; Another binding for M-x
-  (bind-key* "M-m" 'execute-extended-command)
-
   ;; Simple utils
   (defvar emacs-help-dir "~/.emacs.d/help/"
     "Save help files here.")
