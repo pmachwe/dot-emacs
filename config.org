@@ -1389,9 +1389,12 @@ one seems to be the easiest to configure out of the box. Here is the link: [[htt
 
   (use-package eyebrowse
     :init
-    (eyebrowse-mode t))
+    (eyebrowse-mode t)
+    :bind
+    ("C-c C-w C-w" . eyebrowse-last-window-config))
 
 #+END_SRC
+
 
 * OS Specific
 
@@ -1473,6 +1476,8 @@ keybindings are unused. Using C-. for now.
 
 Using "h" for help, "c" for personal configurations.
 
+Some other free combinations are: C-', C-".
+
 #+BEGIN_SRC emacs-lisp
 
   ;; use bind-key to bind personal keys
@@ -1514,8 +1519,26 @@ Using "h" for help, "c" for personal configurations.
    ("C-h" . backward-delete-char)
    ("M-h" . backward-kill-word))
 
+  ;; Window movement
   (bind-keys*
-   ("C-. h v" . view-echo-area-messages))
+   ("C-x <up>" . windmove-up)
+   ("C-x <down>" . windmove-down)
+   ("C-x <left>" . windmove-left)
+   ("C-x <right>" . windmove-right))
+
+  ;; Window Killing
+  ;; C-x 1 and C-x 0 are a bit cumbersome
+  (bind-keys*
+   ("C-x ," . delete-other-windows)
+   ("C-x ." . delete-window))
+
+  ;; Switch windows quickly
+  ;(bind-keys*
+   ;("C-. C-." . ace-window))
+
+  (bind-keys*
+   ("C-. h v" . view-echo-area-messages)
+   ("C-. h c" . (lambda() (switch-to-buffer "*Compilation*"))))
 
   ;; Simple utils
   (defvar emacs-help-dir "~/.emacs.d/help/"
@@ -1540,6 +1563,7 @@ Using "h" for help, "c" for personal configurations.
 
 
 #+END_SRC
+
 
 * Some Useful Tips
 
