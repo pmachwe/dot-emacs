@@ -1065,6 +1065,7 @@ Nice suggestions for key completions in a separate buffer.
     (which-key-mode))
 
 #+END_SRC
+
 * Magit
 
 Magit is the best package to work with Git. 
@@ -1376,6 +1377,22 @@ Key chords look promising. Try these out.
     (beacon-mode 1))
 
 #+END_SRC
+
+* Eyebrowse
+
+A simple package to create/switch between window configurations. There are others like workgroups2 and perspective but this
+one seems to be the easiest to configure out of the box. Here is the link: [[https://github.com/wasamasa/eyebrowse][eyebrowse]].
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; eyebrowse
+
+  (use-package eyebrowse
+    :init
+    (eyebrowse-mode t))
+
+#+END_SRC
+
 * OS Specific
 
 ** Windows
