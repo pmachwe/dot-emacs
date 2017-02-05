@@ -83,8 +83,8 @@ Override some basic default options upfont. Some options taken from
   (winner-mode 1)
 
   ;; simply bold the current line
-  (custom-set-faces
-   '(highlight ((t (:background nil :foreground nil :bold t)))))
+  ;(custom-set-faces
+  ; '(highlight ((t (:background nil :foreground nil :bold t)))))
   (global-hl-line-mode 1)
 
   ;; always show the function
