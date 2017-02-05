@@ -850,6 +850,7 @@ company-gtags should do.
       (add-hook 'shell-mode-hook #'company-mode)
       (setq company-backends '(company-elisp
                                company-ropemacs
+                               company-clang
                                company-gtags
                                company-dabbrev-code
                                company-keywords
@@ -858,6 +859,8 @@ company-gtags should do.
     :diminish company-mode)
 
   (use-package company-c-headers
+    :init
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
     :config
     (add-to-list 'company-backends 'company-c-headers))
 
