@@ -953,6 +953,17 @@ Nice way to highlight delimiters especially for LISP.
                 (rainbow-delimiters-mode 1))))
 #+END_SRC
 
+* Show Matching Parentheses
+
+Taken from [[http://emacsredux.com/blog/2013/04/01/highlight-matching-parentheses/][here]].
+
+#+BEGIN_SRC emacs-lisp
+
+  (require 'paren)
+  (setq show-paren-style 'parenthesis)
+  (show-paren-mode +1)
+
+#+END_SRC
 * Flycheck
 
 On the fly syntax checking for most languages.
