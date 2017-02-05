@@ -1398,6 +1398,24 @@ one seems to be the easiest to configure out of the box. Here is the link: [[htt
 
 #+END_SRC
 
+* Ediff
+
+Some sane defaults for Ediff mode. Taken from [[http://oremacs.com/2015/01/17/setting-up-ediff/][here]].
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Ediff defaults
+  (defmacro csetq (variable value)
+    `(funcall (or (get ',variable 'custom-set)
+                  'set-default)
+              ',variable ,value))
+
+  (csetq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (csetq ediff-split-window-function 'split-window-horizontally)
+  (csetq ediff-diff-options "-w")
+  (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+#+END_SRC
 
 * OS Specific
 
