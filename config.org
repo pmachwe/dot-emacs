@@ -862,9 +862,8 @@ company-gtags should do.
     :diminish company-mode)
 
   (use-package company-c-headers
-    :init
-    (set 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
     :config
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
     (add-to-list 'company-backends 'company-c-headers))
 
   ;; Creates problems with yas-expand
@@ -872,9 +871,6 @@ company-gtags should do.
   ;;     (eval-after-load "shell"
   ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
 #+END_SRC
-
-#+RESULTS:
-: t
 
 ** Auto complete
 
@@ -1599,7 +1595,6 @@ Some other free combinations are: C-', C-".
 
 
 #+END_SRC
-
 
 * Some Useful Tips
 
