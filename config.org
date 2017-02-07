@@ -184,6 +184,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
                         :foreground "SkyBlue1"))
 
   (use-package spacemacs-theme
+    :if window-system
     :init
     (load-theme 'spacemacs-dark t))
 
@@ -290,7 +291,8 @@ Some basic settings first of all.
   (setq org-agenda-files '("~/org"))
 
   ;; Use unicode char instead of ...
-  (setq org-ellipsis "↴")
+  (when window-system
+    (setq org-ellipsis "↴"))
 
   ;(defface org-block-begin-line
   ;  '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
@@ -338,6 +340,7 @@ This package uses some UTF-8 characters for org-mode bullets.
   ;; org-bullets for nicer bullets :)
   ;; disabling because does not work well with leuven theme
   (use-package org-bullets
+    :if window-system
     :config
     (progn
       (org-bullets-mode 1)
@@ -860,7 +863,7 @@ company-gtags should do.
 
   (use-package company-c-headers
     :init
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
+    (set 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
     :config
     (add-to-list 'company-backends 'company-c-headers))
 
@@ -964,6 +967,7 @@ Taken from [[http://emacsredux.com/blog/2013/04/01/highlight-matching-parenthese
   (show-paren-mode +1)
 
 #+END_SRC
+
 * Flycheck
 
 On the fly syntax checking for most languages.
@@ -1183,7 +1187,7 @@ Some common settings in this section.
   ;; common settings for all programming languages
 
   (defun my/common-prog-hooks()
-  ;  (if window-system (linum-mode 1))
+    (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
     (yas-minor-mode 1))
 
@@ -1213,6 +1217,9 @@ In this section, there will be specific settings for C/C++.
   (defun my/cpp-hooks()
   ;  (ggtags-mode 1)
     (counsel-gtags-mode 1)
+    (add-hook 'c++-mode-hook (lambda () 
+                               (setq flycheck-gcc-language-standard "c++11")
+                               (setq flycheck-clang-language-standard "c++11")))
     (my/common-prog-hooks))
 
   ;(add-hook 'c++-mode-hook 'my/cpp-hooks)
@@ -1221,11 +1228,8 @@ In this section, there will be specific settings for C/C++.
               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                 (my/cpp-hooks))))
 
-
   ;; TODO Setup google style check
 #+END_SRC
-
-#+RESULTS:
 
 Adding this to not reconfirm the /compilation/ command.
 
@@ -1701,3 +1705,9 @@ like Wikipedia, Google etc.
 [[http://www.emacswiki.org/emacs/Edit_with_Emacs][edit-server]]
 + Needs edit-server-htmlize to work with GMail.
 + Also check the markdown mode.
+
+* Abbrevs for C++
+
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
