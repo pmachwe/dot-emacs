@@ -83,9 +83,10 @@ Override some basic default options upfont. Some options taken from
   (winner-mode 1)
 
   ;; simply bold the current line
-  ;(custom-set-faces
-  ; '(highlight ((t (:background nil :foreground nil :bold t)))))
-  (global-hl-line-mode 1)
+  (if window-system
+      ;(custom-set-faces
+      ; '(highlight ((t (:background nil :foreground nil :bold t)))))
+      (global-hl-line-mode 1))
 
   ;; always show the function
   (which-function-mode 1)
@@ -111,6 +112,9 @@ Override some basic default options upfont. Some options taken from
 
   (advice-add 'pop-to-mark-command :around
               #'my/multi-pop-to-mark)
+
+  ;; Bar type curson
+  (setq-default cursor-type 'bar)
 
 #+END_SRC
 
@@ -1387,6 +1391,7 @@ Key chords look promising. Try these out.
 
   ;; beacon for better viewing of cursor
   (use-package beacon
+    :disabled t
     :config
     (beacon-mode 1))
 
