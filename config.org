@@ -296,7 +296,7 @@ Some basic settings first of all.
 
   ;; Use unicode char instead of ...
   (when window-system
-    (setq org-ellipsis "↴"))
+    (setq org-ellipsis "…"))
 
   ;(defface org-block-begin-line
   ;  '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
@@ -311,6 +311,9 @@ Some basic settings first of all.
   ;  "Face used for the line delimiting the end of source blocks.")
 
 #+END_SRC
+
+#+RESULTS:
+: …
 
 *** Some pending setups
 **** TODO Setup flyspell and word correction with org mode
@@ -847,34 +850,34 @@ If clang is available, could also use company-clang but mostly
 company-gtags should do.
 
 #+BEGIN_SRC emacs-lisp
-  ;; Company mode
+    ;; Company mode
 
-  (use-package company
-    :init
-    (add-hook 'after-init-hook 'global-company-mode)
-    :config
-    (progn
-      (add-hook 'shell-mode-hook #'company-mode)
-      (setq company-backends '(company-capf
-                               company-elisp
-                               company-ropemacs
-                               company-clang
-                               company-gtags
-                               company-dabbrev-code
-                               company-keywords
-                               company-files
-                               company-dabbrev)))
-    :diminish company-mode)
+    (use-package company
+      :init
+      (add-hook 'after-init-hook 'global-company-mode)
+      :config
+      (progn
+        (add-hook 'shell-mode-hook #'company-mode)
+        (setq company-backends '(company-elisp
+                                 company-ropemacs
+                                 company-clang
+                                 company-gtags
+                                 company-dabbrev-code
+                                 company-keywords
+                                 company-capf
+                                 company-files
+                                 company-dabbrev)))
+      :diminish company-mode)
 
-  (use-package company-c-headers
-    :config
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
-    (add-to-list 'company-backends 'company-c-headers))
+    (use-package company-c-headers
+      :config
+      (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
+      (add-to-list 'company-backends 'company-c-headers))
 
-  ;; Creates problems with yas-expand
-  ;;     (define-key prog-mode-map (kbd "TAB") #'company-complete)
-  ;;     (eval-after-load "shell"
-  ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
+    ;; Creates problems with yas-expand
+    ;;     (define-key prog-mode-map (kbd "TAB") #'company-complete)
+    ;;     (eval-after-load "shell"
+    ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
 #+END_SRC
 
 Also enable flx for company.
@@ -928,6 +931,68 @@ package also. Look at it sometime.
     :config
     (yas-reload-all)
     :diminish yas-minor-mode)
+
+#+END_SRC
+
+* YCMD
+
+#+BEGIN_SRC emacs-lisp
+
+  (if nil
+      (progn
+        (defun ycmd-setup-completion-at-point-function ()
+          "Setup `completion-at-point-functions' for `ycmd-mode'."
+          (add-hook 'completion-at-point-functions
+                    #'ycmd-complete-at-point nil :local))
+
+        (use-package ycmd
+          :init
+          (set-variable 'ycmd-server-command '("/Users/pmachwe/anaconda/bin/python3" "/Users/pmachwe/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))
+          :config
+          (add-hook 'c++-mode-hook 'ycmd-mode)
+          (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function))
+
+        (use-package company-ycmd
+          :config
+          (company-ycmd-setup))
+
+        (use-package flycheck-ycmd
+          :config
+          (flycheck-ycmd-setup)
+          
+          ;; Make sure the flycheck cache sees the parse results
+          (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
+
+          ;; Add the ycmd checker to the list of available checkers
+          (add-to-list 'flycheck-checkers 'ycmd)
+
+          (when (not (display-graphic-p))
+            (setq flycheck-indication-mode nil)))))
+
+#+END_SRC
+
+#+RESULTS:
+
+* Irony Mode
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; irony-mode
+  (use-package irony
+    :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'objc-mode-hook 'irony-mode)
+
+    ;; replace the `completion-at-point' and `complete-symbol' bindings in
+    ;; irony-mode's buffers by irony-mode's function
+    (defun my-irony-mode-hook ()
+      (define-key irony-mode-map [remap completion-at-point]
+        'irony-completion-at-point-async)
+      (define-key irony-mode-map [remap complete-symbol]
+        'irony-completion-at-point-async))
+    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 #+END_SRC
 
