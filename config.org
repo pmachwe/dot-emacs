@@ -697,7 +697,7 @@ Good package but disabled until all options understood and ready to replace helm
             (load-file f)
             ;; add to c/c++
             (add-hook 'c-mode-hook 'counsel-gtags-mode)
-            (add-hook 'c++-mode-hook counsel-gtags-mode)
+            (add-hook 'c++-mode-hook 'counsel-gtags-mode)
             ;; setup shortcuts
             (bind-key "M-." 'counsel-gtags-dwim)
             (bind-key "M-*" 'counsel-gtags-pop))))
@@ -855,7 +855,8 @@ company-gtags should do.
     :config
     (progn
       (add-hook 'shell-mode-hook #'company-mode)
-      (setq company-backends '(company-elisp
+      (setq company-backends '(company-capf
+                               company-elisp
                                company-ropemacs
                                company-clang
                                company-gtags
@@ -874,6 +875,16 @@ company-gtags should do.
   ;;     (define-key prog-mode-map (kbd "TAB") #'company-complete)
   ;;     (eval-after-load "shell"
   ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
+#+END_SRC
+
+Also enable flx for company.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package company-flx
+    :config
+    (company-flx-mode +1))
+
 #+END_SRC
 
 ** Auto complete
