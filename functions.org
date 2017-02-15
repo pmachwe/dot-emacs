@@ -58,7 +58,7 @@ Some functions to setup different themes.
 The compilation buffer pops up and disturbs the work flow. Hence, display only a small compilation window and let it disapper if no error is found. The small window is also
 applicable for grep like processes which also use the compilation buffer.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 
   ;; copied from: http://emacs.stackexchange.com/questions/62/hide-compilation-window
   ; from enberg on #emacs
@@ -105,6 +105,9 @@ applicable for grep like processes which also use the compilation buffer.
   (setq compilation-scroll-output 'first-error)
 
 #+END_SRC
+
+#+RESULTS:
+: first-error
 
 * GTAGS
 
