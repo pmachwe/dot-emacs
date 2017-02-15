@@ -997,6 +997,27 @@ package also. Look at it sometime.
 
 #+END_SRC
 
+* RTags
+
+Experimental, disabled for now.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package rtags
+    :disabled t
+    :config
+    (add-to-list 'company-backends 'company-rtags)
+    (setq rtags-autostart-diagnostics t)
+    (rtags-diagnostics)
+    (setq rtags-completions-enabled t)
+    (push 'company-rtags 'company-backends)
+    (define-key c-mode-base-map (kbd "<C-tab>") (function company-complete))
+    (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
+    (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running))
+
+  (use-package flycheck-rtags)
+#+END_SRC
+
 * SmartParens
 
 Parenthesis matching.
