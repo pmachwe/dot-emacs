@@ -896,13 +896,7 @@ company-gtags should do.
   ;; Creates problems with yas-expand, we always use company-yasnippet C-c C-y
   (define-key prog-mode-map (kbd "TAB") #'company-complete)
 
-  ;;     (eval-after-load "shell"
-  ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
-
 #+END_SRC
-
-#+RESULTS:
-: company-complete
 
 Also enable flx for company.
 
@@ -910,8 +904,8 @@ Also enable flx for company.
 
   (use-package company-flx
     :config
-    (add-elisp-mode-hook '(lambda())
-                         (company-flx-mode +1)))
+    (add-elisp-mode-hook '(lambda()
+                            (company-flx-mode +1))))
 
 #+END_SRC
 

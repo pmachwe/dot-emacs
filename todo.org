@@ -1,0 +1,14 @@
+#+TITLE: List of TODOs
+#+AUTHOR: Parikshit Machwe
+
+* Company [0/1]
+
+- [ ] Check company-flx with other modes. Works fine with elisp.
+
+* Functions [0/1]
+
+- [ ] Compilation buffer hook close *grep* and other buffers as well.
+
+* Packages [0/1]
+
+- [ ] Make RTags to work with Emacs.

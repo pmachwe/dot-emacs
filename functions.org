@@ -61,7 +61,7 @@ applicable for grep like processes which also use the compilation buffer.
 #+BEGIN_SRC emacs-lisp
 
   ;; copied from: http://emacs.stackexchange.com/questions/62/hide-compilation-window
-  ; from enberg on #emacs
+                                          ; from enberg on #emacs
   (defun my/compilation-finish-function(buf str)
     (if (null (string-match ".*exited abnormally.*" (buffer-string)))
         ;;no errors, make the compilation window go away in a few seconds
@@ -81,27 +81,28 @@ applicable for grep like processes which also use the compilation buffer.
 
   ;; Copied from
   ;; http://stackoverflow.com/questions/17659212/dont-display-compilation-buffer-in-emacs-until-the-process-exits-with-error-o
+
   (require 'cl)
   (defadvice compilation-start
-    (around inhibit-display
-        (command &optional mode name-function highlight-regexp)) 
+      (around inhibit-display
+              (command &optional mode name-function highlight-regexp)) 
     (if (not (string-match "^\\(find\\|grep\\)" command))
         
-(cl-flet ((display-buffer)
-           (set-window-point)
-           (goto-char)) 
-      (fset 'display-buffer 'ignore)
-      (fset 'goto-char 'ignore)
-      (fset 'set-window-point 'ignore)
-      (save-window-excursion 
-        ad-do-it))
+        (cl-flet ((display-buffer)
+                  (set-window-point)
+                  (goto-char)) 
+          (fset 'display-buffer 'ignore)
+          (fset 'goto-char 'ignore)
+          (fset 'set-window-point 'ignore)
+          (save-window-excursion 
+            ad-do-it))
       ad-do-it))
   (ad-activate 'compilation-start)
   (add-hook' compilation-start-hook 'my/compilation-start-function)
 
   ;; Some minor settings
   ;; Follow the compilation output buffer
-  (setq compilation-scroll-output t)
+  ;; (setq compilation-scroll-output t)
   ;; Goto first error
   (setq compilation-scroll-output 'first-error)
 
