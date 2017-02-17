@@ -86,7 +86,8 @@ applicable for grep like processes which also use the compilation buffer.
     (around inhibit-display
         (command &optional mode name-function highlight-regexp)) 
     (if (not (string-match "^\\(find\\|grep\\)" command))
-        (flet ((display-buffer)
+        
+(cl-flet ((display-buffer)
            (set-window-point)
            (goto-char)) 
       (fset 'display-buffer 'ignore)

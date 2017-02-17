@@ -127,70 +127,71 @@ In this section, setting up the themes and fonts.
 Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-theme-sanityinc-tomorrow][here]].
 
 #+BEGIN_SRC emacs-lisp
-  ;; themes and fonts
+    ;; themes and fonts
 
-  ;; Move this setup to work.el as it is dependent on the
-  ;; environment, eg font-names are different on Linux than Win
-  ;(set-default-font "InputMono 11")
+    ;; Move this setup to work.el as it is dependent on the
+    ;; environment, eg font-names are different on Linux than Win
+    ;(set-default-font "InputMono 11")
 
-  (use-package monokai-theme
-    :disabled t
-    :init 
-    (load-theme 'monokai t))
+    (use-package monokai-theme
+      :disabled t
+      :init 
+      (load-theme 'monokai t))
 
-  (use-package color-theme-sanityinc-tomorrow
-    :disabled
-    :init
-    (progn
-      (load-theme 'sanityinc-tomorrow-night t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+    (use-package color-theme-sanityinc-tomorrow
+      :if window-system
+      :init
+      (progn
+        (load-theme 'sanityinc-tomorrow-night t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
 
-  (use-package leuven-theme
-    :disabled
-    :config
-    (progn
-      (load-theme 'leuven t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+    (use-package leuven-theme
+      :disabled
+      :config
+      (progn
+        (load-theme 'leuven t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
 
-  (use-package eclipse-theme
-    :disabled
-    :config
-    (load-theme 'eclipse t))
+    (use-package eclipse-theme
+      :disabled
+      :config
+      (load-theme 'eclipse t))
 
-  (use-package material-theme
-    :disabled
-    :init
-    (progn
-      (load-theme 'material t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+    (use-package material-theme
+      :disabled
+      :init
+      (progn
+        (load-theme 'material t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
 
-  (use-package afternoon-theme
-    :disabled t
-    :config
-    (load-theme 'afternoon t)
-    (set-face-attribute 'mode-line nil
-                        :family 'unspecified))
+    (use-package afternoon-theme
+      :disabled t
+      :config
+      (load-theme 'afternoon t)
+      (set-face-attribute 'mode-line nil
+                          :family 'unspecified))
 
-  (use-package arjen-grey-theme
-    :disabled t
-    :config
-    (load-theme 'arjen-grey t)
-    (set-face-attribute 'which-func nil
-                        :foreground "SkyBlue1"))
+    (use-package arjen-grey-theme
+      :disabled t
+      :config
+      (load-theme 'arjen-grey t)
+      (set-face-attribute 'which-func nil
+                          :foreground "SkyBlue1"))
 
-  (use-package spacemacs-theme
-    :if window-system
-    :init
-    (load-theme 'spacemacs-dark t))
+    (use-package spacemacs-theme
+      :disabled t
+      :if window-system
+      :init
+      (load-theme 'spacemacs-dark t))
 
 #+END_SRC
 
@@ -850,35 +851,48 @@ If clang is available, could also use company-clang but mostly
 company-gtags should do.
 
 #+BEGIN_SRC emacs-lisp
-    ;; Company mode
+  ;; Company mode
 
-    (use-package company
-      :init
-      (add-hook 'after-init-hook 'global-company-mode)
-      :config
-      (progn
-        (add-hook 'shell-mode-hook #'company-mode)
-        (setq company-backends '(company-elisp
-                                 company-ropemacs
-                                 company-clang
-                                 company-gtags
-                                 company-dabbrev-code
-                                 company-keywords
-                                 company-capf
-                                 company-files
-                                 company-dabbrev)))
-      :diminish company-mode)
 
-    (use-package company-c-headers
-      :config
-      (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
-      (add-to-list 'company-backends 'company-c-headers))
+  (use-package company
+    :bind (("C-c C-y" . company-yasnippet))
+    :config
+    (add-hook 'c++-mode-hook '(lambda()
+                                (setq-local company-backends '(company-clang
+                                                               company-gtags
+                                                               company-dabbrev-code
+                                                               company-keywords
+                                                               company-files))
+                          (company-mode t)))
+    (add-hook 'elisp-mode-hook '(lambda()
+                                  (setq-local company-backends '(company-capf
+                                                                 company-elisp
+                                                                 company-dabbrev-code
+                                                                 company-keywords
+                                                                 company-files))
+                                  (company-mode +1)))
+    (add-hook 'python-mode-hook '(lambda()
+                                   (setq-local company-backends '(company-ropemacs
+                                                                  company-dabbrev-code
+                                                                  company-keywords
+                                                                  company-files))
+                                   (company-mode +1))))
 
-    ;; Creates problems with yas-expand
-    ;;     (define-key prog-mode-map (kbd "TAB") #'company-complete)
-    ;;     (eval-after-load "shell"
-    ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
+  (use-package company-c-headers
+    :disabled t
+    :config
+    (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.2.1/")
+    (add-to-list 'company-backends 'company-c-headers))
+
+  ;; Creates problems with yas-expand, we always use company-yasnippet C-c C-y
+  (define-key prog-mode-map (kbd "TAB") #'company-complete)
+  ;;     (eval-after-load "shell"
+  ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
+
 #+END_SRC
+
+#+RESULTS:
+: company-complete
 
 Also enable flx for company.
 
@@ -886,7 +900,8 @@ Also enable flx for company.
 
   (use-package company-flx
     :config
-    (company-flx-mode +1))
+    (add-elisp-mode-hook '(lambda())
+                         (company-flx-mode +1)))
 
 #+END_SRC
 
@@ -930,6 +945,8 @@ package also. Look at it sometime.
   (use-package yasnippet
     :config
     (yas-reload-all)
+    (define-key yas-minor-mode-map [(tab)] nil)
+    (define-key yas-minor-mode-map (kbd "TAB") nil)
     :diminish yas-minor-mode)
 
 #+END_SRC
@@ -1015,7 +1032,8 @@ Experimental, disabled for now.
     (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
     (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running))
 
-  (use-package flycheck-rtags)
+  (use-package flycheck-rtags
+    :disabled t)
 #+END_SRC
 
 * SmartParens
@@ -1287,7 +1305,7 @@ Some common settings in this section.
   (defun my/common-prog-hooks()
     (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
-    (yas-minor-mode 1))
+    (yas-minor-mode +1))
 
   ;; No tabs
   (setq-default indent-tabs-mode nil)
