@@ -857,8 +857,10 @@ company-gtags should do.
   (use-package company
     :bind (("C-c C-y" . company-yasnippet))
     :config
+    (define-key company-mode-map (kbd "C-j") 'company-complete-selection)
     (add-hook 'c++-mode-hook '(lambda()
-                                (setq-local company-backends '(company-clang
+                                (setq-local company-backends '(company-capf
+                                                               ycompany-clang
                                                                company-gtags
                                                                company-dabbrev-code
                                                                company-keywords
@@ -876,7 +878,14 @@ company-gtags should do.
                                                                   company-dabbrev-code
                                                                   company-keywords
                                                                   company-files))
-                                   (company-mode +1))))
+                                   (company-mode +1)))
+    (add-hook 'shell-mode-hook '(lambda()
+                                  (setq-local company-backends '(company-capf
+                                                                 company-shell
+                                                                 company-dabbrev-code
+                                                                 company-keywords
+                                                                 company-files))
+                                  (company-mode +1))))
 
   (use-package company-c-headers
     :disabled t
@@ -886,6 +895,7 @@ company-gtags should do.
 
   ;; Creates problems with yas-expand, we always use company-yasnippet C-c C-y
   (define-key prog-mode-map (kbd "TAB") #'company-complete)
+
   ;;     (eval-after-load "shell"
   ;;      '(define-key shell-mode-map (kbd "TAB") #'company-complete))
 
