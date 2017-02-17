@@ -4,6 +4,11 @@
 * Company [0/1]
 
 - [ ] Check company-flx with other modes. Works fine with elisp.
+- [ ] Company quick-help.
+
+* Ivy [0/1]
+
+- [ ] Can it work like ido horizonal completion?
 
 * Functions [0/1]
 
