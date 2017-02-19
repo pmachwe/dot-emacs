@@ -127,72 +127,105 @@ In this section, setting up the themes and fonts.
 Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-theme-sanityinc-tomorrow][here]].
 
 #+BEGIN_SRC emacs-lisp
-    ;; themes and fonts
+  ;; themes and fonts
 
-    ;; Move this setup to work.el as it is dependent on the
-    ;; environment, eg font-names are different on Linux than Win
-    ;(set-default-font "InputMono 11")
+  ;; Move this setup to work.el as it is dependent on the
+  ;; environment, eg font-names are different on Linux than Win
+  ;(set-default-font "InputMono 11")
 
-    (use-package monokai-theme
-      :disabled t
-      :init 
-      (load-theme 'monokai t))
+  (use-package monokai-theme
+    :disabled t
+    :init 
+    (load-theme 'monokai t))
 
-    (use-package color-theme-sanityinc-tomorrow
-      :if window-system
-      :init
-      (progn
-        (load-theme 'sanityinc-tomorrow-night t)
-        (set-face-attribute `mode-line nil
-                            :box nil)
-        (set-face-attribute `mode-line-inactive nil
-                            :box nil)))
+  (use-package color-theme-sanityinc-tomorrow
+    :disabled t
+    :if window-system
+    :init
+    (progn
+      (load-theme 'sanityinc-tomorrow-night t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
 
-    (use-package leuven-theme
-      :disabled
-      :config
-      (progn
-        (load-theme 'leuven t)
-        (set-face-attribute `mode-line nil
-                            :box nil)
-        (set-face-attribute `mode-line-inactive nil
-                            :box nil)))
+  (use-package leuven-theme
+    :disabled
+    :config
+    (progn
+      (load-theme 'leuven t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
 
-    (use-package eclipse-theme
-      :disabled
-      :config
-      (load-theme 'eclipse t))
+  (use-package eclipse-theme
+    :disabled
+    :config
+    (load-theme 'eclipse t))
 
-    (use-package material-theme
-      :disabled
-      :init
-      (progn
-        (load-theme 'material t)
-        (set-face-attribute `mode-line nil
-                            :box nil)
-        (set-face-attribute `mode-line-inactive nil
-                            :box nil)))
+  (use-package material-theme
+    :disabled
+    :init
+    (progn
+      (load-theme 'material t)
+      (set-face-attribute `mode-line nil
+                          :box nil)
+      (set-face-attribute `mode-line-inactive nil
+                          :box nil)))
 
-    (use-package afternoon-theme
-      :disabled t
-      :config
-      (load-theme 'afternoon t)
-      (set-face-attribute 'mode-line nil
-                          :family 'unspecified))
+  (use-package afternoon-theme
+    :disabled t
+    :config
+    (load-theme 'afternoon t)
+    (set-face-attribute 'mode-line nil
+                        :family 'unspecified))
 
-    (use-package arjen-grey-theme
-      :disabled t
-      :config
-      (load-theme 'arjen-grey t)
-      (set-face-attribute 'which-func nil
-                          :foreground "SkyBlue1"))
+  (use-package arjen-grey-theme
+    :disabled t
+    :config
+    (load-theme 'arjen-grey t)
+    (set-face-attribute 'which-func nil
+                        :foreground "SkyBlue1"))
 
-    (use-package spacemacs-theme
-      :disabled t
-      :if window-system
-      :init
-      (load-theme 'spacemacs-dark t))
+  (use-package spacemacs-theme
+    :disabled t
+    :if window-system
+    :init
+    (load-theme 'spacemacs-dark t))
 
+  ;; For doom
+  (use-package nlinum)
+
+  (use-package doom-themes
+    :if window-system
+    :init
+    (load-theme 'doom-one t)
+    :config
+    ;;; Settings (defaults)
+    (setq doom-enable-bold t    ; if nil, bolding are universally disabled
+          doom-enable-italic t  ; if nil, italics are universally disabled
+
+          ;; doom-one specific settings
+          doom-one-brighter-modeline nil
+          doom-one-brighter-comments nil
+          )
+
+    ;;; OPTIONAL
+    ;; brighter source buffers
+    (add-hook 'find-file-hook 'doom-buffer-mode)
+    ;; brighter minibuffer when active
+    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+    ;; Enable custom neotree theme
+    (require 'doom-neotree)    ; all-the-icons fonts must be installed!
+    ;; Enable nlinum line highlighting
+    (require 'doom-nlinum)     ; requires nlinum and hl-line-mode)
+    (setq org-fontify-whole-heading-line t
+          org-fontify-done-headline t
+          org-fontify-quote-and-verse-blocks t)
+    (add-hook 'ediff-prepare-buffer-hook 'doom-buffer-mode)
+    (require 'doom-nlinum)
+    (require 'doom-neotree))
 #+END_SRC
 
 ** Modeline
@@ -858,14 +891,15 @@ company-gtags should do.
     :bind (("C-c C-y" . company-yasnippet))
     :config
     (define-key company-mode-map (kbd "C-j") 'company-complete-selection)
+
     (add-hook 'c++-mode-hook '(lambda()
                                 (setq-local company-backends '(company-capf
-                                                               ycompany-clang
+                                                               company-clang
                                                                company-gtags
                                                                company-dabbrev-code
                                                                company-keywords
                                                                company-files))
-                          (company-mode t)))
+                                (company-mode +1)))
     (add-hook 'elisp-mode-hook '(lambda()
                                   (setq-local company-backends '(company-capf
                                                                  company-elisp
@@ -903,9 +937,10 @@ Also enable flx for company.
 #+BEGIN_SRC emacs-lisp
 
   (use-package company-flx
+    :disabled t
     :config
-    (add-elisp-mode-hook '(lambda()
-                            (company-flx-mode +1))))
+    (add-hook elisp-mode-hook '(lambda()
+                                 (company-flx-mode +1))))
 
 #+END_SRC
 
@@ -1039,6 +1074,8 @@ Experimental, disabled for now.
   (use-package flycheck-rtags
     :disabled t)
 #+END_SRC
+
+#+RESULTS:
 
 * SmartParens
 
