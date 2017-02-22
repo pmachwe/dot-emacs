@@ -925,6 +925,7 @@ company-gtags should do.
 
 
   (use-package company
+    :disabled t
     :bind (("C-c C-y" . company-yasnippet)
            :map company-mode-map
            (("C-j" . company-complete-selection)))
@@ -990,10 +991,9 @@ Disabling this and will use company mode.
   ;; auto-complete
 
   (use-package auto-complete
-    :disabled t
-    :ensure t
     :config
     (progn
+      (setq ac-use-menu-map t)
       (add-to-list 'ac-dictionary-directories 
                    (expand-file-name "~/.emacs.d/elpa/auto-complete-20150618.1949/dict"))
       (setq ac-comphist-file
@@ -1005,6 +1005,7 @@ Disabling this and will use company mode.
     ;:diminish auto-complete-mode)
 
 #+END_SRC
+
 
 ** FASD
 
