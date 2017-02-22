@@ -255,14 +255,33 @@ Beautify the modeline.
     (sml/setup))
 
   ;; from spacemacs
+  ;(use-package spaceline
+  ;  :if window-system
+  ;  :init
+  ;  (setq powerline-default-separator 'wave)
+  ;  :config
+  ;  (require 'spaceline-config)
+  ;  (spaceline-spacemacs-theme)
+  ;  (spaceline-info-mode 1))
+
+  ;; Taken from: https://github.com/prassee/prassee-emacs-theme
   (use-package spaceline
     :if window-system
-    :init
-    (setq powerline-default-separator 'wave)
     :config
-    (require 'spaceline-config)
-    (spaceline-spacemacs-theme)
-    (spaceline-info-mode 1))
+    (progn
+      (require 'spaceline-config)
+      (setq powerline-default-separator 'slant)
+      (setq spaceline-workspace-numbers-unicode t)
+      (setq spaceline-separator-dir-left '(left . left))
+      (setq spaceline-separator-dir-right '(right . right))
+      (setq powerline-height 27)
+      (spaceline-toggle-window-number-on)
+      (spaceline-toggle-buffer-modified-on)
+      (spaceline-toggle-major-mode-on)
+      (spaceline-toggle-battery-on)
+      (spaceline-toggle-hud-on)
+      (spaceline-toggle-projectile-root-on)
+      (spaceline-emacs-theme)))
 
   ;; for mac
   (setq ns-use-srgb-colorspace nil)
@@ -928,7 +947,7 @@ company-gtags should do.
     (add-to-list 'company-backends 'company-c-headers))
 
   ;; Creates problems with yas-expand, we always use company-yasnippet C-c C-y
-  (define-key prog-mode-map (kbd "TAB") #'company-complete)
+  ;(define-key prog-mode-map (kbd "TAB") #'company-complete)
 
 #+END_SRC
 
