@@ -139,7 +139,6 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (load-theme 'monokai t))
 
   (use-package color-theme-sanityinc-tomorrow
-    :disabled t
     :if window-system
     :init
     (progn
@@ -198,6 +197,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
   (use-package nlinum)
 
   (use-package doom-themes
+    :disabled t
     :if window-system
     :init
     (load-theme 'doom-one t)
@@ -227,6 +227,8 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (require 'doom-nlinum)
     (require 'doom-neotree))
 #+END_SRC
+
+#+RESULTS:
 
 ** Modeline
 
@@ -907,38 +909,37 @@ company-gtags should do.
 
 
   (use-package company
-    :bind (("C-c C-y" . company-yasnippet))
+    :bind (("C-c C-y" . company-yasnippet)
+           :map company-mode-map
+           (("C-j" . company-complete-selection)))
     :config
-    (define-key company-mode-map (kbd "C-j") 'company-complete-selection)
-
+    (setq company-idle-delay 0.2)
+    (setq company-minimum-prefix-length 2)
+    (global-company-mode +1)
     (add-hook 'c++-mode-hook '(lambda()
                                 (setq-local company-backends '(company-capf
                                                                company-clang
                                                                company-gtags
                                                                company-dabbrev-code
                                                                company-keywords
-                                                               company-files))
-                                (company-mode +1)))
+                                                               company-files))))
     (add-hook 'elisp-mode-hook '(lambda()
                                   (setq-local company-backends '(company-capf
                                                                  company-elisp
                                                                  company-dabbrev-code
                                                                  company-keywords
-                                                                 company-files))
-                                  (company-mode +1)))
+                                                                 company-files))))
     (add-hook 'python-mode-hook '(lambda()
                                    (setq-local company-backends '(company-ropemacs
                                                                   company-dabbrev-code
                                                                   company-keywords
-                                                                  company-files))
-                                   (company-mode +1)))
+                                                                  company-files))))
     (add-hook 'shell-mode-hook '(lambda()
                                   (setq-local company-backends '(company-capf
                                                                  company-shell
                                                                  company-dabbrev-code
                                                                  company-keywords
-                                                                 company-files))
-                                  (company-mode +1))))
+                                                                 company-files)))))
 
   (use-package company-c-headers
     :disabled t
@@ -950,6 +951,8 @@ company-gtags should do.
   ;(define-key prog-mode-map (kbd "TAB") #'company-complete)
 
 #+END_SRC
+
+#+RESULTS:
 
 Also enable flx for company.
 
