@@ -501,6 +501,20 @@ For source code highlight in exports.
 
 #+END_SRC
 
+* Recentf
+
+Enable the recentf package.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; recentf
+  (use-package recentf
+    :config
+    (recentf-mode t)
+    (setq recentf-max-saved-items 50))
+
+#+END_SRC
+
 * Ido
 
 Ido mode with flex matching does a superior job of finding files than
@@ -511,7 +525,6 @@ switching buffers.
   ;; ido mode
 
   (use-package ido
-    :disabled t
     :config
     (progn
       (ido-mode t)
@@ -713,11 +726,12 @@ Good package but disabled until all options understood and ready to replace helm
 
   ;; Ivy
   (use-package ivy
-    :bind(("C-c C-r" . ivy-resume))
+    :bind(("C-c C-r" . ivy-resume)
+          ("C-x C-r" . ivy-recentf))
     :init
     (ivy-mode 1)
     :config
-    ;(setq ivy-use-virtual-buffers t) ;; not working properly
+    (setq ivy-use-virtual-buffers t) ;; not working properly
     (setq ivy-extra-directories nil) ;; do not show ../  and ./
     (setq ivy-re-builders-alist
           ;; allow input not in order
@@ -763,6 +777,8 @@ Good package but disabled until all options understood and ready to replace helm
 
   (my/setup-counsel-gtags)
 #+END_SRC
+
+#+RESULTS:
 
 * Info+
 
