@@ -1734,7 +1734,7 @@ Some other free combinations are: C-', C-".
   (bind-keys*
    ("M-j" . counsel-find-file)
    ("M-J" . ido-find-file-other-window)
-   ("M-o" . ido-switch-buffer)
+   ("M-o" . ivy-switch-buffer)
    ("M-k" . kill-buffer-and-window)
    ("M-K" . kill-buffer))
 
@@ -1796,6 +1796,9 @@ Some other free combinations are: C-', C-".
 
 
 #+END_SRC
+
+#+RESULTS:
+| lambda | (font size) | (interactive sFont: \nsSize: ) | (set-default-font (concat font   size)) |
 
 * Some Useful Tips
 
