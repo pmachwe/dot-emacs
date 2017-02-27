@@ -242,6 +242,10 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
       ad-do-it))
     (require 'linum-off))
 
+  ;; Always use same color for selected region
+  ;; otherwise global-hl-line-mode interferes
+  (set-face-attribute 'region nil :foreground "black" :background "#a2bff4")
+
 #+END_SRC
 
 ** Modeline
