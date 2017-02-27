@@ -194,7 +194,8 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (load-theme 'spacemacs-dark t))
 
   ;; For doom
-  (use-package nlinum)
+  (use-package nlinum
+    :disabled t)
 
   (use-package doom-themes
     :disabled t
@@ -226,9 +227,22 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (add-hook 'ediff-prepare-buffer-hook 'doom-buffer-mode)
     (require 'doom-nlinum)
     (require 'doom-neotree))
-#+END_SRC
 
-#+RESULTS:
+  ;; Some more configurations
+
+  ;; hlinum
+  (use-package hlinum
+    :config
+    (fringe-mode -1)
+    (hlinum-activate)
+    (defadvice linum-update-window (around linum-dynamic activate)
+    (let* ((w (length (number-to-string
+                       (count-lines (point-min) (point-max)))))
+           (linum-format (concat " %" (number-to-string w) "d ")))
+      ad-do-it))
+    (require 'linum-off))
+
+#+END_SRC
 
 ** Modeline
 
