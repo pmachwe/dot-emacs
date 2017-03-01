@@ -239,8 +239,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
     (let* ((w (length (number-to-string
                        (count-lines (point-min) (point-max)))))
            (linum-format (concat " %" (number-to-string w) "d ")))
-      ad-do-it))
-    (require 'linum-off))
+      ad-do-it)))
 
   ;; Always use same color for selected region
   ;; otherwise global-hl-line-mode interferes
@@ -791,7 +790,7 @@ Good package but disabled until all options understood and ready to replace helm
             ;; setup shortcuts
             (bind-key "M-." 'counsel-gtags-dwim)
             (bind-key "M-*" 'counsel-gtags-pop))))
-    (diminish counsel-gtags-mode))
+    (diminish 'counsel-gtags-mode))
 
   (my/setup-counsel-gtags)
 #+END_SRC
@@ -1018,7 +1017,8 @@ Disabling this and will use company mode.
             (expand-file-name "~/.emacs.d/ac-comphist.dat"))
       (ac-config-default)
       ; auto-complete does not work with flyspell
-      (ac-flyspell-workaround)))
+      (ac-flyspell-workaround)
+      (add-to-list 'ac-modes 'shell-mode)))
 
     ;:diminish auto-complete-mode)
 
