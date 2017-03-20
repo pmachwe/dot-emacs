@@ -1374,6 +1374,17 @@ Session manager for Emacs. Experimental for now.
 
 #+RESULTS:
 
+* Popwin
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Popwin
+
+  (use-package popwin
+    :config
+    (popwin-mode 1))
+
+#+END_SRC
 * Shell Mode
 
 Customize shell-mode.
