@@ -1522,6 +1522,10 @@ Some common settings in this section.
 
   ;; add to all
   (add-hook 'prog-mode-hook 'my/common-prog-hooks)
+
+  ;; for compilation
+  (setq compilation-scroll-output t)
+
 #+END_SRC
 
 ** C
