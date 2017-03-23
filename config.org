@@ -775,24 +775,34 @@ Good package but disabled until all options understood and ready to replace helm
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
-  ;; counsel-gtags is not on MELPA, hence setting up manually
-  (defun my/setup-counsel-gtags()
-    (interactive)
-    (let (f)
-      (setq f "~/.emacs.d/fromgit/emacs-counsel-gtags/counsel-gtags.el")
-      (if (file-exists-p f)
-          (progn
-            (message "Found counsel-gtags, loading..")
-            (load-file f)
-            ;; add to c/c++
-            (add-hook 'c-mode-hook 'counsel-gtags-mode)
-            (add-hook 'c++-mode-hook 'counsel-gtags-mode)
-            ;; setup shortcuts
-            (bind-key "M-." 'counsel-gtags-dwim)
-            (bind-key "M-*" 'counsel-gtags-pop))))
-    (diminish 'counsel-gtags-mode))
+  ;; counsel-gtags on MELPA now
+  (use-package counsel-gtags
+    :config
+    ;; add to c/c++
+    (add-hook 'c-mode-hook 'counsel-gtags-mode)
+    (add-hook 'c++-mode-hook 'counsel-gtags-mode)
+    :bind (("M-." . counsel-gtags-dwim)
+           ("M-*" . counsel-gtags-pop))
+    :diminish 'counsel-gtags-mode)
 
-  (my/setup-counsel-gtags)
+  ;; counsel-gtags is not on MELPA, hence setting up manually
+  ;(defun my/setup-counsel-gtags()
+  ;  (interactive)
+  ;  (let (f)
+  ;    (setq f "~/.emacs.d/fromgit/emacs-counsel-gtags/counsel-gtags.el")
+  ;    (if (file-exists-p f)
+  ;        (progn
+  ;          (message "Found counsel-gtags, loading..")
+  ;          (load-file f)
+  ;          ;; add to c/c++
+  ;          (add-hook 'c-mode-hook 'counsel-gtags-mode)
+  ;          (add-hook 'c++-mode-hook 'counsel-gtags-mode)
+  ;          ;; setup shortcuts
+  ;          (bind-key "M-." 'counsel-gtags-dwim)
+  ;          (bind-key "M-*" 'counsel-gtags-pop))))
+  ;  (diminish 'counsel-gtags-mode))
+  ;
+  ;(my/setup-counsel-gtags)
 #+END_SRC
 
 #+RESULTS:
@@ -1385,6 +1395,79 @@ Session manager for Emacs. Experimental for now.
     (popwin-mode 1))
 
 #+END_SRC
+* Silver Searcher
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; ag
+  (use-package ag)
+
+#+END_SRC
+
+* Projectile
+
+Projectile for working under a project.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; projectile
+  (use-package projectile
+    :config
+    (projectile-mode 1))
+
+  (use-package counsel-projectile
+    :config
+    (counsel-projectile-on))
+
+#+END_SRC
+
+* Quelpa Setup
+
+Quelpa helps loading packages directly from github and sources other than MELPA et al.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; quelpa
+  (use-package quelpa
+    :config
+    (if (require 'quelpa nil t)
+        (quelpa-self-upgrade)
+      (with-temp-buffer
+        (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+        (eval-buffer))))
+
+#+END_SRC
+
+* Personal Packages
+
+These are the packages I have written and available only on Github.
+
+** Shutil
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; shutil
+  (quelpa '(shutil :repo "pmachwe/emacs-shutil" :fetcher github))
+
+  ;; shutil shortcuts
+  (when (require 'shutil nil 'noerror)
+    (bind-key "<f5>" 'shutil-get-new-shell)
+    (bind-key "C-c s b" 'shutil-switch-to-buffer)
+    (bind-key "C-c s n" 'shutil-get-new-shell)
+    (bind-key "C-c s |" 'shutil-split-vertically))
+
+#+END_SRC
+
+** Quick Search
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; quick-search
+  (quelpa '(quick-search :repo "pmachwe/quick-search" :fetcher github))
+
+#+END_SRC
+
+
 * Shell Mode
 
 Customize shell-mode.

@@ -62,19 +62,5 @@
   (if (file-exists-p work-el)
       (load-file work-el)))
 
-;; Load non-MELPA packages
-(require 'my/functions)
-(my/get-git-repo "https://github.com/pmachwe/quick-search.git" "quick-search")
-(my/get-git-repo "https://github.com/syohex/emacs-counsel-gtags.git" "emacs-counsel-gtags")
-(my/get-git-repo "https://github.com/pmachwe/emacs-shutil.git" "emacs-shutil")
-
-;; Move in different file later
-;; shutil shortcuts
-(when (require 'shutil nil 'noerror)
-  (bind-key "<f5>" 'shutil-get-new-shell)
-  (bind-key "C-c s b" 'shutil-switch-to-buffer)
-  (bind-key "C-c s n" 'shutil-get-new-shell)
-  (bind-key "C-c s |" 'shutil-split-vertically))
-
 (provide 'init)
 ;;; init.el ends here
