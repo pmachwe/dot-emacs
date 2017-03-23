@@ -1382,17 +1382,15 @@ Session manager for Emacs. Experimental for now.
 
   ;; Popwin
   ;; bind gets into problem, hence global-set-key
+  ;; (probably because popwin:keymap does not require ')
   (use-package popwin
     :config
     (popwin-mode 1)
     (push '(compilation-mode :noselect t :tail t) popwin:special-display-config)
     (push '("\*P4 Opened.*" :regexp t) popwin:special-display-config)
-    (global-set-key (kbd "C-. p") 'popwin:keymap))
+    (global-set-key (kbd "C-. p") popwin:keymap))
 
 #+END_SRC
-
-#+RESULTS:
-: t
 
 * Silver Searcher
 
