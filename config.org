@@ -1426,6 +1426,11 @@ Quelpa helps loading packages directly from github and sources other than MELPA 
 
   ;; quelpa
   (use-package quelpa
+    :init
+    ;; Do not upgrade during init
+    (setq quelpa-self-upgrade-p nil)
+    (setq quelpa-update-melpa-p nil)
+    (setq quelpa-checkout-melpa-p nil)
     :config
     (unless (require 'quelpa nil t)
       (with-temp-buffer
@@ -1433,7 +1438,6 @@ Quelpa helps loading packages directly from github and sources other than MELPA 
         (eval-buffer))))
 
 #+END_SRC
-
 
 * Personal Packages
 
