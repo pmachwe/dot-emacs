@@ -1503,6 +1503,16 @@ Customize shell-mode.
 
 #+RESULTS:
 
+* CMake Mode
+
+Enable special mode for cmake files.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; cmake mode
+  (use-package cmake-mode)
+
+#+END_SRC
 * Programming Languages
 ** Common Settings 
 
