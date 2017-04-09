@@ -1524,6 +1524,7 @@ Some common settings in this section.
   (defun my/common-prog-hooks()
     (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
+    (subword-mode 1)
     (yas-minor-mode +1))
 
   ;; No tabs
@@ -1539,6 +1540,9 @@ Some common settings in this section.
   (setq compilation-scroll-output t)
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** C
 
@@ -1862,6 +1866,9 @@ Some other free combinations are: C-', C-".
    ("<f5>" . shell)
    ("S-<f5>" . eshell)
    ("C-c M-!" . eshell-command))
+
+  (bind-keys*
+   ("M-/" . hippie-expand))
 
   ;; Search
   (bind-keys*
