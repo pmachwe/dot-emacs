@@ -1513,6 +1513,29 @@ Enable special mode for cmake files.
   (use-package cmake-mode)
 
 #+END_SRC
+* Hippie Expand
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; hippie-expand
+  (use-package hippie-exp
+    :bind ("M-/" . hippie-expand)
+    :init
+    (setq hippie-expand-try-functions-list
+          '(try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill
+            try-complete-file-name-partially
+            try-complete-file-name
+            try-expand-all-abbrevs
+            try-expand-list
+            try-expand-line
+            try-complete-lisp-symbol-partially
+            try-complete-lisp-symbol)))
+
+#+END_SRC
+
+
 * Programming Languages
 ** Common Settings 
 
@@ -1866,9 +1889,6 @@ Some other free combinations are: C-', C-".
    ("<f5>" . shell)
    ("S-<f5>" . eshell)
    ("C-c M-!" . eshell-command))
-
-  (bind-keys*
-   ("M-/" . hippie-expand))
 
   ;; Search
   (bind-keys*
