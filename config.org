@@ -1571,8 +1571,6 @@ This is not part of doom-themes now, so to be installed separately.
     (add-hook 'ediff-prepare-buffer-hook #'solaire-mode))
 
 #+END_SRC
-
-
 * Programming Languages
 ** Common Settings 
 
@@ -1612,7 +1610,7 @@ In this section, there will be specific settings for C/C++.
   ;; c/c++
 
   (setq-default c-default-style "stroustrup"
-                c-basic-offset 4)
+                c-basic-offset 2)
 
   ;; Open .h file in cpp mode
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -1630,6 +1628,13 @@ In this section, there will be specific settings for C/C++.
             (lambda ()
               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                 (my/cpp-hooks))))
+
+  ;; Avoid indentation at namespace
+  (defconst my-cc-style
+    '("cc-mode"
+      (c-offsets-alist . ((innamespace . [0])))))
+
+  (c-add-style "my-cc-mode" my-cc-style)
 
   ;; TODO Setup google style check
 #+END_SRC
