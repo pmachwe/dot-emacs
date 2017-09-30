@@ -1711,6 +1711,38 @@ Some settings for Elisp.
 #+RESULTS:
 : pm/set-hasklig-codes
 
+** Rust
+
+Support tool-chain for Rust programming.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Rust programming
+
+  (use-package rust-mode
+    :config
+    ;; rustfmt
+    (add-hook 'rust-mode-hook
+              (lambda ()
+                (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+    ;; Racer
+    (setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
+    (setq racer-rust-src-path "~/.cargo/src/rust/src") ;; Rust source code PATH
+
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode))
+
+  (use-package cargo
+    :config
+    (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+  (use-package flycheck-rust)
+
+#+END_SRC
+
+#+RESULTS:
+
 * FIRA
 
 FIRA fonts provide litigatures for many unicode like symbols and these
