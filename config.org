@@ -542,7 +542,7 @@ switching buffers.
 
    ;; counsel-gtags on MELPA now
    (use-package counsel-gtags
-     :after counsel
+     :requires counsel
      :hook (c-mode c++-mode)
      :bind (("M-." . counsel-gtags-dwim)
             ("M-*" . counsel-gtags-pop))
@@ -807,6 +807,7 @@ package also. Look at it sometime.
   ;; yasnippets
 
   (use-package yasnippet
+    :disabled t
     :config
     (yas-reload-all)
     ;(define-key yas-minor-mode-map [(tab)] nil)
@@ -932,10 +933,10 @@ Nice way to highlight delimiters especially for LISP.
 
   ;; rainbow delimiters
   (use-package rainbow-delimiters
+    :hook prog-mode-hook
     :config
-    (add-hook 'emacs-lisp-mode-hook
-              (lambda()
-                (rainbow-delimiters-mode 1))))
+    (rainbow-delimiters-mode 1))
+
 #+END_SRC
 
 * Show Matching Parentheses
@@ -1096,6 +1097,7 @@ A visual aid to view the differences from the repository.
   ;; highlight differences from repo
 
   (use-package diff-hl
+    :disabled t
     :config
     (diff-hl-mode 1)
     (diff-hl-dired-mode 1)
@@ -1179,7 +1181,7 @@ Projectile for working under a project.
     (projectile-mode 1))
 
   (use-package counsel-projectile
-    :after counsel
+    :requires counsel
     :config
     (counsel-projectile-mode 1))
 
