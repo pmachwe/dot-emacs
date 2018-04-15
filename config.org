@@ -297,7 +297,6 @@ Beautify the modeline.
 
   ;; Taken from: https://github.com/prassee/prassee-emacs-theme
   (use-package spaceline
-    :disabled t
     :if window-system
     :config
     (progn
@@ -347,91 +346,47 @@ Some basic settings first of all.
  [[http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html][here]].
 
 #+BEGIN_SRC emacs-lisp
-  ;; add global settings in a hook
-  ;; add org-mode specific normally
+  ;; Org-Mode
 
-  ;(use-package org
-  ;  :diminish org-indent-mode)
-
-  ;(diminish 'org-indent-mode)
-
-  ;; disabling org-indent-mode and auto-fill-mode
-  (defun pm/org-mode-hooks()
+  (use-package org
+    :ensure t
+    :pin org
+    :bind (:map org-mode-map
+                ("C-c l" . org-store-link)
+                ("C-c a" . org-agenda)
+                ("C-c c" . org-capture)) ;; should be global?
+    :config
     (org-indent-mode 1)
-    ;(auto-fill-mode 1)
-    (bind-key "C-c l" 'org-store-link)
-    (bind-key "C-c a" 'org-agenda))
-
-  (add-hook 'org-mode-hook 'pm/org-mode-hooks)
-
-  ;; Do not subscript for _ and superscript for ^
-  (setq org-use-sub-superscripts nil)
-
-  ;; Beautify
-  (custom-set-faces
-   '(org-level-1 ((t (:inherit outline-1 :height 1.20))))
-   '(org-level-2 ((t (:inherit outline-2 :height 1.15))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.10))))
-   '(org-level-4 ((t (:inherit outline-4 :height 1.05))))
-   '(org-document-title ((t (:underline t :weight bold :height 1.3)))))
-
-  ;; Org-directory
-  (setq org-directory "~/org")
-  (setq org-agenda-files '("~/org"))
-
-  ;; Use unicode char instead of ...
-  (when window-system
-    (setq org-ellipsis "…"))
-
-  ;(defface org-block-begin-line
-  ;  '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
-  ;  "Face used for the line delimiting the begin of source blocks.")
-  ;
-  ;(defface org-block
-  ;  '((t (:background "#000000")))
-  ;  "Face used for the source block background.")
-  ;
-  ;(defface org-block-end-line
-  ;  '((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
-  ;  "Face used for the line delimiting the end of source blocks.")
+    (setq org-use-sub-superscripts nil)
+    (setq org-directory "~/org")
+    (setq org-agenda-files '("~/org"))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t)
+       (emacs-lisp . t)
+       (sh . t)))
+    (setq org-confirm-babel-evaluate nil) ;; Always evaluate
+    (setq org-src-fontify-natively t) ;; Beautify within code blocks
+    (setq org-src-tab-acts-natively t)
+    (setq org-default-notes-file (concat org-directory "/notes.org"))
+    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+    (setq org-level-1 '((t (:inherit outline-1 :height 1.20))))
+    (setq org-level-2 '((t (:inherit outline-2 :height 1.15))))
+    (setq org-level-3 '((t (:inherit outline-3 :height 1.10))))
+    (setq org-level-4 '((t (:inherit outline-4 :height 1.05))))
+    (setq org-document-title '((t (:underline t :weight bold :height 1.3))))
+    :diminish org-indent-mode
+   )
 
 #+END_SRC
 
-#+RESULTS:
-: …
 
-*** Some pending setups
-**** TODO Setup flyspell and word correction with org mode
-
-** Org Babel
-Some settings specific to org-babel.
-
-#+BEGIN_SRC emacs-lisp
-  ;; add languages to babel
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (emacs-lisp . t)
-     (sh . t)))
-
-  ;; Always evaluate
-  (setq org-confirm-babel-evaluate nil)
-
-  ;; Beautify within code blocks
-  (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
-#+END_SRC
-
-** Other Packages for Org
-Some other packages specific for org-mode.
-
-*** Org Bullets
+** Org Bullets
 This package uses some UTF-8 characters for org-mode bullets.
 
 #+BEGIN_SRC emacs-lisp
-  ;; org-bullets for nicer bullets :)
-  ;; disabling because does not work well with leuven theme
   (use-package org-bullets
+    :hook org-mode
     :if window-system
     :config
     (progn
@@ -439,34 +394,7 @@ This package uses some UTF-8 characters for org-mode bullets.
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
 #+END_SRC
 
-
-*** Org Reveal
-This package lets org-mode files be exported to HTML5 Reveal.js
-presentations. This requires Reveal.js to be installed.
-
-From here: [[https://github.com/yjwen/org-reveal][org-reveal]]
-
-#+BEGIN_SRC emacs-lisp
-  ;; Org-reveal
-
-  (use-package ox-reveal
-    :config
-    (setq org-reveal-root "file:///Users/pmachwe/Install/reveal.js/reveal.js-3.2.0"))
-
-#+END_SRC
-
-*** Org Present
-Converts an org document to a org presentation. Keeps level 1 as the
-slide headline and the rest of the stuff is just text.
-
-#+BEGIN_SRC emacs-lisp
-  ;; Org Present
-
-  (use-package org-present)
-
-#+END_SRC
-
-*** Org Tree Slide
+** Org Tree Slide
 It is also similar to the 'org-present' package but it also captures
 the bullets etc. More details [[https://github.com/takaxp/org-tree-slide/blob/master/README.org][here]].
 
@@ -476,27 +404,14 @@ Use F8 to start the presentation. Use C-> and C-< to move through the slides.
   ;; org-tree-slide
 
   (use-package org-tree-slide
+    :hook org-mode
     :config
-    (progn
-      (define-key org-mode-map (kbd "<f8>") 'org-tree-slide-mode)
-      (define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)))
+    :bind (:map org-mode-map
+                ("[f8]" . org-tree-slide-mode)
+                ("[S-f8]" . org-tree-slide-skip-done)))
 
 #+END_SRC
-
-#+RESULTS:
-: t
-
-*** Org Pandoc
-This allows for export to many different formats.
-**** TODO Set this up
-
-*** Org Journal
-Simple package to write journals.
-
-**** TODO Set this up
-From here: [[http://www.emacswiki.org/emacs/OrgJournal][org-journal]]
-
-*** Htmlize
+** Htmlize
 
 For source code highlight in exports.
 
@@ -504,22 +419,11 @@ For source code highlight in exports.
   ;; htmlize
 
   (use-package htmlize
+    :hook org-mode
     :ensure t)
 
 #+END_SRC
-** Org Mobile
-** Org Capture and Refile
 
-#+BEGIN_SRC emacs-lisp
-  ;; Setup a shortcut for org-capture
-
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
-  (bind-key "C-c c" 'org-capture)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
-#+END_SRC
-
-#+RESULTS:
-: ((org-agenda-files :maxlevel . 6))
 
 * Markdown Mode
 
