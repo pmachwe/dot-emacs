@@ -114,7 +114,7 @@ Override some basic default options upfont. Some options taken from
               #'my/multi-pop-to-mark)
 
   ;; Bar type curson
-  (setq-default cursor-type 'bar)
+  ;;(setq-default cursor-type 'bar)
 
 #+END_SRC
 
