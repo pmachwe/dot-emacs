@@ -1178,7 +1178,8 @@ Projectile for working under a project.
   ;; projectile
   (use-package projectile
     :config
-    (projectile-mode 1))
+    (projectile-mode 1)
+    :diminish projectile-mode)
 
   (use-package counsel-projectile
     :requires counsel
