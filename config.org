@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Configuration
 #+AUTHOR: Parikshit Machwe
 #+STARTUP: outline
@@ -83,10 +84,10 @@ Override some basic default options upfont. Some options taken from
   (winner-mode 1)
 
   ;; simply bold the current line
-  (if window-system
+  ;; (if window-system
       ;(custom-set-faces
       ; '(highlight ((t (:background nil :foreground nil :bold t)))))
-      (global-hl-line-mode 1))
+      ; (global-hl-line-mode 1))
 
   ;; always show the function
   (which-function-mode 1)
@@ -127,136 +128,151 @@ In this section, setting up the themes and fonts.
 Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-theme-sanityinc-tomorrow][here]].
 
 #+BEGIN_SRC emacs-lisp
-  ;; themes and fonts
+    ;; themes and fonts
 
-  ;; Move this setup to work.el as it is dependent on the
-  ;; environment, eg font-names are different on Linux than Win
-  ;(set-default-font "InputMono 11")
+    ;; Move this setup to work.el as it is dependent on the
+    ;; environment, eg font-names are different on Linux than Win
+    ;(set-default-font "InputMono 11")
 
-  (use-package monokai-theme
-    :disabled t
-    :init 
-    (load-theme 'monokai t))
+    (use-package monokai-theme
+      :disabled t
+      :init 
+      (load-theme 'monokai t))
 
-  (use-package color-theme-sanityinc-tomorrow
-    :disabled t
-    :if window-system
-    :init
-    (progn
-      (load-theme 'sanityinc-tomorrow-night t)
+    (use-package color-theme-sanityinc-tomorrow
+      :if window-system
+      :init
+      (progn
+        (load-theme 'sanityinc-tomorrow-night t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
+
+    (use-package leuven-theme
+      :disabled
+      :config
+      (progn
+        (load-theme 'leuven t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
+
+    (use-package eclipse-theme
+      :disabled
+      :config
+      (load-theme 'eclipse t))
+
+    (use-package material-theme
+      :disabled
+      :init
+      (progn
+        (load-theme 'material t)
+        (set-face-attribute `mode-line nil
+                            :box nil)
+        (set-face-attribute `mode-line-inactive nil
+                            :box nil)))
+
+    (use-package afternoon-theme
+      :disabled t
+      :config
+      (load-theme 'afternoon t)
+      (set-face-attribute 'mode-line nil
+                          :family 'unspecified)
       (set-face-attribute `mode-line nil
                           :box nil)
       (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+                          :box nil))
 
-  (use-package leuven-theme
-    :disabled
-    :config
-    (progn
-      (load-theme 'leuven t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+    (use-package arjen-grey-theme
+      :disabled t
+      :config
+      (load-theme 'arjen-grey t)
+      (set-face-attribute 'which-func nil
+                          :foreground "SkyBlue1"))
 
-  (use-package eclipse-theme
-    :disabled
-    :config
-    (load-theme 'eclipse t))
+    (use-package spacemacs-theme
+      :disabled t
+      :if window-system
+      :init
+      (load-theme 'spacemacs-dark t))
 
-  (use-package material-theme
-    :disabled
-    :init
-    (progn
-      (load-theme 'material t)
-      (set-face-attribute `mode-line nil
-                          :box nil)
-      (set-face-attribute `mode-line-inactive nil
-                          :box nil)))
+    ;; For doom
+    (use-package nlinum
+      :disabled t)
 
-  (use-package afternoon-theme
-    :disabled t
-    :config
-    (load-theme 'afternoon t)
-    (set-face-attribute 'mode-line nil
-                        :family 'unspecified)
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-face-attribute `mode-line-inactive nil
-                        :box nil))
+    (use-package doom-themes
+      :disabled t
+      :if window-system
+      :init
+      (load-theme 'doom-one t)
+      :config
+      ;;; Settings (defaults)
+      (setq doom-enable-bold t    ; if nil, bolding are universally disabled
+            doom-enable-italic t  ; if nil, italics are universally disabled
 
-  (use-package arjen-grey-theme
-    :disabled t
-    :config
-    (load-theme 'arjen-grey t)
-    (set-face-attribute 'which-func nil
-                        :foreground "SkyBlue1"))
+            ;; doom-one specific settings
+            doom-one-brighter-modeline nil
+            doom-one-brighter-comments nil
+            )
+      (doom-themes-neotree-config)
 
-  (use-package spacemacs-theme
-    :disabled t
-    :if window-system
-    :init
-    (load-theme 'spacemacs-dark t))
+      ;;; OPTIONAL
+      ;; brighter source buffers
+      ;(add-hook 'find-file-hook 'doom-buffer-mode)
+      ;; brighter minibuffer when active
+      ;(add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+      ;; Enable custom neotree theme
+      ;(require 'doom-neotree)    ; all-the-icons fonts must be installed!
+      ;; Enable nlinum line highlighting
+      ;(require 'doom-nlinum)     ; requires nlinum and hl-line-mode)
+      ;(setq org-fontify-whole-heading-line t
+      ;      org-fontify-done-headline t
+      ;      org-fontify-quote-and-verse-blocks t)
+      ;(add-hook 'ediff-prepare-buffer-hook 'doom-buffer-mode)
+      ;(Require 'doom-nlinum)
+      ;(require 'doom-neotree)
+      )
 
-  ;; For doom
-  (use-package nlinum
-    :disabled t)
+    ;; Some more configurations
 
-  (use-package doom-themes
-    :if window-system
-    :init
-    (load-theme 'doom-one t)
-    :config
-    ;;; Settings (defaults)
-    (setq doom-enable-bold t    ; if nil, bolding are universally disabled
-          doom-enable-italic t  ; if nil, italics are universally disabled
+    ;; hlinum
+    (use-package hlinum
+      :disabled t
+      :config
+      (fringe-mode -1)
+      (hlinum-activate)
+      (defadvice linum-update-window (around linum-dynamic activate)
+      (let* ((w (length (number-to-string
+                         (count-lines (point-min) (point-max)))))
+             (linum-format (concat " %" (number-to-string w) "d ")))
+        ad-do-it)))
 
-          ;; doom-one specific settings
-          doom-one-brighter-modeline nil
-          doom-one-brighter-comments nil
-          )
-    (doom-themes-neotree-config)
-  
-    ;;; OPTIONAL
-    ;; brighter source buffers
-    ;(add-hook 'find-file-hook 'doom-buffer-mode)
-    ;; brighter minibuffer when active
-    ;(add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-    ;; Enable custom neotree theme
-    ;(require 'doom-neotree)    ; all-the-icons fonts must be installed!
-    ;; Enable nlinum line highlighting
-    ;(require 'doom-nlinum)     ; requires nlinum and hl-line-mode)
-    ;(setq org-fontify-whole-heading-line t
-    ;      org-fontify-done-headline t
-    ;      org-fontify-quote-and-verse-blocks t)
-    ;(add-hook 'ediff-prepare-buffer-hook 'doom-buffer-mode)
-    ;(require 'doom-nlinum)
-    ;(require 'doom-neotree)
-    )
+    (defun linum-format-func (line)
+      "Set linum format for LINE."
+      (let((w
+             (length (number-to-string (count-lines (point-min) (point-max))))))
+        (propertize (format (format "  %%%dd  " w) line) 'face 'linum)))
 
-  ;; Some more configurations
+  (setq linum-format 'linum-format-func)
 
-  ;; hlinum
-  (use-package hlinum
-    :config
-    (fringe-mode -1)
-    (hlinum-activate)
-    (defadvice linum-update-window (around linum-dynamic activate)
-    (let* ((w (length (number-to-string
-                       (count-lines (point-min) (point-max)))))
-           (linum-format (concat " %" (number-to-string w) "d ")))
-      ad-do-it)))
+  (add-hook 'linum-mode-hook
+            (lambda()
+              (set-face-attribute 'linum nil :background nil)))
+  (fringe-mode -1)
 
-  ;; Always use same color for selected region
-  ;; otherwise global-hl-line-mode interferes
-  ;(set-face-attribute 'region nil :foreground "black" :background "#a2bff4")
 
-  ;; Make sure line numbers always look the same
-  ;(if window-system
-  ;    (set-face-attribute 'linum-highlight-face nil :background nil :foreground "white"))
+    ;; Always use same color for selected region
+    ;; otherwise global-hl-line-mode interferes
+    ;(set-face-attribute 'region nil :foreground "black" :background "#a2bff4")
 
-  ;; Some themes have bad face for this, fix it
-  (set-face-attribute 'which-func nil :foreground "SkyBlue1")
+    ;; Make sure line numbers always look the same
+    ;(if window-system
+    ;    (set-face-attribute 'linum-highlight-face nil :background nil :foreground "white"))
+
+    ;; Some themes have bad face for this, fix it
+    (set-face-attribute 'which-func nil :foreground "SkyBlue1")
 #+END_SRC
 
 ** Modeline
@@ -469,7 +485,6 @@ switching buffers.
   ;; ido mode
 
   (use-package ido
-    :disabled t
     :config
     (progn
       (ido-mode t)
@@ -480,7 +495,6 @@ switching buffers.
            ("C-x b" . ido-switch-buffer)))
 
   (use-package flx-ido
-    :disabled t
     :config
     (progn
       (flx-ido-mode 1)
@@ -493,6 +507,13 @@ switching buffers.
       (ido-vertical-mode 1)
       (setq ido-vertical-show-count t)
       (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
+
+  (use-package ido-completing-read+
+    :after ido
+    :config
+    (ido-ubiquitous-mode 1))
+
+
 #+END_SRC
 
 #+RESULTS:
@@ -506,6 +527,7 @@ switching buffers.
 
    ;; Ivy
    (use-package ivy
+     :disabled t
      :bind(("C-c C-r" . ivy-resume)
            ("C-x C-r" . ivy-recentf))
      :config
@@ -522,9 +544,12 @@ switching buffers.
      :diminish ivy-mode)
 
    (use-package swiper
+     :requires ivy
+     :after ivy
      :bind("M-i" . swiper))
 
    (use-package counsel
+     :requires ivy
      :after ivy
      :bind(("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
@@ -552,7 +577,6 @@ switching buffers.
 
  #+RESULTS:
 
-
 * Imenu List
 
 Show imenu entries in a separate buffer on the side.
@@ -574,7 +598,8 @@ Show imenu entries in a separate buffer on the side.
 #+BEGIN_SRC emacs-lisp
 
   ;; Info+
-  (use-package info+)
+  (use-package info+
+    :disabled t)
 
 #+END_SRC
 
@@ -1384,7 +1409,7 @@ In this section, there will be specific settings for C/C++.
 
   (defun my/cpp-hooks()
   ;  (ggtags-mode 1)
-    (counsel-gtags-mode 1)
+    ;(counsel-gtags-mode 1)
     (add-hook 'c++-mode-hook (lambda () 
                                (setq flycheck-gcc-language-standard "c++11")
                                (setq flycheck-clang-language-standard "c++11")))
@@ -1578,7 +1603,6 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\\b" 'ido-switch-buffer)
       (key-chord-define-global "\\f" 'ido-find-file)
       (key-chord-define-global "\\g" 'keyboard-quit)
-      (key-chord-define-global "\\x" 'counsel-M-x)
       (key-chord-define-global "\\z" 'undo)
       (key-chord-define-global "\'w" 'avy-goto-word-1)
       (key-chord-define-global "\'a" 'ace-window)
@@ -1586,7 +1610,6 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\'b" 'ido-switch-buffer)
       (key-chord-define-global "\'f" 'ido-find-file)
       (key-chord-define-global "\'g" 'keyboard-quit)
-      (key-chord-define-global "\'x" 'counsel-M-x)
       (key-chord-define-global "\'z" 'undo)
       (key-chord-define-global "\[a" 'beginning-of-defun)
       (key-chord-define-global "\[e" 'end-of-defun)))
@@ -1743,9 +1766,9 @@ Some other free combinations are: C-', C-".
 
   ;; Buffer related
   (bind-keys*
-   ("M-j" . counsel-find-file)
+   ("M-j" . ido-find-file)
    ("M-J" . ido-find-file-other-window)
-   ("M-o" . ivy-switch-buffer)
+   ("M-o" . ido-switch-buffer)
    ("M-k" . kill-buffer-and-window)
    ("M-K" . kill-buffer))
 
