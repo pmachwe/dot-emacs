@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs Configuration
 #+AUTHOR: Parikshit Machwe
 #+STARTUP: outline
@@ -313,6 +312,7 @@ Beautify the modeline.
 
   ;; Taken from: https://github.com/prassee/prassee-emacs-theme
   (use-package spaceline
+    :disabled t
     :if window-system
     :config
     (progn
@@ -512,7 +512,6 @@ switching buffers.
     :after ido
     :config
     (ido-ubiquitous-mode 1))
-
 
 #+END_SRC
 
@@ -1755,7 +1754,7 @@ Some other free combinations are: C-', C-".
    ("C-c M-!" . eshell-command))
 
   ;; Search
-  (bind-keys*
+  (bind-keys
    ("C-s" . isearch-forward-regexp)
    ("C-r" . isearch-backward-regexp)
    ("C-M-s" . isearch-forward)
