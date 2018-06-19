@@ -1,5 +1,10 @@
 
 ;; Turn off mouse interface early in startup to avoid momentary display
+(defvar time-start
+  "Log the starting time."
+  nil)
+
+(setq time-start (float-time))
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -22,11 +27,12 @@
 ;; use-package is used to configure the rest of the packages.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package))
+  (package-install 'use-package)
+  (package-install 'bind-key))
 
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)
+;(require 'diminish)
 (require 'bind-key)
 
 ;; Taken from comments on this post;
@@ -64,4 +70,8 @@
       (load-file work-el)))
 
 (provide 'init)
+
+(message "Total loading time: %0.03fs"
+         (float-time (time-subtract (float-time) time-start)))
+
 ;;; init.el ends here

@@ -1359,7 +1359,9 @@ This is not part of doom-themes now, so to be installed separately.
     (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer)
 
     ;; To enable solaire-mode unconditionally for certain modes:
-    (add-hook 'ediff-prepare-buffer-hook #'solaire-mode))
+    (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
+
+    (turn-on-solaire-mode))
 
 #+END_SRC
 * Programming Languages
