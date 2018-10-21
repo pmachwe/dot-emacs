@@ -1630,6 +1630,7 @@ Key chords look promising. Try these out.
 
 * Eyebrowse
 
+
 A simple package to create/switch between window configurations. There are others like workgroups2 and perspective but this
 one seems to be the easiest to configure out of the box. Here is the link: [[https://github.com/wasamasa/eyebrowse][eyebrowse]].
 
@@ -1644,6 +1645,26 @@ one seems to be the easiest to configure out of the box. Here is the link: [[htt
     ("C-c C-w C-w" . eyebrowse-last-window-config))
 
 #+END_SRC
+
+* Multiterm
+
+A nice package to manage multiple terminals within Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Multi-term
+
+  (use-package multi-term
+    :bind (("C-c C-q c" . multi-term)
+           ("C-c C-q n" . multi-term-next)
+           ("C-c C-q p" . multi-term-prev)
+           ("C-c C-q q" . multi-term-dedicated-open)
+           ("C-c C-q w" . multi-term-dedicated-select)
+           ("C-c C-q e" . multi-term-dedicated-close)))
+
+#+END_SRC
+
+#+RESULTS:
+: multi-term-dedicated-close
 
 * Ediff
 
