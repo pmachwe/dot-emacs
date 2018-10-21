@@ -380,7 +380,7 @@ Some basic settings first of all.
      'org-babel-load-languages
      '((python . t)
        (emacs-lisp . t)
-       (sh . t)))
+       (shell . t)))
     (setq org-confirm-babel-evaluate nil) ;; Always evaluate
     (setq org-src-fontify-natively t) ;; Beautify within code blocks
     (setq org-src-tab-acts-natively t)
@@ -501,7 +501,6 @@ switching buffers.
       (setq ido-enable-flex-matching t)))
 
   (use-package ido-vertical-mode
-    :disabled t
     :config
     (progn
       (ido-vertical-mode 1)
