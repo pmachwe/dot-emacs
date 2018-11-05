@@ -574,7 +574,7 @@ switching buffers.
  #+END_SRC
 
  #+RESULTS:
-
+ 
 * Imenu List
 
 Show imenu entries in a separate buffer on the side.
@@ -1638,12 +1638,30 @@ one seems to be the easiest to configure out of the box. Here is the link: [[htt
   ;; eyebrowse
 
   (use-package eyebrowse
+    :disabled t
     :init
     (eyebrowse-mode t)
     :bind
     ("C-c C-w C-w" . eyebrowse-last-window-config))
 
 #+END_SRC
+
+* Elscreen
+
+This is much simpler to use than eyebrowse. Has similar functionality as tmux.
+
+#+BEGIN_SRC emacs-lisp
+  ;; elscreen
+
+  (use-package elscreen
+    :config
+    (setq elscreen-display-tab nil)
+    (elscreen-start))
+
+#+END_SRC
+
+#+RESULTS:
+: t
 
 * Multiterm
 
