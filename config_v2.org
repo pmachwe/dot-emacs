@@ -1,0 +1,149 @@
+* Interactive Completion
+
+Add some control variable to enable/disable different packages. Also install some helper packages.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defvar pm/ivy-for-interactive-completion
+    nil
+    "By default use IDO. Use IVY when this variable is true.")
+
+  ;; recentf
+  (use-package recentf
+    :config
+    (recentf-mode t)
+    (setq recentf-max-saved-items 50))
+
+  ;; Smex
+  (use-package smex
+    :bind(("M-x" . smex)
+	  ("M-X" . smex-major-mode-commands))
+    :config
+    (smex-initialize))
+
+  ;; Flx
+  (use-package flx)
+
+#+END_SRC
+
+** Ido
+
+Ido mode with flex matching does a superior job of finding files than
+Helm. So until flx is ported to helm, using ido for finding files and
+switching buffers.
+
+#+BEGIN_SRC emacs-lisp
+  ;; ido mode
+
+  (use-package ido
+    :config
+    (ido-mode t)
+    (ido-everywhere 1)
+    (setq ido-use-virtual-buffers t)
+    (setq ido-use-faces nil)
+    :bind (("C-x C-f" . ido-find-file)
+	   ("C-x b" . ido-switch-buffer))
+    :diminish ido-mode)
+
+  (use-package flx-ido
+    :requires ido
+    :after ido
+    :config
+    (flx-ido-mode 1)
+    (setq ido-enable-flex-matching t))
+
+  (use-package ido-vertical-mode
+    :requires ido
+    :after ido
+    :config
+    (ido-vertical-mode 1)
+    (setq ido-vertical-show-count t)
+    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down))
+
+  (use-package ido-completing-read+
+    :requires ido
+    :after ido
+    :config
+    (ido-ubiquitous-mode 1))
+
+  (use-package ido-occur
+    :requires ido
+    :after ido
+    :bind (("M-i" . ido-occur)
+	   ("M-I" . ido-occur-at-point)
+	   :map isearch-mode-map
+	   ("C-o" . ido-occur-from-isearch)))
+
+  ;; Setup ggtags to use ido-completion
+  ;; This could be slow on large projects because the
+  ;; ggtags-completion-table is converted to string
+  ;; https://github.com/leoliu/ggtags/issues/56#issuecomment-43165031
+  (when (and (package-installed-p 'ggtags)
+	     (package-installed-p 'ido))
+    (setq ggtags-completing-read-function
+	  (lambda (&rest args)
+	    (apply #'ido-completing-read
+		   (car args)
+		   (all-completions "" ggtags-completion-table)
+		   (cddr args)))))
+#+END_SRC
+
+#+RESULTS:
+
+** Ivy	
+ This is a newer package which is clutter-free and atleast in that sense better than helm. But need to check the functionality. Hence, using for experimentation.
+
+ Good package but disabled until all options understood and ready to replace helm.
+
+ #+BEGIN_SRC emacs-lisp
+
+   ;; Ivy
+   (use-package ivy
+     :if pm/ivy-for-interactive-completion
+     :bind(("C-c C-r" . ivy-resume)
+           ("C-x C-r" . ivy-recentf))
+     :config
+     (ivy-mode 1)
+     (setq ivy-use-virtual-buffers t) ;; not working properly
+     (setq ivy-extra-directories nil) ;; do not show ../  and ./
+     (setq ivy-initial-inputs-alist nil)
+     (setq ivy-re-builders-alist
+           ;; allow input not in order
+           '((t   . ivy--regex-fuzzy)))
+     ;(custom-set-faces
+     ; '(ivy-current-match ((t (:inherit t :italic t))))
+     ; '(ivy-minibuffer-match-face-2 ((t (:inherit t :underline t)))))
+     :diminish ivy-mode)
+
+   (use-package swiper
+     :requires ivy
+     :after ivy
+     :bind("M-i" . swiper))
+
+   (use-package counsel
+     :requires ivy
+     :after ivy
+     :bind(("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("M-y" . counsel-yank-pop)
+           ("C-? f" . counsel-describe-function)
+           ("C-? v" . counsel-describe-variable)
+           ("C-? i" . counsel-info-lookup-symbol)
+           ("C-? u" . counsel-unicode-char)
+           ("C-c g" . counsel-git)
+           ("C-c j" . counsel-git-grep)
+           ("C-c /" . counsel-imenu)
+           ;("C-c k" . counsel-ag)
+           :map read-expression-map
+           ("C-r" . counsel-expression-history)))
+
+   ;; counsel-gtags on MELPA now
+   (use-package counsel-gtags
+     :requires counsel
+     :hook (c-mode c++-mode)
+     :bind (("M-." . counsel-gtags-dwim)
+            ("M-*" . counsel-gtags-pop))
+     :diminish 'counsel-gtags-mode)
+
+ #+END_SRC
+
