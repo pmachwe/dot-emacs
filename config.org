@@ -1663,6 +1663,53 @@ This is much simpler to use than eyebrowse. Has similar functionality as tmux.
 #+RESULTS:
 : t
 
+* Hydras
+
+Try out the hydra package. The hydra configs are copied from the community wiki.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Hydra
+
+  (use-package hydra
+    :config
+    (load-file (concat user-emacs-directory "/hydras.el")))
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Large Log Files
+
+Some setting especially for large log files. Taken mostly from 
+
+#+BEGIN_SRC emacs-lisp
+  ;; view-mode settings
+
+  (use-package view
+    :config
+    (defun View-goto-line-last (&optional line)
+      "goto last line"
+      (interactive "P")
+      (goto-line (line-number-at-pos (point-max))))
+
+    (define-key view-mode-map (kbd "e") 'View-scroll-half-page-forward)
+    (define-key view-mode-map (kbd "u") 'View-scroll-half-page-backward)
+
+    ;; less like
+    (define-key view-mode-map (kbd "N") 'View-search-last-regexp-backward)
+    (define-key view-mode-map (kbd "?") 'View-search-regexp-backward?)
+    (define-key view-mode-map (kbd "g") 'View-goto-line)
+    (define-key view-mode-map (kbd "G") 'View-goto-line-last)
+    ;; vi/w3m like
+    (define-key view-mode-map (kbd "h") 'backward-char)
+    (define-key view-mode-map (kbd "j") 'next-line)
+    (define-key view-mode-map (kbd "k") 'previous-line)
+    (define-key view-mode-map (kbd "l") 'forward-char))
+
+
+#+END_SRC
+
 * Multiterm
 
 A nice package to manage multiple terminals within Emacs.
