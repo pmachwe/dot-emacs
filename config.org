@@ -1612,7 +1612,8 @@ Key chords look promising. Try these out.
       (key-chord-define-global "\'g" 'keyboard-quit)
       (key-chord-define-global "\'z" 'undo)
       (key-chord-define-global "\[a" 'beginning-of-defun)
-      (key-chord-define-global "\[e" 'end-of-defun)))
+      (key-chord-define-global "\[e" 'end-of-defun)
+      (key-chord-define-global ";f" 'counsel-find-file)))
 #+END_SRC
 
 * Beacon
@@ -1977,7 +1978,7 @@ copy the whole line if nothing is selected.
          (list (region-beginning) (region-end))
        (list (line-beginning-position) (line-beginning-position 2)))))
 
-  (advice-add 'kill-region :before #'slick-cut)
+  ;(advice-add 'kill-region :before #'slick-cut)
 
   (defun slick-copy (beg end)
     (interactive
@@ -1986,7 +1987,7 @@ copy the whole line if nothing is selected.
        (message "Copied line")
        (list (line-beginning-position) (line-beginning-position 2)))))
 
-  (advice-add 'kill-ring-save :before #'slick-copy)
+  ;(advice-add 'kill-ring-save :before #'slick-copy)
 
 #+END_SRC
 
@@ -2028,5 +2029,16 @@ like Wikipedia, Google etc.
 * Abbrevs for C++
 
 #+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+* Isearch
+
+Some tweaks for isearch. Treak <space> as wildcard regex in isearch. This could be ignored by doing =M-s SPC= during isearch.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq search-whitespace-regexp ".*")
+  (setq isearch-lax-whitespace t)
+  (setq isearch-regexp-lax-whitespace t)
 
 #+END_SRC
