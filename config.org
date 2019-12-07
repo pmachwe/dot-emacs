@@ -391,6 +391,7 @@ Some basic settings first of all.
     (setq org-level-3 '((t (:inherit outline-3 :height 1.10))))
     (setq org-level-4 '((t (:inherit outline-4 :height 1.05))))
     (setq org-document-title '((t (:underline t :weight bold :height 1.3))))
+    (setq org-src-window-setup 'current-window)
     :diminish org-indent-mode
    )
 
