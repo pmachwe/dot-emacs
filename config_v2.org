@@ -1,149 +1,168 @@
-* Interactive Completion
+#+TITLE: Emacs Configuration
+#+AUTHOR: Parikshit Machwe
+#+STARTUP: outline
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./style.css">
 
-Add some control variable to enable/disable different packages. Also install some helper packages.
+* Introduction
+
+The previous configuration was developed a couple of years back but in
+the meantime a lot of packages have been updated and new replacements
+have been created. Hence, this is an attempt to clean-up the previous
+configuration.
+
+The overall setup still remains the same. It uses the Jon Weigley's ubiqutous
+[[https://github.com/jwiegley/use-package][use-package]] used all around by the Emacs community. Also this uses
+/org-babel/ mode which is a fantastic package promoting [[https://www.youtube.com/watch?v=dljNabciEGg][Literate
+Programming]].
+
+* Bootstrap
+
+Setup package repositories and =use-package=. Also, setup key-chords
+along with key-bindings for the heavily used packages. Upgrading, to
+=delight= from =diminish= package as =delight= provides more options
+and is also integrated with =use-package=.
 
 #+BEGIN_SRC emacs-lisp
 
-  (defvar pm/ivy-for-interactive-completion
-    nil
-    "By default use IDO. Use IVY when this variable is true.")
+  (require 'package)
+  (setq package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
+                           ("melpa" . "http://melpa.org/packages/")
+                           ("org"   . "http://orgmode.org/elpa/")))
+  (package-initialize)
 
-  ;; recentf
-  (use-package recentf
-    :config
-    (recentf-mode t)
-    (setq recentf-max-saved-items 50))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package)
+    (package-install 'bind-key))
 
-  ;; Smex
-  (use-package smex
-    :bind(("M-x" . smex)
-	  ("M-X" . smex-major-mode-commands))
-    :config
-    (smex-initialize))
+  (eval-when-compile
+    (require 'use-package)
+    (require 'bind-key))
 
-  ;; Flx
-  (use-package flx)
+  (use-package-chords)
+  (setq use-package-always-ensure t)
+
+  (use-package delight)
 
 #+END_SRC
 
-** Ido
 
-Ido mode with flex matching does a superior job of finding files than
-Helm. So until flx is ported to helm, using ido for finding files and
-switching buffers.
+* Basics
+
+These are certain basic settings to reduce clutter and setup some
+simple defaults.
+
++ The most notable is the =winner-mode= which does undo/redo for
+  windows config are:
+
+|-------------+-------------|
+| Key binding | Function    |
+|-------------+-------------|
+| C-<left>    | winner-undo |
+| C-<right>   | winner-redo |
+|-------------+-------------|
 
 #+BEGIN_SRC emacs-lisp
-  ;; ido mode
 
-  (use-package ido
+  (use-package emacs
     :config
-    (ido-mode t)
-    (ido-everywhere 1)
-    (setq ido-use-virtual-buffers t)
-    (setq ido-use-faces nil)
-    :bind (("C-x C-f" . ido-find-file)
-	   ("C-x b" . ido-switch-buffer))
-    :diminish ido-mode)
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tooltip-mode -1)
 
-  (use-package flx-ido
-    :requires ido
-    :after ido
-    :config
-    (flx-ido-mode 1)
-    (setq ido-enable-flex-matching t))
+    (setq inhibit-startup-message t)
+    (setq initial-scratch-message "")
 
-  (use-package ido-vertical-mode
-    :requires ido
-    :after ido
-    :config
-    (ido-vertical-mode 1)
-    (setq ido-vertical-show-count t)
-    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down))
+    (setq custom-file (concat user-emacs-directory "/custom.el"))
+    (load custom-file 'noerror)
 
-  (use-package ido-completing-read+
-    :requires ido
-    :after ido
-    :config
-    (ido-ubiquitous-mode 1))
+    ;; Keep all backup and auto-save files in one directory
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+    (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+    (setq delete-old-versions t
+          kept-new-versions 6
+          kept-old-versions 2
+          version-control t)
 
-  (use-package ido-occur
-    :requires ido
-    :after ido
-    :bind (("M-i" . ido-occur)
-	   ("M-I" . ido-occur-at-point)
-	   :map isearch-mode-map
-	   ("C-o" . ido-occur-from-isearch)))
+    ;; UTF-8 please
+    (setq locale-coding-system 'utf-8)   ; pretty
+    (set-terminal-coding-system 'utf-8)  ; pretty
+    (set-keyboard-coding-system 'utf-8)  ; pretty
+    (set-selection-coding-system 'utf-8) ; please
+    (prefer-coding-system 'utf-8)        ; with sugar on top
 
-  ;; Setup ggtags to use ido-completion
-  ;; This could be slow on large projects because the
-  ;; ggtags-completion-table is converted to string
-  ;; https://github.com/leoliu/ggtags/issues/56#issuecomment-43165031
-  (when (and (package-installed-p 'ggtags)
-	     (package-installed-p 'ido))
-    (setq ggtags-completing-read-function
-	  (lambda (&rest args)
-	    (apply #'ido-completing-read
-		   (car args)
-		   (all-completions "" ggtags-completion-table)
-		   (cddr args)))))
+    ;; Turn off the blinking cursor
+    (blink-cursor-mode -1)
+
+    (setq-default indent-tabs-mode nil)
+    (setq-default indicate-empty-lines t)
+
+    ;; delete the region when typing, just like as we expect nowadays.
+    (delete-selection-mode t)
+
+    ;; -i gets alias definitions from .bash_profile
+    (setq shell-command-switch "-ic")
+
+    ;; show time
+    (display-time)
+
+    ;; winner mode to undo/redo window configurations
+    (winner-mode 1)
+
+    ;; always show the function
+    (which-function-mode 1)
+
+    ;; no bells please
+    (defun my-bell-func()) ;; empty
+    (setq ring-bell-function 'my-bell-func)
+    (setq visible-bell nil)
+
+    ;; http://endlessparentheses.com/faster-pop-to-mark-command.html
+    ;; Go up last positions using C-u C-SPC C-SPC
+    ;; instead of C-u C-SPC C-u C-SPC
+    (setq set-mark-command-repeat-pop t)
+
+    ;; If same marks are saved in the ring, pop out the same ones
+    (defun my/multi-pop-to-mark (orig-fun &rest args)
+      "Call ORIG-FUN until the cursor moves.
+    Try the repeated popping up to 10 times."
+      (let ((p (point)))
+        (dotimes (i 10)
+          (when (= p (point))
+            (apply orig-fun args)))))
+
+    (advice-add 'pop-to-mark-command :around
+                #'my/multi-pop-to-mark))
+
 #+END_SRC
 
-#+RESULTS:
 
-** Ivy	
- This is a newer package which is clutter-free and atleast in that sense better than helm. But need to check the functionality. Hence, using for experimentation.
+* Notes
 
- Good package but disabled until all options understood and ready to replace helm.
+With Emacs 25, a new shell opens up in another window messing up the
+existing window configuration. The following advice fixes this.
 
- #+BEGIN_SRC emacs-lisp
+https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows
 
-   ;; Ivy
-   (use-package ivy
-     :if pm/ivy-for-interactive-completion
-     :bind(("C-c C-r" . ivy-resume)
-           ("C-x C-r" . ivy-recentf))
-     :config
-     (ivy-mode 1)
-     (setq ivy-use-virtual-buffers t) ;; not working properly
-     (setq ivy-extra-directories nil) ;; do not show ../  and ./
-     (setq ivy-initial-inputs-alist nil)
-     (setq ivy-re-builders-alist
-           ;; allow input not in order
-           '((t   . ivy--regex-fuzzy)))
-     ;(custom-set-faces
-     ; '(ivy-current-match ((t (:inherit t :italic t))))
-     ; '(ivy-minibuffer-match-face-2 ((t (:inherit t :underline t)))))
-     :diminish ivy-mode)
+#+BEGIN_SRC emacs-lisp
 
-   (use-package swiper
-     :requires ivy
-     :after ivy
-     :bind("M-i" . swiper))
+  (use-package shell
+    :config
+    (defun shell-same-window-advice (orig-fn &optional buffer)
+      "Advice to make `shell' reuse the current window.
 
-   (use-package counsel
-     :requires ivy
-     :after ivy
-     :bind(("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("M-y" . counsel-yank-pop)
-           ("C-? f" . counsel-describe-function)
-           ("C-? v" . counsel-describe-variable)
-           ("C-? i" . counsel-info-lookup-symbol)
-           ("C-? u" . counsel-unicode-char)
-           ("C-c g" . counsel-git)
-           ("C-c j" . counsel-git-grep)
-           ("C-c /" . counsel-imenu)
-           ;("C-c k" . counsel-ag)
-           :map read-expression-map
-           ("C-r" . counsel-expression-history)))
+  Intended as :around advice."
+      (let* ((buffer-regexp
+              (regexp-quote
+               (cond ((bufferp buffer)  (buffer-name buffer))
+                     ((stringp buffer)  buffer)
+                     (:else             "*shell*"))))
+             (display-buffer-alist
+              (cons `(,buffer-regexp display-buffer-same-window)
+                    display-buffer-alist)))
+        (funcall orig-fn buffer)))
 
-   ;; counsel-gtags on MELPA now
-   (use-package counsel-gtags
-     :requires counsel
-     :hook (c-mode c++-mode)
-     :bind (("M-." . counsel-gtags-dwim)
-            ("M-*" . counsel-gtags-pop))
-     :diminish 'counsel-gtags-mode)
-
- #+END_SRC
+    (advice-add 'shell :around #'shell-same-window-advice))
+#+END_SRC
 

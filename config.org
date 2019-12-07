@@ -9,7 +9,7 @@ The /org-babel/ mode allows for literate programming, i.e. programming
 within documentation. This is a great way to organize the stuff
 especially the configs which build up over the years. Here is a nice
 video detailing about it.
-[[https://www.youtube.com/watch?v=dljNabciEGg][Literate Programming]]
+[[https://www.youtube.com/watch?v=dljNabciEGg][Literate Programming]].
 
 The other package that I came across recently [[https://github.com/jwiegley/use-package][use-package]]. This is a
 great utility to not only organize the Emacs packages but improving
@@ -1688,6 +1688,7 @@ Some setting especially for large log files. Taken mostly from
   ;; view-mode settings
 
   (use-package view
+    :disabled t
     :config
     (defun View-goto-line-last (&optional line)
       "goto last line"
