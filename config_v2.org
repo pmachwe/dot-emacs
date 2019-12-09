@@ -161,15 +161,6 @@ for the *Imenu* mode.
     (recentf-mode t)
     (setq recentf-max-saved-items 50))
 
-  ;; Smex
-  (use-package smex
-    :bind(("M-x" . smex)
-          ("M-X" . smex-major-mode-commands))
-    :config
-    (smex-initialize))
-
-
-
   ;; Ivy
   (use-package ivy
     :disabled t
