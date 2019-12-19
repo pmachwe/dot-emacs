@@ -3,6 +3,7 @@
 #+AUTHOR: Parikshit Machwe
 #+STARTUP: outline
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./style.css">
+#+OPTIONS: toc:2
 
 * Introduction
 
@@ -163,7 +164,6 @@ for the *Imenu* mode.
 
   ;; Ivy
   (use-package ivy
-    :disabled t
     :bind(("C-c C-r" . ivy-resume)
           ("C-x C-r" . ivy-recentf))
     :config
@@ -263,13 +263,12 @@ https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windo
 
 The default keybindings are generally not that useful, so these could be used for more frequent commands.
 
-|------------+------------------+--------------------|
-| Keybinding | Current Function | Potential Fucntion |
-|------------+------------------+--------------------|
-| M-c        | Capitalize word  |                    |
-| C-i        | Insert tab       |                    |
-| M-i        | Insert tab       |                    |
-| C-c except | Undefined        | This is a good     |
-| a, c, l, s |                  | collection         |
-|------------+------------------+--------------------|
+|-----------------------+------------------+---------------------------|
+| Keybinding            | Current Function | Potential Fucntion        |
+|-----------------------+------------------+---------------------------|
+| M-c                   | Capitalize word  |                           |
+| C-i                   | Insert tab       |                           |
+| M-i                   | Insert tab       |                           |
+| C-c except a, c, l, s | Undefined        | This is a good collection |
+|-----------------------+------------------+---------------------------|
 
