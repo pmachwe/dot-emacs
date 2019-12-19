@@ -168,18 +168,18 @@ for the *Imenu* mode.
           ("C-x C-r" . ivy-recentf))
     :config
     (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t) ;; not working properly
+    (setq ivy-use-virtual-buffers t)
     (setq ivy-extra-directories nil) ;; do not show ../  and ./
     (setq ivy-initial-inputs-alist nil)
     (setq ivy-re-builders-alist
-          ;; allow input not in order
-          '((t   . ivy--regex-fuzzy)))
+          '((swiper . ivy--regex-plus)
+            (t . ivy--regex-fuzzy)))
     :delight ivy-mode)
 
   (use-package swiper
     :requires ivy
     :after ivy
-    :bind("M-i" . swiper))
+    :bind("M-s i" . swiper))
 
   (use-package counsel
     :requires ivy
@@ -187,16 +187,14 @@ for the *Imenu* mode.
     :bind(("M-x" . counsel-M-x)
           ("C-x C-f" . counsel-find-file)
           ("M-j" . counsel-find-file)
-          ("M-J" . counsel-find-file-other-window)
+          ("M-J" . find-file-other-window)
           ("M-o" . counsel-switch-buffer)
           ("M-O" . counsel-switch-buffer-other-window)
           ("M-y" . counsel-yank-pop)
-          ("C-? f" . counsel-describe-function)
-          ("C-? v" . counsel-describe-variable)
-          ("C-? i" . counsel-info-lookup-symbol)
-          ("C-? u" . counsel-unicode-char)
-          ("C-c g" . counsel-git)
-          ("C-c j" . counsel-git-grep)
+          ("C-c h f" . counsel-describe-function)
+          ("C-c h v" . counsel-describe-variable)
+          ("C-c h i" . counsel-info-lookup-symbol)
+          ("C-c h u" . counsel-unicode-char)
           ("C-c /" . counsel-imenu)
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
@@ -206,7 +204,7 @@ for the *Imenu* mode.
     :requires counsel
     :hook (c-mode c++-mode)
     :bind (("M-." . counsel-gtags-dwim)
-           ("M-*" . counsel-gtags-pop))
+           ("M-*" . counsel-gtags-go-backwards))
     :diminish 'counsel-gtags-mode)
 
   (use-package prescient
@@ -230,6 +228,7 @@ for the *Imenu* mode.
     :config
     (ivy-prescient-mode 1))
 #+END_SRC
+
 
 * Notes
 
@@ -258,4 +257,19 @@ https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windo
 
     (advice-add 'shell :around #'shell-same-window-advice))
 #+END_SRC
+
+
+* Available key-sequences
+
+The default keybindings are generally not that useful, so these could be used for more frequent commands.
+
+|------------+------------------+--------------------|
+| Keybinding | Current Function | Potential Fucntion |
+|------------+------------------+--------------------|
+| M-c        | Capitalize word  |                    |
+| C-i        | Insert tab       |                    |
+| M-i        | Insert tab       |                    |
+| C-c except | Undefined        | This is a good     |
+| a, c, l, s |                  | collection         |
+|------------+------------------+--------------------|
 

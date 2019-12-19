@@ -202,7 +202,6 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
       :disabled t)
 
     (use-package doom-themes
-      :disabled t
       :if window-system
       :init
       (load-theme 'doom-one t)
@@ -216,23 +215,7 @@ Tomorrow Night themes are downloaded from [[https://github.com/purcell/color-the
             doom-one-brighter-comments nil
             )
       (doom-themes-neotree-config)
-
-      ;;; OPTIONAL
-      ;; brighter source buffers
-      ;(add-hook 'find-file-hook 'doom-buffer-mode)
-      ;; brighter minibuffer when active
-      ;(add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-      ;; Enable custom neotree theme
-      ;(require 'doom-neotree)    ; all-the-icons fonts must be installed!
-      ;; Enable nlinum line highlighting
-      ;(require 'doom-nlinum)     ; requires nlinum and hl-line-mode)
-      ;(setq org-fontify-whole-heading-line t
-      ;      org-fontify-done-headline t
-      ;      org-fontify-quote-and-verse-blocks t)
-      ;(add-hook 'ediff-prepare-buffer-hook 'doom-buffer-mode)
-      ;(Require 'doom-nlinum)
-      ;(require 'doom-neotree)
-      )
+      (doom-themes-org-config))
 
     ;; Some more configurations
 
@@ -1375,8 +1358,7 @@ Some common settings in this section.
   (defun my/common-prog-hooks()
     (if window-system (linum-mode 1))
     (local-set-key (kbd "RET") 'newline-and-indent)
-    (subword-mode 1)
-    (yas-minor-mode +1))
+    (subword-mode 1))
 
   ;; No tabs
   (setq-default indent-tabs-mode nil)
@@ -1854,7 +1836,7 @@ Some other free combinations are: C-', C-".
    ("C-c C-," . unhighlight-regexp))
 
   ;; Buffer related
-  (bind-keys*
+  (bind-keys
    ("M-j" . ido-find-file)
    ("M-J" . ido-find-file-other-window)
    ("M-o" . ido-switch-buffer)
@@ -1862,16 +1844,16 @@ Some other free combinations are: C-', C-".
    ("M-K" . kill-buffer))
 
   ;; Avy - again due to org-mode pollution
-  (bind-keys*
+  (bind-keys
    ("C-;" . avy-goto-word-1)
    ("C-c ;" . avy-goto-char)
    ("M-g g" . avy-goto-line))
 
   ;; Free up C-h for backspace
-  (bind-key* "C-?" help-map)
+  (bind-key "C-?" help-map)
 
   ;; Use C-h for backspace as it is more ergonomic
-  (bind-keys*
+  (bind-keys
    ("C-h" . backward-delete-char)
    ("M-h" . backward-kill-word))
 
@@ -1889,8 +1871,8 @@ Some other free combinations are: C-', C-".
    ("C-x ." . delete-window))
 
   ;; Switch windows quickly
-  ;(bind-keys*
-   ;("C-. C-." . ace-window))
+  (bind-keys
+   ("C-. C-." . ace-window))
 
   (bind-keys*
    ("C-. h v" . view-echo-area-messages)
