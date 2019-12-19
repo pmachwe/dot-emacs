@@ -165,7 +165,9 @@ for the *Imenu* mode.
   ;; Ivy
   (use-package ivy
     :bind(("C-c C-r" . ivy-resume)
-          ("C-x C-r" . ivy-recentf))
+          ("C-x C-r" . ivy-recentf)
+          ("C-c <down>" . ivy-push-view)
+          ("C-c <up>" . ivy-pop-view))
     :config
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
@@ -196,6 +198,7 @@ for the *Imenu* mode.
           ("C-c h i" . counsel-info-lookup-symbol)
           ("C-c h u" . counsel-unicode-char)
           ("C-c /" . counsel-imenu)
+          ("C-c b" . counsel-bookmark)
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
@@ -205,7 +208,7 @@ for the *Imenu* mode.
     :hook (c-mode c++-mode)
     :bind (("M-." . counsel-gtags-dwim)
            ("M-*" . counsel-gtags-go-backwards))
-    :diminish 'counsel-gtags-mode)
+    :delight 'counsel-gtags-mode)
 
   (use-package prescient
     :ensure t
@@ -227,6 +230,20 @@ for the *Imenu* mode.
     (ivy-prescient-enable-sorting t)
     :config
     (ivy-prescient-mode 1))
+
+  (use-package ivy-posframe
+    :after ivy
+    :config
+    (setq ivy-posframe-display-functions-alist
+          '((swiper . nil)
+            (t . ivy-posframe-display-at-window-center)))
+    ;; posframe misses the default font sometimes
+    ;; so set is explicitly but this will still not work
+    ;; when the font is changed interactively, need to
+    ;; check and add a hook.
+    (setq ivy-posframe-font (elt (query-font (face-attribute 'default :font)) 0))
+    (ivy-posframe-mode 1))
+
 #+END_SRC
 
 
