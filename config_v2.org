@@ -42,8 +42,9 @@ and is also integrated with =use-package=.
     (require 'use-package)
     (require 'bind-key))
 
-  (use-package-chords)
-  (setq use-package-always-ensure t)
+  ;(use-package-chords)
+  ;(setq use-package-always-ensure t)
+  (setq package-check-signature nil)
 
   (use-package delight)
 
@@ -198,6 +199,7 @@ Some useful keybindings when in ivy minibuffer.
           ("C-c <up>" . ivy-pop-view))
     :config
     (ivy-mode 1)
+    (setq ivy-count-format "(%d/%d) ")
     (setq ivy-use-virtual-buffers t)
     (setq ivy-extra-directories nil) ;; do not show ../  and ./
     (setq ivy-initial-inputs-alist nil)
@@ -218,7 +220,7 @@ Some useful keybindings when in ivy minibuffer.
           ("C-x C-f" . counsel-find-file)
           ("M-j" . counsel-find-file)
           ("M-J" . find-file-other-window)
-          ("M-o" . counsel-switch-buffer)
+          ("M-o" . ivy-switch-buffer)
           ("M-O" . counsel-switch-buffer-other-window)
           ("M-y" . counsel-yank-pop)
           ("C-c h f" . counsel-describe-function)
@@ -239,7 +241,6 @@ Some useful keybindings when in ivy minibuffer.
     :delight 'counsel-gtags-mode)
 
   (use-package prescient
-    :ensure t
     :custom
     (prescient-history-length 50)
     (prescient-save-file "~/.emacs.d/prescient-items")
@@ -248,7 +249,6 @@ Some useful keybindings when in ivy minibuffer.
     (prescient-persist-mode 1))
 
   (use-package ivy-prescient
-    :ensure t
     :after (prescient ivy)
     :custom
     (ivy-prescient-sort-commands
@@ -260,6 +260,7 @@ Some useful keybindings when in ivy minibuffer.
     (ivy-prescient-mode 1))
 
   (use-package ivy-posframe
+    :requires ivy
     :after ivy
     :config
     (setq ivy-posframe-display-functions-alist
@@ -333,7 +334,7 @@ This is a very useful package to create asynchronous processing.
 #+END_SRC
 
 
-* Dired
+** Dired
 
 Setting up dired to group directories upfront and also sort the files by
 modification time, by default.
@@ -369,7 +370,6 @@ has tons of useful dired features.
     (wdired-create-parent-directories t))
 
   (use-package dired-subtree
-    :ensure t
     :after dired
     :bind (:map dired-mode-map
                 ("<tab>" . dired-subtree-toggle)
@@ -378,6 +378,108 @@ has tons of useful dired features.
 
 #+END_SRC
 
+
+** Elscreen
+
+Elscreen has similar behaviour and usage as the tmux/screen command
+and hence is more intuitive. There are other packages which offer more
+like eyebrowse, perspective and workgroups.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package elscreen
+    :config
+    (setq elscreen-display-tab t)
+    (elscreen-start))
+
+  (use-package elscreen-buffer-group
+    :after elscreen)
+
+#+END_SRC
+
+** Isearch
+
+Treat SPC as * similar to ivy in normal isearch. Use M-SPC to go back
+to normal behaviour.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package isearch
+    :config
+    (setq search-whitespace-regexp ".*")
+    (setq isearch-lax-whitespace t)
+    (setq isearch-regexp-lax-whitespace t))
+
+#+END_SRC
+
+** Ediff
+
+Some sane defaults for Ediff mode. Taken from [[http://oremacs.com/2015/01/17/setting-up-ediff/][here]].
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; (use-package emacs
+  ;;   (defmacro csetq (variable value)
+  ;;     `(funcall (or (get ',variable 'custom-set)
+  ;;                   'set-default)
+  ;;               ',variable ,value))
+
+  ;;   (csetq ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;;   (csetq ediff-split-window-function 'split-window-horizontally)
+  ;;   (csetq ediff-diff-options "-w")
+  ;;   (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
+
+#+END_SRC
+
+** Which Key
+
+Nice suggestions for key completions in the minibuffer.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; which-key
+  (use-package which-key
+    :config
+    (which-key-mode))
+
+#+END_SRC
+
+
+** Projectile
+
+** Avy
+
+** Anzu
+
+Display total matches information in the mode-line in various search
+modes.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; Anzu
+  (use-package anzu
+    :init
+    (global-anzu-mode +1)
+    (global-set-key [remap query-replace] 'anzu-query-replace)
+    (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+    :delight)
+#+END_SRC
+
+** Undo-tree
+
+** Magit
+
+Magit is the best package to work with Git. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; Magit
+
+  (use-package magit
+    :bind ("<f6>" . magit-status))
+
+#+END_SRC
+
+** Hungry Delete
+   
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
@@ -405,38 +507,50 @@ and file management.
 
 #+BEGIN_SRC emacs-lisp
 
-    (use-package ibuffer
-      :bind ("C-x C-b" . ibuffer-other-window)
-      :config
-      (progn
-        (setq ibuffer-saved-filter-groups
-              (quote (("mygroups"
-                       ("dired" (mode . dired-mode))
-                       ("perl" (mode . cperl-mode))
-                       ("erc" (mode . erc-mode))
-                       ("planner" (or
-                                   (name . "^\\*Calendar\\*$")
-                                   (name . "^diary$")
-                                   (mode . muse-mode)))
-                       ("emacs" (or
-                                 (name . "^\\*scratch\\*$")
-                                 (name . "^\\*Messages\\*$")))
-                       ("gnus" (or
-                                (mode . message-mode)
-                                (mode . bbdb-mode)
-                                (mode . mail-mode)
-                                (mode . gnus-group-mode)
-                                (mode . gnus-summary-mode)
-                                (mode . gnus-article-mode)
-                                (name . "^\\.bbdb$")
-                                (name . "^\\.newsrc-dribble")))))))
-        (setq ibuffer-expert t)
-        (add-hook 'ibuffer-mode-hook
-                  '(lambda ()
-                     (ibuffer-auto-mode 1)
-                     (ibuffer-switch-to-saved-filter-groups "mygroups")))))
-
+  (use-package ibuffer
+    :bind ("C-x C-b" . ibuffer-other-window)
+    :config
+    (setq ibuffer-saved-filter-groups
+          (quote (("mygroups"
+                   ("dired" (mode . dired-mode))
+                   ("perl" (mode . cperl-mode))
+                   ("erc" (mode . erc-mode))
+                   ("planner" (or
+                               (name . "^\\*Calendar\\*$")
+                               (name . "^diary$")
+                               (mode . muse-mode)))
+                   ("emacs" (or
+                             (name . "^\\*scratch\\*$")
+                             (name . "^\\*Messages\\*$")))
+                   ("gnus" (or
+                            (mode . message-mode)
+                            (mode . bbdb-mode)
+                            (mode . mail-mode)
+                            (mode . gnus-group-mode)
+                            (mode . gnus-summary-mode)
+                            (mode . gnus-article-mode)
+                            (name . "^\\.bbdb$")
+                            (name . "^\\.newsrc-dribble")))))))
+    (setq ibuffer-expert t)
+    (add-hook 'ibuffer-mode-hook
+              '(lambda ()
+                 (ibuffer-auto-mode 1)
+                 (ibuffer-switch-to-saved-filter-groups "mygroups"))))
 #+END_SRC
+
+* Auto-completion
+
+** Hippie Expand
+
+* Programming
+
+** Dtrt-Indent
+
+** Smartparens
+
+** Electric Pair
+
+** Rainbow Delimiters
 
 * Available key-sequences
 
