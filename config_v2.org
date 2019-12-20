@@ -152,6 +152,37 @@ recently found prescient-mode which is being used here.
 Also, adding the counsel frontend for GNU global and also setting up
 for the *Imenu* mode.
 
+Note from the manual.
+
+#+BEGIN_QUOTE
+
+Ivy supports regexp negation with "!". For example, "define key ! ivy quit"
+first selects everything matching "define.*key", then removes everything matching
+ "ivy", and finally removes everything matching "quit". 
+What remains is the final result set of the negation regexp.
+
+Since Ivy treats minibuffer input as a regexp, the standard regexp identifiers work:
+ "^", "$", "\b" or "[a-z]". The exceptions are spaces, which translate to ".*", and
+ "!" that signal the beginning of a negation group.
+
+#+END_QUOTE
+
+Some useful keybindings when in ivy minibuffer.
+
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------|
+| Keybindings | Function                | Comment                                                                                            |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------|
+| M-o         | ivy-dispatching-done    | Presents a set of actions on given selection.                                                      |
+| C-M-m       | ivy-call                | Completes action without closing minibuffer. Use when going through description of many functions. |
+| M-i         | ivy-insert-current      | ??                                                                                                 |
+| M-j         | ivy-yank-work           | Yanks the current sub-word at point.                                                               |
+| S-SPC       | ivy-restrict-to-matches | Reduce candidates to current selection and can continue.                                           |
+| M-w         | ivy-kill-ring-save      | Copy the current selection to kill-ring.                                                           |
+| C-c C-o     | ivy-occur               | Saves the current candidates to a new buffer and exits completion.                                 |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------|
+
+*TODO*: Setup ivy-actions to specific commands.
+
 #+BEGIN_SRC emacs-lisp
   ;; recentf
   (use-package recentf
@@ -252,6 +283,7 @@ existing window configuration. The following advice fixes this. ([[https://stack
 
 Also, adding a simple function to open a shell with a unique /buffer-name/
 everytime but ask for a name when universal argument is supplied.
+
 
 #+BEGIN_SRC emacs-lisp
 
