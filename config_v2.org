@@ -152,7 +152,7 @@ recently found prescient-mode which is being used here.
 Also, adding the counsel frontend for GNU global and also setting up
 for the *Imenu* mode.
 
-Note from the manual.
+Note from the [[https://oremacs.com/swiper/#ivy--regex-plus][manual]].
 
 #+BEGIN_QUOTE
 
@@ -321,6 +321,67 @@ everytime but ask for a name when universal argument is supplied.
 
 #+END_SRC
 
+
+* Utilities
+
+This is a very useful package to create asynchronous processing.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package aysnc)
+
+#+END_SRC
+
+
+* Dired
+
+Setting up dired to group directories upfront and also sort the files by
+modification time, by default.
+
+*Tip*: Use 'h' key in the dired buffer to go to the /help/ section which
+has tons of useful dired features.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package dired
+    :custom
+    (dired-recursive-copies 'always)
+    (dired-recursive-deletes 'always)
+    (dired-isearch-filenames 'dwim)
+    (delete-by-moving-to-trash t)
+    (dired-listing-switches "-AFhlv --group-directories-first")
+    (dired-dwim-target t)
+    :hook
+    (dired-mode . dired-hide-details-mode)
+    (dired-mode . hl-line-mode))
+
+  (use-package dired-async
+    :after (dired async)
+    :config
+    (dired-async-mode 1))
+
+  (use-package wdired
+    :after dired
+    :commands (wdired-mode
+               wdired-change-to-wdired-mode)
+    :custom
+    (wdired-allow-to-change-permissions t)
+    (wdired-create-parent-directories t))
+
+  (use-package dired-subtree
+    :ensure t
+    :after dired
+    :bind (:map dired-mode-map
+                ("<tab>" . dired-subtree-toggle)
+                ("<C-tab>" . dired-subtree-cycle)
+                ("<S-tab>" . dired-subtree-remove)))
+
+#+END_SRC
+
+* Buffers, Windows and Frames
+
+This section setups up packages and options to help with buffer, window, frame
+and file management.
 
 * Available key-sequences
 
