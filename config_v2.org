@@ -104,9 +104,6 @@ simple defaults.
     ;; delete the region when typing, just like as we expect nowadays.
     (delete-selection-mode t)
 
-    ;; -i gets alias definitions from .bash_profile
-    (setq shell-command-switch "-ic")
-
     ;; show time
     (display-time)
 
@@ -242,26 +239,29 @@ for the *Imenu* mode.
     ;; when the font is changed interactively, need to
     ;; check and add a hook.
     (setq ivy-posframe-font (elt (query-font (face-attribute 'default :font)) 0))
-    (ivy-posframe-mode 1))
+    (ivy-posframe-mode 1)
+    :delight ivy-posframe-mode)
 
 #+END_SRC
 
 
-* Notes
+* Shell
 
 With Emacs 25, a new shell opens up in another window messing up the
-existing window configuration. The following advice fixes this.
+existing window configuration. The following advice fixes this. ([[https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows][SO]])
 
-https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows
+Also, adding a simple function to open a shell with a unique /buffer-name/
+everytime but ask for a name when universal argument is supplied.
 
 #+BEGIN_SRC emacs-lisp
 
   (use-package shell
     :config
-    (defun shell-same-window-advice (orig-fn &optional buffer)
-      "Advice to make `shell' reuse the current window.
+    ;; -i gets alias definitions from .bash_profile
+    (setq shell-command-switch "-ic")
 
-  Intended as :around advice."
+    (defun shell-same-window-advice (orig-fn &optional buffer)
+      "Advice to make `shell' reuse the current window. Intended as :around advice."
       (let* ((buffer-regexp
               (regexp-quote
                (cond ((bufferp buffer)  (buffer-name buffer))
@@ -272,7 +272,21 @@ https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windo
                     display-buffer-alist)))
         (funcall orig-fn buffer)))
 
-    (advice-add 'shell :around #'shell-same-window-advice))
+    (advice-add 'shell :around #'shell-same-window-advice)
+
+    (defun pm/shell (&optional name)
+      "Open a new shell everytime with unique buffer-name.
+  With universal arg, provide a name which will be made unique."
+      (interactive
+       (if current-prefix-arg
+           (list (read-string "Shell name: "))
+         (list "shell")))
+      (shell (generate-new-buffer-name name)))
+
+    :bind (("<f5>" . pm/shell)
+           :map shell-mode-map
+           ("C-j" . comint-send-input)))
+
 #+END_SRC
 
 
