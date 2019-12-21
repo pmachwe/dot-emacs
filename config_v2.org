@@ -357,6 +357,17 @@ everytime but ask for a name when universal argument is supplied.
          (list "shell")))
       (shell (generate-new-buffer-name name)))
 
+    ;; Use Git Bash as shell on Windows.
+    (defvar win-git-path "C:/Program Files/Git"
+      "Git executable path on Windows.")
+  
+    (when (and (equal system-type 'windows-nt)
+               (file-exists-p win-git-path))
+      (setq explicit-shell-file-name
+            (f-join win-git-path "bin/bash.exe"))
+      (setq shell-file-name explicit-shell-file-name)
+      (add-to-list 'exec-path (f-join win-git-path "bin")))
+
     :bind (("<f5>" . pm/shell)
            :map shell-mode-map
            ("C-j" . comint-send-input)))
