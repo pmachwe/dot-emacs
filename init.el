@@ -19,18 +19,16 @@
 
 (setq first-time-setup (not (file-exists-p (concat user-emacs-directory "elpa"))))
 
-(progn
-  (prin1 "pm: first-time-setup is: ")
-  (print first-time-setup))
+(if first-time-setup
+    (message "PM: This is a first-time setup in this directory, ensuring all packages are installed."))
 
 ;; Set up package
 
 (require 'package)
-;; (setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
-;;                          ("melpa"     . "http://melpa.org/packages/")
-;;                          ("org" . "http://orgmode.org/elpa/")))
-(setq package-archives '(("melpa"     . "http://melpa.org/packages/")))
-
+(setq package-enable-at-startup nil)
+(setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
+                         ("melpa"     . "http://melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
 (unless package--initialized (package-initialize))
 
 ;; Bootstrap use-package
