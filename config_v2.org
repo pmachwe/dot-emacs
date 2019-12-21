@@ -454,7 +454,8 @@ Nice suggestions for key completions in the minibuffer.
   ;; which-key
   (use-package which-key
     :config
-    (which-key-mode))
+    (which-key-mode)
+    :delight)
 
 #+END_SRC
 
@@ -532,6 +533,7 @@ Magit is the best package to work with Git.
 
 #+END_SRC
 
+
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
@@ -600,6 +602,7 @@ and file management.
            ("C-x <left>" . windmove-left)
            ("C-x <right>" . windmove-right)))
 #+END_SRC
+
 
 * Auto-completion
 
@@ -730,6 +733,7 @@ Its goal is to provide a nice set of features operating on a project level.
 
 #+END_SRC
 
+
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -745,6 +749,8 @@ Its goal is to provide a nice set of features operating on a project level.
 
 * Themes
 
+Using the themes and modeline from doom.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package doom-themes
@@ -755,6 +761,10 @@ Its goal is to provide a nice set of features operating on a project level.
     (load-theme 'doom-one t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
+
+  (use-package doom-modeline
+        :hook (after-init . doom-modeline-mode))
+
 #+END_SRC
 
 
@@ -772,10 +782,10 @@ This section includes some custom keybindings for useful functions.
            ("M-k" . kill-buffer-and-window)
            ("M-K" . kill-buffer)
            ("C-c ," . highlight-symbol-at-point)
-           ("C-c C-," . unhighlight-regexp))
-  
+           ("C-c C-," . unhighlight-regexp)))
 
 #+END_SRC
+
 * Available key-sequences
 
 The default keybindings are generally not that useful, so these could be used for more frequent commands.
