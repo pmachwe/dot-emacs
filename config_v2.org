@@ -95,6 +95,9 @@ simple defaults.
     (set-selection-coding-system 'utf-8) ; please
     (prefer-coding-system 'utf-8)        ; with sugar on top
 
+    ;; Answering just 'y' or 'n' will do
+    (defalias 'yes-or-no-p 'y-or-n-p)
+
     ;; Turn off the blinking cursor
     (blink-cursor-mode -1)
 
@@ -455,8 +458,6 @@ Nice suggestions for key completions in the minibuffer.
 
 #+END_SRC
 
-** Projectile
-
 ** Avy
 
 #+BEGIN_SRC emacs-lisp
@@ -518,6 +519,18 @@ Magit is the best package to work with Git.
 
 #+END_SRC
 
+** Multiple Cursors
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package multiple-cursors
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+           ("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C-<" . mc/mark-all-like-this)
+           "C-c C-SPC" . set-rectangular-region-anchor))
+
+#+END_SRC
 
 * Buffers, Windows and Frames
 
@@ -587,6 +600,7 @@ and file management.
            ("C-x <left>" . windmove-left)
            ("C-x <right>" . windmove-right)))
 #+END_SRC
+
 * Auto-completion
 
 ** Hippie Expand
@@ -615,12 +629,51 @@ and file management.
 * Programming
 
 ** Dtrt-Indent
+#+BEGIN_SRC emacs-lisp
+
+  (use-package dtrt-indent
+    :hook prog-mode-hook
+    :config
+    (dtrt-indent-mode 1)
+    (setq dtrt-indent-verbosity 0)
+    :delight)
+
+#+END_SRC
 
 ** Smartparens
 
-** Electric Pair
+#+BEGIN_SRC emacs-lisp
+  ;; Smart Parens
+
+  (use-package smartparens
+    :hook prog-mode-hook
+    :config
+    (smartparens-mode 1)
+    ;; when you press RET, the curly braces automatically
+    ;; add another newline
+    (sp-with-modes '(c-mode c++-mode)
+                   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+                   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                                             ("* ||\n[i]" "RET"))))
+      ;; Setup smartparens keybindings and use the stricter mode
+    (add-hook 'emacs-lisp-mode-hook '(lambda ()
+                                       (require 'smartparens-config)
+                                       (sp-use-smartparens-bindings)
+                                       (smartparens-strict-mode)
+                                       (prettify-symbols-mode))))
+#+END_SRC
 
 ** Rainbow Delimiters
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package rainbow-delimiters
+    :hook prog-mode-hook
+    :config
+    (rainbow-delimiters-mode 1))
+
+#+END_SRC
+
 ** Perforce
 
 #+BEGIN_SRC emacs-lisp
@@ -640,6 +693,40 @@ and file management.
            ("C-c = -" . er/contract-region)
            ("C-c = =" . er/mark-symbol)
            ("C-c = f" . er/mark-defun)))
+
+#+END_SRC
+
+** Magit
+
+Magit is the best package to work with Git. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; Magit
+
+  (use-package magit
+    :bind ("<f6>" . magit-status))
+
+#+END_SRC
+
+** Projectile
+
+Projectile is a project interaction library for Emacs. 
+Its goal is to provide a nice set of features operating on a project level.
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; projectile
+  (use-package projectile
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :config
+    (projectile-mode 1)
+    :delight '(:eval (concat " " (projectile-project-name))))
+
+  (use-package counsel-projectile
+    :requires counsel
+    :config
+    (counsel-projectile-mode 1))
 
 #+END_SRC
 
