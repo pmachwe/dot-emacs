@@ -4,6 +4,8 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./style.css">
 #+OPTIONS: toc:2
 
+* Table of Contents :TOC:
+
 * Introduction
 
 The previous configuration was developed a couple of years back but in
@@ -736,6 +738,10 @@ Its goal is to provide a nice set of features operating on a project level.
 
 * Org Mode
 
+Other than the usual settings, adding a package =toc-org= to export a
+table of contents for Github. Minimally, add a headline with the tag
+=:TOC:= to generate the table of contents.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package org
@@ -782,8 +788,10 @@ Its goal is to provide a nice set of features operating on a project level.
     :hook (org-mode . org-bullets-mode)
     :if window-system)
 
+  (use-package toc-org
+    :hook (org-mode . toc-org-mode)
+  
 #+END_SRC
-
 
 * Themes
 
