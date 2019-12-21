@@ -5,6 +5,41 @@
 #+OPTIONS: toc:2
 
 * Table of Contents :TOC:
+- [[#introduction][Introduction]]
+- [[#bootstrap][Bootstrap]]
+- [[#basics][Basics]]
+- [[#completion-frontend][Completion Frontend]]
+- [[#shell][Shell]]
+- [[#utilities][Utilities]]
+  - [[#dired][Dired]]
+  - [[#elscreen][Elscreen]]
+  - [[#isearch][Isearch]]
+  - [[#ediff][Ediff]]
+  - [[#which-key][Which Key]]
+  - [[#avy][Avy]]
+  - [[#anzu][Anzu]]
+  - [[#undo-tree][Undo-tree]]
+  - [[#magit][Magit]]
+  - [[#hungry-delete][Hungry Delete]]
+  - [[#multiple-cursors][Multiple Cursors]]
+- [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
+  - [[#ace-window][Ace Window]]
+  - [[#ibuffer][Ibuffer]]
+  - [[#windmove][Windmove]]
+- [[#auto-completion][Auto-completion]]
+  - [[#hippie-expand][Hippie Expand]]
+- [[#programming][Programming]]
+  - [[#dtrt-indent][Dtrt-Indent]]
+  - [[#smartparens][Smartparens]]
+  - [[#rainbow-delimiters][Rainbow Delimiters]]
+  - [[#perforce][Perforce]]
+  - [[#expand-region][Expand Region]]
+  - [[#magit-1][Magit]]
+  - [[#projectile][Projectile]]
+- [[#org-mode][Org Mode]]
+- [[#themes][Themes]]
+- [[#custom-key-bindings][Custom Key Bindings]]
+- [[#available-key-sequences][Available key-sequences]]
 
 * Introduction
 
@@ -789,8 +824,8 @@ table of contents for Github. Minimally, add a headline with the tag
     :if window-system)
 
   (use-package toc-org
-    :hook (org-mode . toc-org-mode)
-  
+    :hook (org-mode . toc-org-mode))
+
 #+END_SRC
 
 * Themes
