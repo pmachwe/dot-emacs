@@ -452,7 +452,17 @@ Nice suggestions for key completions in the minibuffer.
 
 ** Projectile
 
-** Avy
+** COMMENT Avy
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package avy
+    :bind (("C-;" . avy-goto-word-1)
+           ("C-:" . avy-goto-char)
+           ("M-g g" . avy-goto-line)
+           ("C-'" . avy-isearch)))
+
+#+END_SRC
 
 ** Anzu
 
