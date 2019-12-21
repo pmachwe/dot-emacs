@@ -382,7 +382,7 @@ has tons of useful dired features.
 #+END_SRC
 
 
-** COMMENT Elscreen
+** Elscreen
 
 Elscreen has similar behaviour and usage as the tmux/screen command
 and hence is more intuitive. There are other packages which offer more
@@ -449,10 +449,9 @@ Nice suggestions for key completions in the minibuffer.
 
 #+END_SRC
 
-
 ** Projectile
 
-** COMMENT Avy
+** Avy
 
 #+BEGIN_SRC emacs-lisp
 
@@ -482,6 +481,15 @@ modes.
 
 ** Undo-tree
 
+#+BEGIN_SRC emacs-lisp
+
+  (use-package undo-tree
+    :config
+    (setq global-undo-tree-mode t)
+    (setq undo-tree-visualizer-diff t))
+
+#+END_SRC
+
 ** Magit
 
 Magit is the best package to work with Git. 
@@ -496,6 +504,14 @@ Magit is the best package to work with Git.
 
 ** Hungry Delete
    
+#+BEGIN_SRC emacs-lisp
+
+  (use-package hungry-delete
+    :config
+    (global-hungry-delete-mode))
+
+#+END_SRC
+
 
 * Buffers, Windows and Frames
 
@@ -559,6 +575,26 @@ and file management.
 * Auto-completion
 
 ** Hippie Expand
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; hippie-expand
+  (use-package hippie-exp
+    :bind ("M-/" . hippie-expand)
+    :init
+    (setq hippie-expand-try-functions-list
+          '(try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill
+            try-complete-file-name-partially
+            try-complete-file-name
+            try-expand-all-abbrevs
+            try-expand-list
+            try-expand-line
+            try-complete-lisp-symbol-partially
+            try-complete-lisp-symbol)))
+
+#+END_SRC
 
 
 * Programming
