@@ -27,23 +27,23 @@ and is also integrated with =use-package=.
 
 #+BEGIN_SRC emacs-lisp
 
-  (require 'package)
-  (setq package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
-                           ("melpa" . "http://melpa.org/packages/")
-                           ("org"   . "http://orgmode.org/elpa/")))
-  (package-initialize)
+  ;; (require 'package)
+  ;; (setq package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
+  ;;                          ("melpa" . "http://melpa.org/packages/")
+  ;;                          ("org"   . "http://orgmode.org/elpa/")))
+  ;; (package-initialize)
 
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package)
-    (package-install 'bind-key))
+  ;; (unless (package-installed-p 'use-package)
+  ;;   (package-refresh-contents)
+  ;;   (package-install 'use-package)
+  ;;   (package-install 'bind-key))
 
-  (eval-when-compile
-    (require 'use-package)
-    (require 'bind-key))
+  ;; (eval-when-compile
+  ;;   (require 'use-package)
+  ;;   (require 'bind-key))
 
-  ;(use-package-chords)
-  ;(setq use-package-always-ensure t)
+  ;; ;(use-package-chords)
+  ;; ;(setq use-package-always-ensure t)
   (setq package-check-signature nil)
 
   (use-package delight)
@@ -193,6 +193,7 @@ Some useful keybindings when in ivy minibuffer.
 
   ;; Ivy
   (use-package ivy
+    :demand t
     :bind(("C-c C-r" . ivy-resume)
           ("C-x C-r" . ivy-recentf)
           ("C-c <down>" . ivy-push-view)
@@ -216,6 +217,7 @@ Some useful keybindings when in ivy minibuffer.
   (use-package counsel
     :requires ivy
     :after ivy
+    :demand t
     :bind(("M-x" . counsel-M-x)
           ("C-x C-f" . counsel-find-file)
           ("M-j" . counsel-find-file)
@@ -329,7 +331,10 @@ This is a very useful package to create asynchronous processing.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package aysnc)
+  (use-package aysnc
+    :demand t
+    :init
+    (async-bytecomp-package-mode 1))
 
 #+END_SRC
 
@@ -345,15 +350,14 @@ has tons of useful dired features.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dired
-    :custom
-    (dired-recursive-copies 'always)
-    (dired-recursive-deletes 'always)
-    (dired-isearch-filenames 'dwim)
-    (delete-by-moving-to-trash t)
-    (dired-listing-switches "-AFhlv --group-directories-first")
-    (dired-dwim-target t)
+    :config
+    (setq dired-recursive-copies 'always)
+    (setq dired-recursive-deletes 'always)
+    (setq dired-isearch-filenames 'dwim)
+    (setq delete-by-moving-to-trash t)
+    ;(setq dired-listing-switches "-altr --group-directories-first")
+    (setq dired-dwim-target t)
     :hook
-    (dired-mode . dired-hide-details-mode)
     (dired-mode . hl-line-mode))
 
   (use-package dired-async
@@ -480,6 +484,7 @@ Magit is the best package to work with Git.
 
 ** Hungry Delete
    
+
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
@@ -538,9 +543,11 @@ and file management.
                  (ibuffer-switch-to-saved-filter-groups "mygroups"))))
 #+END_SRC
 
+
 * Auto-completion
 
 ** Hippie Expand
+
 
 * Programming
 
@@ -551,6 +558,41 @@ and file management.
 ** Electric Pair
 
 ** Rainbow Delimiters
+** Perforce
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package p4
+    :hook prog-mode-hook)
+
+#+END_SRC
+
+
+* Org Mode
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org
+    :config
+    (setq org-src-window-setup 'current-window)
+    (setq org-indent-mode t))
+
+
+#+END_SRC
+
+* Themes
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package doom-themes
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-one t)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+END_SRC
 
 * Available key-sequences
 

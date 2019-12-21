@@ -14,26 +14,41 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
 
+(defvar first-time-setup nil
+  "Track if first time setup to ensure all packages are installed.")
+
+(setq first-time-setup (not (file-exists-p (concat user-emacs-directory "elpa"))))
+
+(progn
+  (prin1 "pm: first-time-setup is: ")
+  (print first-time-setup))
+
 ;; Set up package
 
 (require 'package)
-(setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
-                         ("melpa"     . "http://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
+;; (setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
+;;                          ("melpa"     . "http://melpa.org/packages/")
+;;                          ("org" . "http://orgmode.org/elpa/")))
+(setq package-archives '(("melpa"     . "http://melpa.org/packages/")))
+
+(unless package--initialized (package-initialize))
 
 ;; Bootstrap use-package
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)
-  (package-install 'bind-key))
+  (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package))
-;(require 'diminish)
 (require 'bind-key)
+(require 'org)
+
+;; If creating the setup first-time, ensure that all packages
+;; are installed, otherwise just load when used
+(setq use-package-always-ensure first-time-setup)
+(setq use-package-verbose t)
 
 ;; Taken from comments on this post;
 ;; http://endlessparentheses.com/init-org-Without-org-mode.html
@@ -50,8 +65,8 @@
           (load-file el-file)))
     (error "Init org file '%s' missing" org-file)))
 
-(my/load-el-before-org (concat user-emacs-directory "config.org")
-                       (concat user-emacs-directory "config.el"))
+(my/load-el-before-org (concat user-emacs-directory "config_v2.org")
+                       (concat user-emacs-directory "config_v2.el"))
 
 (my/load-el-before-org (concat user-emacs-directory "functions.org")
                        (concat user-emacs-directory "functions.el"))
