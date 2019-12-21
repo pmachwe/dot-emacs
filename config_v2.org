@@ -408,12 +408,18 @@ like eyebrowse, perspective and workgroups.
 Treat SPC as * similar to ivy in normal isearch. Use M-SPC to go back
 to normal behaviour.
 
+*TIP*: Use =M-s .= to select symbol at point in isearch (similar to =*= in vim).
+
 #+BEGIN_SRC emacs-lisp
   (use-package isearch
     :config
     (setq search-whitespace-regexp ".*")
     (setq isearch-lax-whitespace t)
-    (setq isearch-regexp-lax-whitespace t))
+    (setq isearch-regexp-lax-whitespace t)
+    :bind (("C-s" . isearch-forward-regexp)
+           ("C-r" . isearch-backward-regexp)
+           ("C-M-s" . isearch-forward)
+           ("C-M-r" . isearch-backward)))
 
 #+END_SRC
 
@@ -571,7 +577,16 @@ and file management.
                  (ibuffer-switch-to-saved-filter-groups "mygroups"))))
 #+END_SRC
 
+** Windmove
 
+#+BEGIN_SRC emacs-lisp
+
+  (use-package windmove
+    :bind (("C-x <up>" . windmove-up)
+           ("C-x <down>" . windmove-down)
+           ("C-x <left>" . windmove-left)
+           ("C-x <right>" . windmove-right)))
+#+END_SRC
 * Auto-completion
 
 ** Hippie Expand
@@ -615,6 +630,18 @@ and file management.
 
 #+END_SRC
 
+** Expand Region
+
+#+BEGIN_SRC emacs-lisp
+  ;; expand region
+
+  (use-package expand-region
+    :bind (("C-=" . er/expand-region)
+           ("C-c = -" . er/contract-region)
+           ("C-c = =" . er/mark-symbol)
+           ("C-c = f" . er/mark-defun)))
+
+#+END_SRC
 
 * Org Mode
 
@@ -644,6 +671,24 @@ and file management.
 #+END_SRC
 
 
+* Custom Key Bindings
+
+This section includes some custom keybindings for useful functions.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package emacs
+    :bind (("C-h" . backward-delete-char)
+           ("M-h" . backward-kill-word)
+           ("S-<f5>" . eshell)
+           ("C-c M-!" . eshell-command)
+           ("M-k" . kill-buffer-and-window)
+           ("M-K" . kill-buffer)
+           ("C-c ," . highlight-symbol-at-point)
+           ("C-c C-," . unhighlight-regexp))
+  
+
+#+END_SRC
 * Available key-sequences
 
 The default keybindings are generally not that useful, so these could be used for more frequent commands.
