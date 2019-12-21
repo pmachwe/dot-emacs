@@ -11,6 +11,7 @@
 - [[#completion-frontend][Completion Frontend]]
 - [[#shell][Shell]]
 - [[#utilities][Utilities]]
+  - [[#async][Async]]
   - [[#dired][Dired]]
   - [[#elscreen][Elscreen]]
   - [[#isearch][Isearch]]
@@ -377,17 +378,18 @@ everytime but ask for a name when universal argument is supplied.
 
 * Utilities
 
-This is a very useful package to create asynchronous processing.
+** Async
+
+This package provides APIs for asynchronous processing.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package async
-    :demand t
-    :init
-    (async-bytecomp-package-mode 1))
+    (use-package async
+      :demand t
+      :init
+      (async-bytecomp-package-mode 1))
 
 #+END_SRC
-
 
 ** Dired
 
@@ -431,8 +433,6 @@ has tons of useful dired features.
                 ("<S-tab>" . dired-subtree-remove)))
 
 #+END_SRC
-
-
 ** Elscreen
 
 Elscreen has similar behaviour and usage as the tmux/screen command
