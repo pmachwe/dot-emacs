@@ -828,6 +828,7 @@ table of contents for Github. Minimally, add a headline with the tag
 
 #+END_SRC
 
+
 * Themes
 
 Using the themes and modeline from doom.
@@ -863,21 +864,25 @@ This section includes some custom keybindings for useful functions.
            ("M-k" . kill-buffer-and-window)
            ("M-K" . kill-buffer)
            ("C-c ," . highlight-symbol-at-point)
-           ("C-c C-," . unhighlight-regexp)))
+           ("C-c C-," . unhighlight-regexp)
+           ("C-?" . help-map)))
 
 #+END_SRC
-
 
 * Available key-sequences
 
 The default keybindings are generally not that useful, so these could be used for more frequent commands.
 
-|-----------------------+------------------+---------------------------|
-| Keybinding            | Current Function | Potential Fucntion        |
-|-----------------------+------------------+---------------------------|
-| M-c                   | Capitalize word  |                           |
-| C-i                   | Insert tab       |                           |
-| M-i                   | Insert tab       |                           |
-| C-c except a, c, l, s | Undefined        | This is a good collection |
-|-----------------------+------------------+---------------------------|
-
+|------------------+--------------------+---------------------------|
+| Keybinding       | Current Function   | Potential Fucntion        |
+|------------------+--------------------+---------------------------|
+| M-c              | Capitalize word    |                           |
+| C-i              | Insert tab         |                           |
+| M-i              | Insert tab         |                           |
+| C-c b            | counsel-bookmark   |                           |
+| C-c p            | projectile key-map |                           |
+| C-c a            | org-agenda         |                           |
+| C-c l            | org-store link     |                           |
+| C-c c            | org-capture        |                           |
+| C-c except above | Undefined          | This is a good collection |
+|------------------+--------------------+---------------------------|
