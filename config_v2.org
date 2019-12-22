@@ -876,7 +876,8 @@ This section includes some custom keybindings for useful functions.
            ("M-K" . kill-buffer)
            ("C-c ," . highlight-symbol-at-point)
            ("C-c C-," . unhighlight-regexp)
-           ("C-?" . help-map)))
+           ("C-?" . help-map)
+           ("C-M-o" . mode-line-other-window)))
 
 #+END_SRC
 
