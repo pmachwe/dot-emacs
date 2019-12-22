@@ -361,7 +361,7 @@ everytime but ask for a name when universal argument is supplied.
     ;; Use Git Bash as shell on Windows.
     (defvar win-git-path "C:/Program Files/Git"
       "Git executable path on Windows.")
-  
+    (require 'f)
     (when (and (equal system-type 'windows-nt)
                (file-exists-p win-git-path))
       (setq explicit-shell-file-name
