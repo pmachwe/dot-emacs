@@ -7,6 +7,7 @@
 * Table of Contents :TOC:
 - [[#introduction][Introduction]]
 - [[#bootstrap][Bootstrap]]
+- [[#envirornment][Envirornment]]
 - [[#basics][Basics]]
 - [[#completion-frontend][Completion Frontend]]
 - [[#shell][Shell]]
@@ -89,6 +90,21 @@ and is also integrated with =use-package=.
 
 #+END_SRC
 
+
+* Envirornment
+
+This is not the best way but identifying the work machine when there
+is an empty file =.WORK_MACHINE= in the =user-emacs-directory=. There
+are some pacakges that do not work properly in my work environment and
+hence need to be disabled.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun my/is-work-env()
+      "Check the existence of .WORK_MACHINE file."
+    (file-exists-p (concat user-emacs-directory "/.WORK_MACHINE")))
+
+#+END_SRC
 
 * Basics
 
@@ -596,6 +612,7 @@ of its own. It adds the keybinding =C-M-e= to achieve this.
 
 #+END_SRC
 
+
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
@@ -911,6 +928,7 @@ These are some general settings for various programming languages.
 
 #+END_SRC
 
+
 * Themes
 
 Using the themes and modeline from doom.
@@ -927,7 +945,8 @@ Using the themes and modeline from doom.
     (doom-themes-org-config))
 
   (use-package doom-modeline
-        :hook (after-init . doom-modeline-mode))
+    :if (not (my/is-work-env))
+    :hook (after-init . doom-modeline-mode))
 
 #+END_SRC
 
