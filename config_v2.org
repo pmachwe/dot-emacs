@@ -25,6 +25,7 @@
   - [[#hungry-delete][Hungry Delete]]
   - [[#multiple-cursors][Multiple Cursors]]
   - [[#minibuffer-editing][Minibuffer Editing]]
+  - [[#electric-pair][Electric Pair]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -105,6 +106,7 @@ hence need to be disabled.
     (file-exists-p (concat user-emacs-directory "/.WORK_MACHINE")))
 
 #+END_SRC
+
 
 * Basics
 
@@ -612,6 +614,20 @@ of its own. It adds the keybinding =C-M-e= to achieve this.
 
 #+END_SRC
 
+** Electric Pair
+
+Add a matching closing bracket when an opening bracket is inserted.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package electric-pair
+    :hook prog-mode
+    :config
+    (setq electric-pair-pairs
+          '(
+            (?\" . ?\")
+            (?\{ . ?\}))))
+#+END_SRC
 
 * Buffers, Windows and Frames
 
@@ -870,6 +886,7 @@ table of contents for Github. Minimally, add a headline with the tag
     :hook (org-mode . toc-org-mode))
 
 #+END_SRC
+
 
 * Programming
 
