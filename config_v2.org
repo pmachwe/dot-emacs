@@ -620,14 +620,15 @@ Add a matching closing bracket when an opening bracket is inserted.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package electric-pair
-    :hook prog-mode
+  (use-package elec-pair
+    :hook (prog-mode . electric-pair-mode)
     :config
     (setq electric-pair-pairs
           '(
             (?\" . ?\")
             (?\{ . ?\}))))
 #+END_SRC
+
 
 * Buffers, Windows and Frames
 
