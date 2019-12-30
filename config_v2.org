@@ -288,7 +288,7 @@ Some useful keybindings when in ivy minibuffer.
           ("C-c h i" . counsel-info-lookup-symbol)
           ("C-c h u" . counsel-unicode-char)
           ("C-c /" . counsel-imenu)
-          ("C-c b" . counsel-bookmark)
+          ("C-c ." . counsel-bookmark)
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
