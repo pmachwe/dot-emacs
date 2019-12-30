@@ -23,6 +23,7 @@
   - [[#magit][Magit]]
   - [[#hungry-delete][Hungry Delete]]
   - [[#multiple-cursors][Multiple Cursors]]
+  - [[#minibuffer-editing][Minibuffer Editing]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -581,6 +582,18 @@ Magit is the best package to work with Git.
 
 #+END_SRC
 
+** Minibuffer Editing
+
+This package enables editing minibuffer contents in a separate buffer
+of its own. It adds the keybinding =C-M-e= to achieve this.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package miniedit
+    :commands minibuffer-edit
+    :init (miniedit-install))
+
+#+END_SRC
 
 * Buffers, Windows and Frames
 
@@ -815,7 +828,8 @@ table of contents for Github. Minimally, add a headline with the tag
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture))
-    :delight org-indent-mode)
+    :delight org-indent-mode
+    :hook auto-fill-mode)
 
   (use-package htmlize
     :after org
