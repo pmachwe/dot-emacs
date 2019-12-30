@@ -829,6 +829,63 @@ Its goal is to provide a nice set of features operating on a project level.
 
 #+END_SRC
 
+** Language Specific
+
+ These are some general settings for various programming languages.
+
+ #+BEGIN_SRC emacs-lisp
+
+   (use-package emacs
+     :config
+
+     (defun my/common-prog-settings()
+       "Setup common settings for all programming."
+       (when window-system (linum-mode 1))
+       (local-set-key (kbd "RET") 'newline-and-indent)
+       (subword-mode 1)
+       (setq-default indent-tabs-mode nil)
+       (setq compilation-scroll-output t))
+
+     (defun my/c-prog-settings()
+       "Specific settings for C/C++."
+       (setq-default c-default-style "stroustrup"
+                     c-basic-offset 2)
+       (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+       ;; Flycheck
+       (setq flycheck-gcc-language-standard "c++11")
+       (setq flycheck-clang-language-standard "c++11")
+       ;; Avoid indentation at namespace
+       (defconst my-cc-style
+         '("cc-mode"
+           (c-offsets-alist . ((innamespace . [0])))))
+
+       (c-add-style "my-cc-mode" my-cc-style)
+       (hs-minor-mode))
+
+     (defun my/elisp-prog-settings()
+       "Specific settings for Elisp."
+       (require 'smartparens-config)
+       (sp-use-smartparens-bindings)
+       (smartparens-strict-mode)
+       (prettify-symbols-mode))
+
+     (defun my/python-prog-settings()
+       "Specific settings for Python."
+       (elpy-enable)
+       (elpy-mode 1)
+       (setq-default python-indent-offset 4))
+      ; (highlight-indentation-mode)
+       ;(fci-mode 1))
+
+     :hook ((prog-mode     . my/common-prog-settings)
+            (c-mode-common . my/c-prog-settings)
+            (c++-mode      . my/c-prog-settings)
+            (elisp-mode    . my/elisp-prog-settings)
+            (python-mode   . my/python-prog-settings)))
+
+
+ #+END_SRC
+
 
 * Org Mode
 
@@ -885,64 +942,6 @@ table of contents for Github. Minimally, add a headline with the tag
 
   (use-package toc-org
     :hook (org-mode . toc-org-mode))
-
-#+END_SRC
-
-
-* Programming
-
-These are some general settings for various programming languages.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package emacs
-    :config
-
-    (defun my/common-prog-settings()
-      "Setup common settings for all programming."
-      (when window-system (linum-mode 1))
-      (local-set-key (kbd "RET") 'newline-and-indent)
-      (subword-mode 1)
-      (setq-default indent-tabs-mode nil)
-      (setq compilation-scroll-output t))
-
-    (defun my/c-prog-settings()
-      "Specific settings for C/C++."
-      (setq-default c-default-style "stroustrup"
-                    c-basic-offset 2)
-      (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-      ;; Flycheck
-      (setq flycheck-gcc-language-standard "c++11")
-      (setq flycheck-clang-language-standard "c++11")
-      ;; Avoid indentation at namespace
-      (defconst my-cc-style
-        '("cc-mode"
-          (c-offsets-alist . ((innamespace . [0])))))
-
-      (c-add-style "my-cc-mode" my-cc-style)
-      (hs-minor-mode))
-
-    (defun my/elisp-prog-settings()
-      "Specific settings for Elisp."
-      (require 'smartparens-config)
-      (sp-use-smartparens-bindings)
-      (smartparens-strict-mode)
-      (prettify-symbols-mode))
-
-    (defun my/python-prog-settings()
-      "Specific settings for Python."
-      (elpy-enable)
-      (elpy-mode 1)
-      (setq-default python-indent-offset 4))
-     ; (highlight-indentation-mode)
-      ;(fci-mode 1))
-
-    :hook ((prog-mode     . my/common-prog-settings)
-           (c-mode-common . my/c-prog-settings)
-           (c++-mode      . my/c-prog-settings)
-           (elisp-mode    . my/elisp-prog-settings)
-           (python-mode   . my/python-prog-settings)))
-
 
 #+END_SRC
 
