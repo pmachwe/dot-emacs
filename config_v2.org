@@ -820,12 +820,13 @@ Its goal is to provide a nice set of features operating on a project level.
     ("C-c p" . projectile-command-map)
     :config
     (projectile-mode 1)
+    (setq projectile-completion-system 'ivy)
     :delight '(:eval (concat " " (projectile-project-name))))
 
-  ;; (use-package counsel-projectile
-  ;;   :requires counsel
-  ;;   :config
-  ;;   (counsel-projectile-mode 1))
+  (use-package counsel-projectile
+    :requires (counsel projectile)
+    :config
+    (counsel-projectile-mode 1))
 
 #+END_SRC
 
