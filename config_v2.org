@@ -40,8 +40,8 @@
   - [[#expand-region][Expand Region]]
   - [[#magit-1][Magit]]
   - [[#projectile][Projectile]]
+  - [[#language-specific][Language Specific]]
 - [[#org-mode][Org Mode]]
-- [[#programming-1][Programming]]
 - [[#themes][Themes]]
 - [[#custom-key-bindings][Custom Key Bindings]]
 - [[#available-key-sequences][Available key-sequences]]
@@ -917,6 +917,16 @@ table of contents for Github. Minimally, add a headline with the tag
     (setq org-level-3 '((t (:inherit outline-3 :height 1.10))))
     (setq org-level-4 '((t (:inherit outline-4 :height 1.05))))
     (setq org-document-title '((t (:underline t :weight bold :height 1.3))))
+    (setq org-structure-template-alist
+     '(("s" "#+BEGIN_SRC\n?\n#+END_SRC")
+       ("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+       ("e" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE")
+       ("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE")
+       ("v" "#+BEGIN_VERSE\n?\n#+END_VERSE")
+       ("V" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")
+       ("c" "#+BEGIN_CENTER\n?\n#+END_CENTER")
+       ("C" "#+BEGIN_COMMENT\n?\n#+END_COMMENT")
+       ("I" "#+INCLUDE: %file ?")))
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture))
