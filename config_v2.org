@@ -26,6 +26,7 @@
   - [[#multiple-cursors][Multiple Cursors]]
   - [[#minibuffer-editing][Minibuffer Editing]]
   - [[#electric-pair][Electric Pair]]
+  - [[#save-points][Save Points]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -629,6 +630,19 @@ Add a matching closing bracket when an opening bracket is inserted.
             (?\{ . ?\}))))
 #+END_SRC
 
+** Save Points
+
+Remember last point where the file was closed.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package saveplace
+    :custom
+    (save-place-file "~/.emacs.d/saveplace")
+    :config
+    (save-place-mode 1))
+
+#+END_SRC
 
 * Buffers, Windows and Frames
 
