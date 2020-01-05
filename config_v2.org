@@ -937,11 +937,12 @@ table of contents for Github. Minimally, add a headline with the tag
        ("c" "#+BEGIN_CENTER\n?\n#+END_CENTER")
        ("C" "#+BEGIN_COMMENT\n?\n#+END_COMMENT")
        ("I" "#+INCLUDE: %file ?")))
+    (org-indent-mode 1)
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture))
     :delight org-indent-mode
-    :hook auto-fill-mode)
+    :hook (org-mode . auto-fill-mode))
 
   (use-package htmlize
     :after org
@@ -964,7 +965,6 @@ table of contents for Github. Minimally, add a headline with the tag
     :hook (org-mode . toc-org-mode))
 
 #+END_SRC
-
 
 * Themes
 
