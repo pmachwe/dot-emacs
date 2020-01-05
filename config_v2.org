@@ -10,8 +10,8 @@
 - [[#envirornment][Envirornment]]
 - [[#basics][Basics]]
 - [[#completion-frontend][Completion Frontend]]
-- [[#shell][Shell]]
 - [[#utilities][Utilities]]
+  - [[#shell][Shell]]
   - [[#async][Async]]
   - [[#dired][Dired]]
   - [[#elscreen][Elscreen]]
@@ -340,7 +340,10 @@ Some useful keybindings when in ivy minibuffer.
 #+END_SRC
 
 
-* Shell
+
+* Utilities
+
+** Shell
 
 With Emacs 25, a new shell opens up in another window messing up the
 existing window configuration. The following advice fixes this. ([[https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows][SO]])
@@ -395,10 +398,6 @@ everytime but ask for a name when universal argument is supplied.
            ("C-j" . comint-send-input)))
 
 #+END_SRC
-
-
-* Utilities
-
 ** Async
 
 This package provides APIs for asynchronous processing.
