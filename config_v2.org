@@ -617,11 +617,13 @@ of its own. It adds the keybinding =C-M-e= to achieve this.
 
 ** Electric Pair
 
-Add a matching closing bracket when an opening bracket is inserted.
+Add a matching closing bracket when an opening bracket is
+inserted. This is nice but does not work well together with =smartparens=.
 
 #+BEGIN_SRC emacs-lisp
 
   (use-package elec-pair
+    :disabled
     :hook (prog-mode . electric-pair-mode)
     :config
     (setq electric-pair-pairs
@@ -887,12 +889,11 @@ Its goal is to provide a nice set of features operating on a project level.
       ; (highlight-indentation-mode)
        ;(fci-mode 1))
 
-     :hook ((prog-mode     . my/common-prog-settings)
-            (c-mode-common . my/c-prog-settings)
-            (c++-mode      . my/c-prog-settings)
-            (elisp-mode    . my/elisp-prog-settings)
-            (python-mode   . my/python-prog-settings)))
-
+     :hook ((prog-mode       . my/common-prog-settings)
+            (c-mode          . my/c-prog-settings)
+            (c++-mode        . my/c-prog-settings)
+            (emacs-lisp-mode . my/elisp-prog-settings)
+            (python-mode     . my/python-prog-settings)))
 
  #+END_SRC
 
