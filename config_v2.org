@@ -10,8 +10,8 @@
 - [[#envirornment][Envirornment]]
 - [[#basics][Basics]]
 - [[#completion-frontend][Completion Frontend]]
-- [[#shell][Shell]]
 - [[#utilities][Utilities]]
+  - [[#shell][Shell]]
   - [[#async][Async]]
   - [[#dired][Dired]]
   - [[#elscreen][Elscreen]]
@@ -26,6 +26,7 @@
   - [[#multiple-cursors][Multiple Cursors]]
   - [[#minibuffer-editing][Minibuffer Editing]]
   - [[#electric-pair][Electric Pair]]
+  - [[#save-points][Save Points]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -341,7 +342,10 @@ Some useful keybindings when in ivy minibuffer.
 #+END_SRC
 
 
-* Shell
+
+* Utilities
+
+** Shell
 
 With Emacs 25, a new shell opens up in another window messing up the
 existing window configuration. The following advice fixes this. ([[https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows][SO]])
@@ -396,10 +400,6 @@ everytime but ask for a name when universal argument is supplied.
            ("C-j" . comint-send-input)))
 
 #+END_SRC
-
-
-* Utilities
-
 ** Async
 
 This package provides APIs for asynchronous processing.
@@ -618,17 +618,33 @@ of its own. It adds the keybinding =C-M-e= to achieve this.
 
 ** Electric Pair
 
-Add a matching closing bracket when an opening bracket is inserted.
+Add a matching closing bracket when an opening bracket is
+inserted. This is nice but does not work well together with =smartparens=.
 
 #+BEGIN_SRC emacs-lisp
 
   (use-package elec-pair
+    :disabled
     :hook (prog-mode . electric-pair-mode)
     :config
     (setq electric-pair-pairs
           '(
             (?\" . ?\")
             (?\{ . ?\}))))
+#+END_SRC
+
+** Save Points
+
+Remember last point where the file was closed.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package saveplace
+    :custom
+    (save-place-file "~/.emacs.d/saveplace")
+    :config
+    (save-place-mode 1))
+
 #+END_SRC
 
 
@@ -779,13 +795,7 @@ Trying out company mode.
     (sp-with-modes '(c-mode c++-mode)
                    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
                    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-                                                             ("* ||\n[i]" "RET"))))
-      ;; Setup smartparens keybindings and use the stricter mode
-    (add-hook 'emacs-lisp-mode-hook '(lambda ()
-                                       (require 'smartparens-config)
-                                       (sp-use-smartparens-bindings)
-                                       (smartparens-strict-mode)
-                                       (prettify-symbols-mode))))
+                                                             ("* ||\n[i]" "RET")))))
 #+END_SRC
 
 ** Rainbow Delimiters
@@ -904,12 +914,11 @@ Its goal is to provide a nice set of features operating on a project level.
       ; (highlight-indentation-mode)
        ;(fci-mode 1))
 
-     :hook ((prog-mode     . my/common-prog-settings)
-            (c-mode-common . my/c-prog-settings)
-            (c++-mode      . my/c-prog-settings)
-            (elisp-mode    . my/elisp-prog-settings)
-            (python-mode   . my/python-prog-settings)))
-
+     :hook ((prog-mode       . my/common-prog-settings)
+            (c-mode          . my/c-prog-settings)
+            (c++-mode        . my/c-prog-settings)
+            (emacs-lisp-mode . my/elisp-prog-settings)
+            (python-mode     . my/python-prog-settings)))
 
  #+END_SRC
 
@@ -954,11 +963,12 @@ table of contents for Github. Minimally, add a headline with the tag
        ("c" "#+BEGIN_CENTER\n?\n#+END_CENTER")
        ("C" "#+BEGIN_COMMENT\n?\n#+END_COMMENT")
        ("I" "#+INCLUDE: %file ?")))
+    (org-indent-mode 1)
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture))
     :delight org-indent-mode
-    :hook auto-fill-mode)
+    :hook (org-mode . auto-fill-mode))
 
   (use-package htmlize
     :after org
@@ -981,7 +991,6 @@ table of contents for Github. Minimally, add a headline with the tag
     :hook (org-mode . toc-org-mode))
 
 #+END_SRC
-
 
 * Themes
 
