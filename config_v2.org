@@ -32,6 +32,7 @@
   - [[#windmove][Windmove]]
 - [[#auto-completion][Auto-completion]]
   - [[#hippie-expand][Hippie Expand]]
+  - [[#company][Company]]
 - [[#programming][Programming]]
   - [[#dtrt-indent][Dtrt-Indent]]
   - [[#smartparens][Smartparens]]
@@ -45,6 +46,7 @@
 - [[#themes][Themes]]
 - [[#custom-key-bindings][Custom Key Bindings]]
 - [[#available-key-sequences][Available key-sequences]]
+- [[#wishlist][Wishlist]]
 
 * Introduction
 
@@ -724,6 +726,30 @@ and file management.
 
 #+END_SRC
 
+** Company
+
+Trying out company mode.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package company
+    :custom
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 2)
+    :config
+    (company-tng-configure-default)
+    :hook (after-init . global-company-mode))
+
+  (use-package company-prescient
+    :requires (company prescient))
+
+  (use-package company-shell
+    :requires company
+    :config
+    (add-to-list 'company-backends '(company-shell company-shell-env)))
+
+#+END_SRC
+
 
 * Programming
 
@@ -1017,3 +1043,10 @@ The default keybindings are generally not that useful, so these could be used fo
 | C-c c            | org-capture        |                           |
 | C-c except above | Undefined          | This is a good collection |
 |------------------+--------------------+---------------------------|
+
+* Wishlist
+
+These are some of the packages that need to be looked at and configured.
+
++ Centaur Tabs
++ LSP Mode especially for C++ (company-lsp)
