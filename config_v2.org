@@ -773,9 +773,8 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dtrt-indent
-    :hook prog-mode-hook
+    :hook (prog-mode . dtrt-indent-mode)
     :config
-    (dtrt-indent-mode 1)
     (setq dtrt-indent-verbosity 0)
     :delight)
 
@@ -787,9 +786,8 @@ Trying out company mode.
   ;; Smart Parens
 
   (use-package smartparens
-    :hook prog-mode-hook
+    :hook (prog-mode . smartparens-mode)
     :config
-    (smartparens-mode 1)
     ;; when you press RET, the curly braces automatically
     ;; add another newline
     (sp-with-modes '(c-mode c++-mode)
@@ -803,9 +801,7 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package rainbow-delimiters
-    :hook prog-mode-hook
-    :config
-    (rainbow-delimiters-mode 1))
+    :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
 
@@ -814,7 +810,7 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package p4
-    :hook prog-mode-hook)
+    :hook prog-mode)
 
 #+END_SRC
 
@@ -992,6 +988,7 @@ table of contents for Github. Minimally, add a headline with the tag
 
 #+END_SRC
 
+
 * Themes
 
 Using the themes and modeline from doom.
@@ -1052,6 +1049,7 @@ The default keybindings are generally not that useful, so these could be used fo
 | C-c c            | org-capture        |                           |
 | C-c except above | Undefined          | This is a good collection |
 |------------------+--------------------+---------------------------|
+
 
 * Wishlist
 
