@@ -787,6 +787,7 @@ Trying out company mode.
   (use-package smartparens
     :hook (prog-mode . smartparens-mode)
     :config
+    (require 'smartparens-config)
     ;; when you press RET, the curly braces automatically
     ;; add another newline
     (sp-with-modes '(c-mode c++-mode)
@@ -807,9 +808,12 @@ Trying out company mode.
 
 ** Perforce
 
+Install this package only in work environment.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package p4
+    :if (my/is-work-env)
     :hook prog-mode)
 
 #+END_SRC
