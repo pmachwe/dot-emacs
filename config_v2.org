@@ -199,8 +199,10 @@ simple defaults.
             (apply orig-fun args)))))
 
     (advice-add 'pop-to-mark-command :around
-                #'my/multi-pop-to-mark))
+                #'my/multi-pop-to-mark)
 
+    ;; Open in maximized frame
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 #+END_SRC
 
 
@@ -1056,6 +1058,7 @@ This section includes some custom keybindings for useful functions.
 
 * OS Specific
 
+
 ** Windows
 
 #+BEGIN_SRC emacs-lisp
@@ -1063,14 +1066,13 @@ This section includes some custom keybindings for useful functions.
   (use-package emacs
     :if (or (string-equal system-type "windows-nt")
             (string-equal system-type "ms-dos"))
-    :custom
-    (default-directory (getenv "HOME"))
-    (w32-get-true-file-attributes nil)
     :config
+    (setq default-directory (getenv "HOME"))
+    (setq w32-get-true-file-attributes nil)
+    (message "Setting up options for %s" system-type)
     (remove-hook 'find-file-hooks 'vc-find-file-hook))
 
 #+END_SRC
-
 
 * Available key-sequences
 
