@@ -1064,7 +1064,7 @@ This section includes some custom keybindings for useful functions.
     :if (or (string-equal system-name "windows-nt")
             (string-equal system-name "ms-dos"))
     :custom
-    ( default-directory (getenv "HOME"))
+    (default-directory (getenv "HOME"))
     (w32-get-true-file-attributes nil)
     :config
     (remove-hook 'find-file-hooks 'vc-find-file-hook))
