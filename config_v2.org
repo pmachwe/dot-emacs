@@ -46,6 +46,8 @@
 - [[#org-mode][Org Mode]]
 - [[#themes][Themes]]
 - [[#custom-key-bindings][Custom Key Bindings]]
+- [[#os-specific][OS Specific]]
+  - [[#windows][Windows]]
 - [[#available-key-sequences][Available key-sequences]]
 - [[#wishlist][Wishlist]]
 
@@ -357,6 +359,7 @@ Some useful keybindings when in ivy minibuffer.
             #'ivy-format-function-line)
     (ivy-rich-mode 1))
 #+END_SRC
+
 
 * Utilities
 
@@ -1047,6 +1050,24 @@ This section includes some custom keybindings for useful functions.
            ("C-c C-," . unhighlight-regexp)
            ("C-?" . help-map)
            ("C-M-o" . mode-line-other-window)))
+
+#+END_SRC
+
+
+* OS Specific
+
+** Windows
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package emacs
+    :if (or (string-equal system-name "windows-nt")
+            (string-equal system-name "ms-dos"))
+    :custom
+    ( default-directory (getenv "HOME"))
+    (w32-get-true-file-attributes nil)
+    :config
+    (remove-hook 'find-file-hooks 'vc-find-file-hook))
 
 #+END_SRC
 
