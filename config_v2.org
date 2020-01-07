@@ -1061,8 +1061,8 @@ This section includes some custom keybindings for useful functions.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emacs
-    :if (or (string-equal system-name "windows-nt")
-            (string-equal system-name "ms-dos"))
+    :if (or (string-equal system-type "windows-nt")
+            (string-equal system-type "ms-dos"))
     :custom
     (default-directory (getenv "HOME"))
     (w32-get-true-file-attributes nil)
