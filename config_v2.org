@@ -293,7 +293,7 @@ Some useful keybindings when in ivy minibuffer.
           ("C-c h u" . counsel-unicode-char)
           ("C-c /" . counsel-imenu)
           ("C-c ." . counsel-bookmark)
-          ("C-x C-r" . ivy-recentf)
+          ("C-x C-r" . counsel-recentf)
           :map read-expression-map
           ("C-r" . counsel-expression-history)))
 
@@ -339,9 +339,15 @@ Some useful keybindings when in ivy minibuffer.
     (ivy-posframe-mode 1)
     :delight ivy-posframe-mode)
 
+  (use-package ivy-rich
+    :ensure t
+    :custom
+    (ivy-rich-path-style 'abbreviate)
+    :config
+    (setcdr (assq t ivy-format-functions-alist)
+            #'ivy-format-function-line)
+    (ivy-rich-mode 1))
 #+END_SRC
-
-
 
 * Utilities
 
