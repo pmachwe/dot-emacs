@@ -327,6 +327,15 @@ Some useful keybindings when in ivy minibuffer.
   (use-package ivy-posframe
     :requires ivy
     :after ivy
+    :custom
+    (ivy-posframe-parameters
+     '((left-fringe . 2)
+       (right-fringe . 2)
+       (internal-border-width . 2)))
+    (ivy-posframe-height-alist
+     '((swiper . 15)
+       (swiper-isearch . 15)
+       (t . 10)))
     :config
     (setq ivy-posframe-display-functions-alist
           '((swiper . nil)
