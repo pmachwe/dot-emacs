@@ -771,6 +771,12 @@ Trying out company mode.
     :custom
     (company-idle-delay 0)
     (company-minimum-prefix-length 2)
+    (company-tooltip-align-annotations t)
+    (company-show-numbers t)
+    (company-transformers
+     '(company-sort-by-backend-importance
+       company-sort-prefer-same-case-prefix
+       company-sort-by-occurrence))
     :config
     (company-tng-configure-default)
     :hook (after-init . global-company-mode))
