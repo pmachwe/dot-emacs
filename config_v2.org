@@ -27,6 +27,7 @@
   - [[#minibuffer-editing][Minibuffer Editing]]
   - [[#electric-pair][Electric Pair]]
   - [[#save-points][Save Points]]
+  - [[#wordnut][WordNut]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -653,6 +654,19 @@ inserted. This is nice but does not work well together with =smartparens=.
 #+END_SRC
 
 ** Save Points
+** WordNut
+
+A utility to get word meanings/synonyms inside of emacs. Uses
+[[https://wordnet.princeton.edu/download/current-version#win][WordNet]] as backend and it needs to be installed.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package wordnut
+    :config
+    (when (eq system-type 'windows-nt)
+      (setq wordnut-cmd "c:/Program Files (x86)/WordNet/2.1/bin/wn.exe")))
+
+#+END_SRC
 
 Remember last point where the file was closed.
 
@@ -899,7 +913,7 @@ Its goal is to provide a nice set of features operating on a project level.
  #+BEGIN_SRC emacs-lisp
 
    (use-package emacs
-     :config
+     :init
 
      (defun my/common-prog-settings()
        "Setup common settings for all programming."
@@ -945,7 +959,6 @@ Its goal is to provide a nice set of features operating on a project level.
             (c++-mode        . my/c-prog-settings)
             (emacs-lisp-mode . my/elisp-prog-settings)
             (python-mode     . my/python-prog-settings)))
-
  #+END_SRC
 
 
@@ -1079,6 +1092,7 @@ This section includes some custom keybindings for useful functions.
     (remove-hook 'find-file-hooks 'vc-find-file-hook))
 
 #+END_SRC
+
 
 * Available key-sequences
 
