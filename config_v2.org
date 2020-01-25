@@ -654,6 +654,17 @@ inserted. This is nice but does not work well together with =smartparens=.
 #+END_SRC
 
 ** Save Points
+Remember last point where the file was closed.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package saveplace
+    :custom
+    (save-place-file "~/.emacs.d/saveplace")
+    :config
+    (save-place-mode 1))
+
+#+END_SRC
 ** WordNut
 
 A utility to get word meanings/synonyms inside of emacs. Uses
@@ -668,17 +679,6 @@ A utility to get word meanings/synonyms inside of emacs. Uses
 
 #+END_SRC
 
-Remember last point where the file was closed.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package saveplace
-    :custom
-    (save-place-file "~/.emacs.d/saveplace")
-    :config
-    (save-place-mode 1))
-
-#+END_SRC
 
 
 * Buffers, Windows and Frames
