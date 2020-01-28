@@ -15,6 +15,7 @@
   - [[#async][Async]]
   - [[#dired][Dired]]
   - [[#elscreen][Elscreen]]
+  - [[#perspective][Perspective]]
   - [[#isearch][Isearch]]
   - [[#ediff][Ediff]]
   - [[#which-key][Which Key]]
@@ -481,9 +482,12 @@ Elscreen has similar behaviour and usage as the tmux/screen command
 and hence is more intuitive. There are other packages which offer more
 like eyebrowse, perspective and workgroups.
 
+Update - Trying out =perspective= as it also allows separate buffer list.
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package elscreen
+    :disabled t
     :config
     (setq elscreen-display-tab t)
     (elscreen-start))
@@ -495,7 +499,27 @@ like eyebrowse, perspective and workgroups.
     :after elscreen)
 
 #+END_SRC
+** Perspective
 
+[[https://github.com/nex3/perspective-el][Perspective]] has an advantage over other similar packages like
+=elscreen=, =eyebrowse= that it keeps separate buffer list. However,
+=ivy= has some issues and it does not filter the buffers for each
+perspective [[https://github.com/abo-abo/swiper/issues/1991][here]]. Hence, using the workaround suggested to use a
+separate function to achieve this.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package perspective
+    :init
+    (persp-mode)
+    (defun my/persp-switch-to-buffer()
+      (interactive)
+      (ivy-read "Switch to buffer: " (remove nil (mapcar 'buffer-name (persp-buffers (persp-curr))))))
+    :config
+    (setq persp-mode-prefix-key (kbd "C-."))
+    (define-key perspective-map (kbd ".") 'my/persp-switch-to-buffer))
+
+#+END_SRC
 ** Isearch
 
 Treat SPC as * similar to ivy in normal isearch. Use M-SPC to go back
