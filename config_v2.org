@@ -46,6 +46,7 @@
   - [[#projectile][Projectile]]
   - [[#language-specific][Language Specific]]
 - [[#org-mode][Org Mode]]
+- [[#github-packages][Github Packages]]
 - [[#themes][Themes]]
 - [[#custom-key-bindings][Custom Key Bindings]]
 - [[#os-specific][OS Specific]]
@@ -1060,6 +1061,38 @@ table of contents for Github. Minimally, add a headline with the tag
 
 #+END_SRC
 
+
+* Github Packages
+
+Some packages are not available on MELPA etc, so the following setup
+using =quelpa= is used to install those.
+
+I wanted to write a ivy/counsel interface to =cscope= as it is used at
+work but now found that this is already available on [[https://github.com/Raphus-cucullatus/ivy-cscope.el][github]].
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; quelpa
+  (use-package quelpa
+    :init
+    ;; Do not upgrade during init
+    (setq quelpa-self-upgrade-p nil)
+    (setq quelpa-update-melpa-p nil)
+    (setq quelpa-checkout-melpa-p nil)
+    :config
+    (unless (require 'quelpa nil t)
+      (with-temp-buffer
+        (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+        (eval-buffer))))
+
+  ;; ivy-cscope
+  (quelpa '(ivy-cscope :repo "raphus-cucullatus/ivy-cscope.el" :fetcher github))
+
+  ;; ivy-cscope setup
+  (when (require 'ivy-cscope nil 'noerror)
+    (define-key c-mode-base-map (kbd "C-c s") ivy-cscope-command-map))
+
+#+END_SRC
 
 * Themes
 
