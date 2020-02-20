@@ -1090,7 +1090,7 @@ work but now found that this is already available on [[https://github.com/Raphus
 
   ;; ivy-cscope setup
   (when (require 'ivy-cscope nil 'noerror)
-    (define-key c-mode-base-map (kbd "C-c s") ivy-cscope-command-map))
+    (define-key (make-keymap) (kbd "C-c s") ivy-cscope-command-map))
 
 #+END_SRC
 
@@ -1101,6 +1101,7 @@ Using the themes and modeline from doom.
 #+BEGIN_SRC emacs-lisp
 
   (use-package doom-themes
+    :disabled t
     :config
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -1110,8 +1111,13 @@ Using the themes and modeline from doom.
     (doom-themes-org-config))
 
   (use-package doom-modeline
+    :disabled t
     :if (not (my/is-work-env))
     :hook (after-init . doom-modeline-mode))
+
+  (use-package modus-operandi-theme
+    :config
+    (load-theme 'modus-operandi t))
 
 #+END_SRC
 
