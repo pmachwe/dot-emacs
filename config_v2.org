@@ -1096,7 +1096,10 @@ work but now found that this is already available on [[https://github.com/Raphus
 
 * Themes
 
-Using the themes and modeline from doom.
+Using the themes and modeline from doom. Using the =modus-operandi=
+theme as default now due to much cleaner and pleasing colours and also
+using the =telephone-line= modeline which is configured well with the
+=modus-operandi= theme.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1118,6 +1121,11 @@ Using the themes and modeline from doom.
   (use-package modus-operandi-theme
     :config
     (load-theme 'modus-operandi t))
+
+  (use-package telephone-line
+    :requires modus-operandi-theme
+    :init
+    (telephone-line-mode t))
 
 #+END_SRC
 
