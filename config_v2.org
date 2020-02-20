@@ -837,8 +837,9 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dtrt-indent
-    :hook (prog-mode . dtrt-indent-mode)
+    :hook prog-mode
     :config
+    (dtrt-indent-mode t)
     (setq dtrt-indent-verbosity 0)
     :delight)
 
@@ -850,8 +851,9 @@ Trying out company mode.
   ;; Smart Parens
 
   (use-package smartparens
-    :hook (prog-mode . smartparens-mode)
+    :hook prog-mode
     :config
+    (smartparens-mode t)
     (require 'smartparens-config)
     ;; when you press RET, the curly braces automatically
     ;; add another newline
@@ -867,7 +869,9 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package rainbow-delimiters
-    :hook (prog-mode . rainbow-delimiters-mode))
+    :hook prog-mode
+    :config
+    (rainbow-delimiters-mode))
 
 #+END_SRC
 
