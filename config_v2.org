@@ -33,6 +33,7 @@
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
   - [[#windmove][Windmove]]
+  - [[#window-management][Window Management]]
 - [[#auto-completion][Auto-completion]]
   - [[#hippie-expand][Hippie Expand]]
   - [[#company][Company]]
@@ -205,7 +206,8 @@ simple defaults.
                 #'my/multi-pop-to-mark)
 
     ;; Open in maximized frame
-    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+    (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
+
 #+END_SRC
 
 
@@ -774,6 +776,62 @@ and file management.
            ("C-x <down>" . windmove-down)
            ("C-x <left>" . windmove-left)
            ("C-x <right>" . windmove-right)))
+
+#+END_SRC
+
+** Window Management
+
+For all the special windows, specify a location on the frame for
+better management. The configuration is inspired from [[https://protesilaos.com/dotemacs/#h:12591f89-eeea-4b12-93e8-9293504e5a12][here]].
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package window
+    :init
+    (setq display-buffer-alist
+          '(
+            ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|grep\\)\\*"
+             (display-buffer-in-side-window)
+             (window-height . 0.25)
+             (side . bottom)
+             (slot . 1)
+             (window-parameters . ((no-other-window . t))))
+            (".*\\*Completions.*"
+             (display-buffer-in-side-window)
+             (window-height . 0.16)
+             (side . bottom)
+             (slot . 0)
+             (window-parameters . ((no-other-window . t))))
+            ("\\*e?shell.*"
+             (display-buffer-in-side-window)
+             (window-height . 0.25)
+             (side . bottom)
+             (slot . 0))
+            ;; left side window
+            ("\\*Help.*"
+             (display-buffer-in-side-window)
+             (window-width . 0.50)       ; See the :hook
+             (side . right)
+             (slot . 0)
+             (window-parameters . ((no-other-window . t))))
+            ("\\*Custom.*"
+             (display-buffer-in-side-window)
+             (window-width . 0.50)
+             (side . right)
+             (slot . 1))))
+    (setq window-combination-resize t)
+    (setq even-window-sizes 'height-only)
+    (setq window-sides-vertical nil)
+    :hook ((help-mode . visual-line-mode)
+           (custom-mode . visual-line-mode)))
+
+  (defun pm/display-current-buffer-in-floating-frame ()
+    "Display the buffer in a separate frame."
+    (interactive)
+    (make-frame '((name . "floating-frame")
+                  (minibuffer . nil)
+                  (windows . x))))
+
 #+END_SRC
 
 
