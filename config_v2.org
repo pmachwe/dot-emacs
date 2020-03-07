@@ -10,6 +10,8 @@
 - [[#envirornment][Envirornment]]
 - [[#basics][Basics]]
 - [[#completion-frontend][Completion Frontend]]
+  - [[#ivy][Ivy]]
+  - [[#ido][Ido]]
 - [[#utilities][Utilities]]
   - [[#shell][Shell]]
   - [[#async][Async]]
@@ -213,6 +215,8 @@ simple defaults.
 
 * Completion Frontend
 
+** Ivy
+
 I had started with the inbuilt *Ido* which in itself is fantastic,
 tried on *Helm* for a bit but it was a bit heavy on resources, took
 a bit of time starting up and hence moved to *Ivy* which practically
@@ -257,114 +261,168 @@ Some useful keybindings when in ivy minibuffer.
 *TODO*: Setup ivy-actions to specific commands.
 
 #+BEGIN_SRC emacs-lisp
-  ;; recentf
-  (use-package recentf
+    ;; recentf
+    (use-package recentf
+      :config
+      (recentf-mode t)
+      (setq recentf-max-saved-items 50))
+
+    ;; Ivy
+    (use-package ivy
+      :disabled
+      :bind(("C-c C-r" . ivy-resume)
+            ("C-c <down>" . ivy-push-view)
+            ("C-c <up>" . ivy-pop-view))
+      :config
+      (ivy-mode 1)
+      (setq ivy-count-format "(%d/%d) ")
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-extra-directories nil) ;; do not show ../  and ./
+      (setq ivy-initial-inputs-alist nil)
+      (setq ivy-re-builders-alist
+            '((swiper . ivy--regex-plus)
+              (t . ivy--regex-fuzzy)))
+      :delight ivy-mode)
+
+    (use-package swiper
+      :requires ivy
+      :after ivy
+      :bind("M-s i" . swiper))
+
+    (use-package counsel
+      :requires ivy
+      :after ivy
+      :demand t
+      :bind(("M-x" . counsel-M-x)
+            ("C-x C-f" . counsel-find-file)
+            ("M-j" . counsel-find-file)
+            ("M-J" . find-file-other-window)
+            ("M-o" . ivy-switch-buffer)
+            ("M-O" . counsel-switch-buffer-other-window)
+            ("M-y" . counsel-yank-pop)
+            ("C-c h f" . counsel-describe-function)
+            ("C-c h v" . counsel-describe-variable)
+            ("C-c h i" . counsel-info-lookup-symbol)
+            ("C-c h u" . counsel-unicode-char)
+            ("C-c /" . counsel-imenu)
+            ("C-c ." . counsel-bookmark)
+            ("C-x C-r" . counsel-recentf)
+            :map read-expression-map
+            ("C-r" . counsel-expression-history)))
+
+    ;; counsel-gtags on MELPA now
+    (use-package counsel-gtags
+      :requires counsel
+      :hook (c-mode c++-mode)
+      :bind (("M-." . counsel-gtags-dwim)
+             ("M-*" . counsel-gtags-go-backwards))
+      :delight 'counsel-gtags-mode)
+
+    (use-package prescient
+      :disabled
+      :custom
+      (prescient-history-length 50)
+      (prescient-save-file "~/.emacs.d/prescient-items")
+      (prescient-filter-method '(fuzzy initialism regexp))
+      :config
+      (prescient-persist-mode 1))
+
+    (use-package ivy-prescient
+      :after (prescient ivy)
+      :custom
+      (ivy-prescient-sort-commands
+       '(:not swiper ivy-switch-buffer counsel-switch-buffer))
+      (ivy-prescient-retain-classic-highlighting t)
+      (ivy-prescient-enable-filtering t)
+      (ivy-prescient-enable-sorting t)
+      :config
+      (ivy-prescient-mode 1))
+
+    (use-package ivy-posframe
+      :requires ivy
+      :after ivy
+      :custom
+      (ivy-posframe-parameters
+       '((left-fringe . 2)
+         (right-fringe . 2)
+         (internal-border-width . 2)))
+      (ivy-posframe-height-alist
+       '((swiper . 15)
+         (swiper-isearch . 15)
+         (t . 10)))
+      :config
+      (setq ivy-posframe-display-functions-alist
+            '((swiper . nil)
+              (t . ivy-posframe-display-at-window-center)))
+      ;; posframe misses the default font sometimes
+      ;; so set is explicitly but this will still not work
+      ;; when the font is changed interactively, need to
+      ;; check and add a hook.
+      (setq ivy-posframe-font (elt (query-font (face-attribute 'default :font)) 0))
+      (ivy-posframe-mode 1)
+      :delight ivy-posframe-mode)
+
+    (use-package ivy-rich
+      :requires ivy
+      :ensure t
+      :custom
+      (ivy-rich-path-style 'abbreviate)
+      :config
+      (setcdr (assq t ivy-format-functions-alist)
+              #'ivy-format-function-line)
+      (ivy-rich-mode 1))
+
+     (use-package icomplete
+       :disabled
+       :config
+       (icomplete-mode 1))
+#+END_SRC
+
+** Ido
+
+=Ivy= does not seem to work well with =persp-mode= and also does not
+provide any great usable feature over =ido-mode=. Hence, going back to
+=ido-mode= for now.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ido
     :config
-    (recentf-mode t)
-    (setq recentf-max-saved-items 50))
+    (ido-mode t)
+    (ido-everywhere 1)
+    (setq ido-show-dot-for-dired t)       ; pwd as first candidate
+    (setq ido-enable-dot-prefix t)        ; show hidden files when . entered
+    :bind (("C-x C-f" . ido-find-file)
+           ("M-j" . ido-find-file)
+           ("C-x b" . ido-switch-buffer)
+           ("M-o" . ido-switch-buffer)))
 
-  ;; Ivy
-  (use-package ivy
-    :demand t
-    :bind(("C-c C-r" . ivy-resume)
-          ("C-c <down>" . ivy-push-view)
-          ("C-c <up>" . ivy-pop-view))
+  (use-package flx)
+
+  (use-package flx-ido
     :config
-    (ivy-mode 1)
-    (setq ivy-count-format "(%d/%d) ")
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-extra-directories nil) ;; do not show ../  and ./
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-re-builders-alist
-          '((swiper . ivy--regex-plus)
-            (t . ivy--regex-fuzzy)))
-    :delight ivy-mode)
+    (progn
+      (flx-ido-mode 1)
+      (setq ido-enable-flex-matching t)))
 
-  (use-package swiper
-    :requires ivy
-    :after ivy
-    :bind("M-s i" . swiper))
-
-  (use-package counsel
-    :requires ivy
-    :after ivy
-    :demand t
-    :bind(("M-x" . counsel-M-x)
-          ("C-x C-f" . counsel-find-file)
-          ("M-j" . counsel-find-file)
-          ("M-J" . find-file-other-window)
-          ("M-o" . ivy-switch-buffer)
-          ("M-O" . counsel-switch-buffer-other-window)
-          ("M-y" . counsel-yank-pop)
-          ("C-c h f" . counsel-describe-function)
-          ("C-c h v" . counsel-describe-variable)
-          ("C-c h i" . counsel-info-lookup-symbol)
-          ("C-c h u" . counsel-unicode-char)
-          ("C-c /" . counsel-imenu)
-          ("C-c ." . counsel-bookmark)
-          ("C-x C-r" . counsel-recentf)
-          :map read-expression-map
-          ("C-r" . counsel-expression-history)))
-
-  ;; counsel-gtags on MELPA now
-  (use-package counsel-gtags
-    :requires counsel
-    :hook (c-mode c++-mode)
-    :bind (("M-." . counsel-gtags-dwim)
-           ("M-*" . counsel-gtags-go-backwards))
-    :delight 'counsel-gtags-mode)
-
-  (use-package prescient
-    :custom
-    (prescient-history-length 50)
-    (prescient-save-file "~/.emacs.d/prescient-items")
-    (prescient-filter-method '(fuzzy initialism regexp))
+  (use-package ido-vertical-mode
+    :disabled
     :config
-    (prescient-persist-mode 1))
+    (progn
+      (ido-vertical-mode 1)
+      (setq ido-vertical-show-count t)
+      (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
 
-  (use-package ivy-prescient
-    :after (prescient ivy)
-    :custom
-    (ivy-prescient-sort-commands
-     '(:not swiper ivy-switch-buffer counsel-switch-buffer))
-    (ivy-prescient-retain-classic-highlighting t)
-    (ivy-prescient-enable-filtering t)
-    (ivy-prescient-enable-sorting t)
+  (use-package ido-completing-read+
+    :disabled
+    :after ido
     :config
-    (ivy-prescient-mode 1))
+    (ido-ubiquitous-mode 1))
 
-  (use-package ivy-posframe
-    :requires ivy
-    :after ivy
-    :custom
-    (ivy-posframe-parameters
-     '((left-fringe . 2)
-       (right-fringe . 2)
-       (internal-border-width . 2)))
-    (ivy-posframe-height-alist
-     '((swiper . 15)
-       (swiper-isearch . 15)
-       (t . 10)))
+  (use-package smex
+    :bind(("M-x" . smex)
+          ("M-X" . smex-major-mode-commands))
     :config
-    (setq ivy-posframe-display-functions-alist
-          '((swiper . nil)
-            (t . ivy-posframe-display-at-window-center)))
-    ;; posframe misses the default font sometimes
-    ;; so set is explicitly but this will still not work
-    ;; when the font is changed interactively, need to
-    ;; check and add a hook.
-    (setq ivy-posframe-font (elt (query-font (face-attribute 'default :font)) 0))
-    (ivy-posframe-mode 1)
-    :delight ivy-posframe-mode)
-
-  (use-package ivy-rich
-    :ensure t
-    :custom
-    (ivy-rich-path-style 'abbreviate)
-    :config
-    (setcdr (assq t ivy-format-functions-alist)
-            #'ivy-format-function-line)
-    (ivy-rich-mode 1))
+    (smex-initialize))
 #+END_SRC
 
 
