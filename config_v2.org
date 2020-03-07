@@ -1206,7 +1206,8 @@ work but now found that this is already available on [[https://github.com/Raphus
         (eval-buffer))))
 
   ;; ivy-cscope
-  (quelpa '(ivy-cscope :repo "raphus-cucullatus/ivy-cscope.el" :fetcher github))
+  (when (require 'ivy nil 'noerror)
+    (quelpa '(ivy-cscope :repo "raphus-cucullatus/ivy-cscope.el" :fetcher github)))
 
   ;; ivy-cscope setup
   (when (require 'ivy-cscope nil 'noerror)
