@@ -413,7 +413,6 @@ provide any great usable feature over =ido-mode=. Hence, going back to
       (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
 
   (use-package ido-completing-read+
-    :disabled
     :after ido
     :config
     (ido-ubiquitous-mode 1))
