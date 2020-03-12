@@ -393,10 +393,21 @@ provide any great usable feature over =ido-mode=. Hence, going back to
     (ido-everywhere 1)
     (setq ido-show-dot-for-dired t)       ; pwd as first candidate
     (setq ido-enable-dot-prefix t)        ; show hidden files when . entered
+
+    (defun pm/ido-kill-ring()
+      "Show the kill-ring through ido interface."
+      (interactive)
+      (let (orig-sep ido-separator)
+        (setq ido-separator "\n....\n")
+        (insert
+         (completing-read "yank: " kill-ring nil t))
+        (setq ido-separator orig-sep)))
+
     :bind (("C-x C-f" . ido-find-file)
-           ("M-j" . ido-find-file)
-           ("C-x b" . ido-switch-buffer)
-           ("M-o" . ido-switch-buffer)))
+           ("M-j"     . ido-find-file)
+           ("C-x b"   . ido-switch-buffer)
+           ("M-o"     . ido-switch-buffer)
+           ("M-y"     . pm/ido-kill-ring))
 
   (use-package flx)
 
