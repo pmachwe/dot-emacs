@@ -429,6 +429,11 @@ provide any great usable feature over =ido-mode=. Hence, going back to
   (use-package idomenu
     :requires ido
     :bind ("C-c /" . idomenu))
+
+  ;; Fallback
+  (require 'icomplete)
+  (icomplete-mode 1)
+
 #+END_SRC
 
 * Utilities
