@@ -408,10 +408,8 @@ provide any great usable feature over =ido-mode=. Hence, going back to
       (interactive)
       (let ((orig-sep ido-separator)
             (files (mapcar 'abbreviate-file-name recentf-list)))
-        (setq ido-separator "\n")
         (find-file
-         (completing-read "Open recent file: " files nil t))
-        (setq ido-separator orig-sep))
+         (completing-read "Open recent file: " files nil t))))
 
     :bind (("C-x C-f" . ido-find-file)
            ("M-j"     . ido-find-file)
@@ -420,27 +418,26 @@ provide any great usable feature over =ido-mode=. Hence, going back to
            ("M-y"     . pm/ido-kill-ring)
            ("C-x C-r" . pm/recentf)))
 
-  (use-package flx)
-
-  (use-package flx-ido
-    :requires (flx ido)
-    :config
-    (progn
-      (flx-ido-mode 1)
-      (setq ido-enable-flex-matching t)))
-
   (use-package ido-vertical-mode
-    :disabled
     :config
-    (progn
-      (ido-vertical-mode 1)
-      (setq ido-vertical-show-count t)
-      (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)))
+    (ido-vertical-mode 1)
+    (setq ido-vertical-show-count t)
+    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down))
 
   (use-package ido-completing-read+
     :after ido
     :config
     (ido-ubiquitous-mode 1))
+
+  ;; Note - have flx and flx-ido after ido-vertical-mode
+  ;; otherwise it does not get activated
+  (use-package flx)
+
+  (use-package flx-ido
+    :requires (flx ido)
+    :config
+    (flx-ido-mode 1)
+    (setq ido-enable-flex-matching t))
 
   (use-package smex
     :bind(("M-x" . smex)
@@ -1359,6 +1356,7 @@ These are some of the packages that need to be looked at and configured.
 
 + Centaur Tabs
 + LSP Mode especially for C++ (company-lsp)
+
 
 * Trial
 
