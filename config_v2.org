@@ -992,7 +992,7 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package dtrt-indent
-    :hook prog-mode
+    :hook (prog-mode . dtrt-indent-mode)
     :config
     (dtrt-indent-mode t)
     (setq dtrt-indent-verbosity 0)
@@ -1006,7 +1006,7 @@ Trying out company mode.
   ;; Smart Parens
 
   (use-package smartparens
-    :hook prog-mode
+    :hook (prog-mode . smartparens-mode)
     :config
     (smartparens-mode t)
     (require 'smartparens-config)
@@ -1024,7 +1024,7 @@ Trying out company mode.
 #+BEGIN_SRC emacs-lisp
 
   (use-package rainbow-delimiters
-    :hook prog-mode
+    :hook (prog-mode . rainbow-delimiters-mode)
     :config
     (rainbow-delimiters-mode))
 
@@ -1232,6 +1232,7 @@ work but now found that this is already available on [[https://github.com/Raphus
 
   ;; quelpa
   (use-package quelpa
+    :disabled
     :init
     ;; Do not upgrade during init
     (setq quelpa-self-upgrade-p nil)
@@ -1244,12 +1245,12 @@ work but now found that this is already available on [[https://github.com/Raphus
         (eval-buffer))))
 
   ;; ivy-cscope
-  (when (require 'ivy nil 'noerror)
-    (quelpa '(ivy-cscope :repo "raphus-cucullatus/ivy-cscope.el" :fetcher github)))
+  ;; (when (require 'ivy nil 'noerror)
+  ;;   (quelpa '(ivy-cscope :repo "raphus-cucullatus/ivy-cscope.el" :fetcher github)))
 
-  ;; ivy-cscope setup
-  (when (require 'ivy-cscope nil 'noerror)
-    (define-key (make-keymap) (kbd "C-c s") ivy-cscope-command-map))
+  ;; ;; ivy-cscope setup
+  ;; (when (require 'ivy-cscope nil 'noerror)
+  ;;   (define-key (make-keymap) (kbd "C-c s") ivy-cscope-command-map))
 
 #+END_SRC
 
