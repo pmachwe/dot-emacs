@@ -31,6 +31,7 @@
   - [[#electric-pair][Electric Pair]]
   - [[#save-points][Save Points]]
   - [[#wordnut][WordNut]]
+  - [[#imenu-anywhere][Imenu-Anywhere]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -56,6 +57,7 @@
   - [[#windows][Windows]]
 - [[#available-key-sequences][Available key-sequences]]
 - [[#wishlist][Wishlist]]
+- [[#trial][Trial]]
 
 * Introduction
 
@@ -399,6 +401,7 @@ provide any great usable feature over =ido-mode=. Hence, going back to
   (use-package flx)
 
   (use-package flx-ido
+    :requires (flx ido)
     :config
     (progn
       (flx-ido-mode 1)
@@ -422,8 +425,11 @@ provide any great usable feature over =ido-mode=. Hence, going back to
           ("M-X" . smex-major-mode-commands))
     :config
     (smex-initialize))
-#+END_SRC
 
+  (use-package idomenu
+    :requires ido
+    :bind ("C-c /" . idomenu))
+#+END_SRC
 
 * Utilities
 
@@ -765,6 +771,14 @@ A utility to get word meanings/synonyms inside of emacs. Uses
 #+END_SRC
 
 
+** Imenu-Anywhere
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package imenu-anywhere
+    :bind ("C-c C-/" . imenu-anywhere))
+
+#+END_SRC
 
 * Buffers, Windows and Frames
 
@@ -1316,3 +1330,19 @@ These are some of the packages that need to be looked at and configured.
 
 + Centaur Tabs
 + LSP Mode especially for C++ (company-lsp)
+
+* Trial
+
+Trying out some packages.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package isearch-dabbrev
+    :ensure t
+    :bind (:map isearch-mode-map
+                ("<tab>" . isearch-dabbrev-expand)))
+
+  (use-package isearch-project
+    :disabled)
+
+#+END_SRC
