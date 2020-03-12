@@ -637,16 +637,16 @@ Some sane defaults for Ediff mode. Taken from [[http://oremacs.com/2015/01/17/se
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; (use-package emacs
-  ;;   (defmacro csetq (variable value)
-  ;;     `(funcall (or (get ',variable 'custom-set)
-  ;;                   'set-default)
-  ;;               ',variable ,value))
-
-  ;;   (csetq ediff-window-setup-function 'ediff-setup-windows-plain)
-  ;;   (csetq ediff-split-window-function 'split-window-horizontally)
-  ;;   (csetq ediff-diff-options "-w")
-  ;;   (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
+  (use-package emacs
+    :config
+    (defmacro csetq (variable value)
+      `(funcall (or (get ',variable 'custom-set)
+                    'set-default)
+                ',variable ,value))
+    (csetq ediff-window-setup-function 'ediff-setup-windows-plain)
+    (csetq ediff-split-window-function 'split-window-horizontally)
+    (csetq ediff-diff-options "-w")
+    (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
 
 #+END_SRC
 
