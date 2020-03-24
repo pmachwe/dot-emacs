@@ -508,10 +508,16 @@ everytime but ask for a name when universal argument is supplied.
       (setq shell-file-name explicit-shell-file-name)
       (add-to-list 'exec-path (f-join win-git-path "bin")))
 
+    (defun pm/shell-command-on-current-file (cmd)
+      "Shell script/command CMD on current file."
+      (interactive "sCommand: ")
+      (shell-command
+       (format "%s %s" cmd (shell-quote-argument (buffer-file-name)))))
+
     :bind (("<f5>" . pm/shell)
+           ("C-! C-!" . pm/shell-command-on-current-file)
            :map shell-mode-map
            ("C-j" . comint-send-input)))
-
 #+END_SRC
 ** Async
 
@@ -835,6 +841,7 @@ all open buffers of current major mode.
 
     :bind ("M-s O" . multi-occur-in-this-mode))
 #+END_SRC
+
 
 * Buffers, Windows and Frames
 
