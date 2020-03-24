@@ -32,6 +32,7 @@
   - [[#save-points][Save Points]]
   - [[#wordnut][WordNut]]
   - [[#imenu-anywhere][Imenu-Anywhere]]
+  - [[#multi-occur][Multi-occur]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -793,8 +794,6 @@ A utility to get word meanings/synonyms inside of emacs. Uses
       (setq wordnut-cmd "c:/Program Files (x86)/WordNet/2.1/bin/wn.exe")))
 
 #+END_SRC
-
-
 ** Imenu-Anywhere
 
 #+BEGIN_SRC emacs-lisp
@@ -804,6 +803,38 @@ A utility to get word meanings/synonyms inside of emacs. Uses
 
 #+END_SRC
 
+** Multi-occur
+
+=multi-occur= asks for the =buffers= to search for every time which is
+a bit inconvinient. Hence, a utility from [[https://www.masteringemacs.org/article/searching-buffers-occur-mode][Mastering Emacs]] to search on
+all open buffers of current major mode.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package replace
+    :config
+
+    (eval-when-compile
+      (require 'cl))
+
+    (defun get-buffers-matching-mode (mode)
+      "Returns a list of buffers where their major-mode is equal to MODE"
+      (let ((buffer-mode-matches '()))
+        (dolist (buf (buffer-list))
+          (with-current-buffer buf
+            (if (eq mode major-mode)
+                (add-to-list 'buffer-mode-matches buf))))
+        buffer-mode-matches))
+
+    (defun multi-occur-in-this-mode ()
+      "Show all lines matching REGEXP in buffers with this major mode."
+      (interactive)
+      (multi-occur
+       (get-buffers-matching-mode major-mode)
+       (car (occur-read-primary-args))))
+
+    :bind ("M-s O" . multi-occur-in-this-mode))
+#+END_SRC
 
 * Buffers, Windows and Frames
 
