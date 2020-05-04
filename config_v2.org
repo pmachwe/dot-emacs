@@ -1153,6 +1153,8 @@ Its goal is to provide a nice set of features operating on a project level.
        (setq-default c-default-style "stroustrup"
                      c-basic-offset 2)
        (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+       (add-to-list 'auto-mode-alist '("\\.cxx\\'" . c++-mode))
+       (add-to-list 'auto-mode-alist '("\\.cxx\\'" . prog-mode))
        ;; Flycheck
        (setq flycheck-gcc-language-standard "c++11")
        (setq flycheck-clang-language-standard "c++11")
