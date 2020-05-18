@@ -1079,7 +1079,9 @@ Install this package only in work environment.
 
   (use-package p4
     :if (my/is-work-env)
-    :hook prog-mode)
+    ;; Giving errors on work computer
+    ;; :hook prog-mode
+    )
 
 #+END_SRC
 
@@ -1150,11 +1152,8 @@ Its goal is to provide a nice set of features operating on a project level.
 
      (defun my/c-prog-settings()
        "Specific settings for C/C++."
-       (setq-default c-default-style "stroustrup"
-                     c-basic-offset 2)
        (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
        (add-to-list 'auto-mode-alist '("\\.cxx\\'" . c++-mode))
-       (add-to-list 'auto-mode-alist '("\\.cxx\\'" . prog-mode))
        ;; Flycheck
        (setq flycheck-gcc-language-standard "c++11")
        (setq flycheck-clang-language-standard "c++11")
@@ -1164,7 +1163,13 @@ Its goal is to provide a nice set of features operating on a project level.
            (c-offsets-alist . ((innamespace . [0])))))
 
        (c-add-style "my-cc-mode" my-cc-style)
-       (hs-minor-mode))
+       (hs-minor-mode)
+       (setq-default c-default-style "stroustrup"
+                     c-basic-offset 2)
+       ;; Need this otherwise not working
+       ;; on work computer
+       (setq c-basic-offset 4)
+       )
 
      (defun my/elisp-prog-settings()
        "Specific settings for Elisp."
