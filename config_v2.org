@@ -33,6 +33,7 @@
   - [[#wordnut][WordNut]]
   - [[#imenu-anywhere][Imenu-Anywhere]]
   - [[#multi-occur][Multi-occur]]
+  - [[#emamux][Emamux]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -47,7 +48,6 @@
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#perforce][Perforce]]
   - [[#expand-region][Expand Region]]
-  - [[#magit-1][Magit]]
   - [[#projectile][Projectile]]
   - [[#language-specific][Language Specific]]
 - [[#org-mode][Org Mode]]
@@ -845,6 +845,22 @@ all open buffers of current major mode.
     :bind ("M-s O" . multi-occur-in-this-mode))
 #+END_SRC
 
+** Emamux
+
+Utility to control TMUX panes from Emacs.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package emamux
+      :custom
+      (global-set-key (kbd "C-c m") emamux:keymap)
+      (emamux:completing-read-type 'ido)
+      :bind (("C-c m m" . emamux:run-command)
+             ("C-c m q" . emamux:close-panes)
+             ("C-c m s" . emamux:send-command)
+             ("C-c m n" . emamux:new-window)
+             ("C-c m h" . emamux:split-window)))
+
+#+END_SRC
 
 * Buffers, Windows and Frames
 
@@ -1098,17 +1114,6 @@ Install this package only in work environment.
 
 #+END_SRC
 
-** Magit
-
-Magit is the best package to work with Git. 
-
-#+BEGIN_SRC emacs-lisp
-  ;; Magit
-
-  (use-package magit
-    :bind ("<f6>" . magit-status))
-
-#+END_SRC
 
 ** Projectile
 
@@ -1328,6 +1333,7 @@ using the =telephone-line= modeline which is configured well with the
     :hook (after-init . doom-modeline-mode))
 
   (use-package modus-operandi-theme
+    :disabled t
     :config
     (load-theme 'modus-operandi t))
 

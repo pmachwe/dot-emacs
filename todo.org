@@ -17,3 +17,12 @@
 * Packages [0/1]
 
 - [ ] Make RTags to work with Emacs.
+* Try
+
+- auto-yasnippet
+- ace-mc
+- avy-zap
+- visual bookmarks through *bm*
+- bookmark+
+- 
+
