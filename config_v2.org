@@ -49,6 +49,7 @@
   - [[#perforce][Perforce]]
   - [[#expand-region][Expand Region]]
   - [[#projectile][Projectile]]
+  - [[#yasnippet][Yasnippet]]
   - [[#language-specific][Language Specific]]
 - [[#org-mode][Org Mode]]
 - [[#github-packages][Github Packages]]
@@ -1113,8 +1114,6 @@ Install this package only in work environment.
            ("C-c = f" . er/mark-defun)))
 
 #+END_SRC
-
-
 ** Projectile
 
 Projectile is a project interaction library for Emacs. 
@@ -1137,6 +1136,16 @@ Its goal is to provide a nice set of features operating on a project level.
     (counsel-projectile-mode 1))
 
 #+END_SRC
+** Yasnippet                                                                                                                                      
+ 
+  #+BEGIN_SRC emacs-lisp                                                                                                                         
+                                                                                                                                                 
+    (use-package yasnippet                                                                                                                       
+      :commands yas-expand                                                                                                                       
+      :config                                                                                                                                    
+      (yas-reload-all)                                                                                                                           
+      (yas-minor-mode))                                                                                                                          
+  #+END_SRC                                                                                                                                      
 
 ** Language Specific
 
