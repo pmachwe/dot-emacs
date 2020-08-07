@@ -1205,8 +1205,17 @@ Its goal is to provide a nice set of features operating on a project level.
             (c++-mode        . my/c-prog-settings)
             (emacs-lisp-mode . my/elisp-prog-settings)
             (python-mode     . my/python-prog-settings)))
- #+END_SRC
 
+
+   (use-package python-mode 
+     :mode ("\\.py\\'" . python-mode) 
+     :interpreter ("python" . python-mode) 
+     :config         
+     (when (executable-find "ipython")                                        
+       (setq python-shell-interpreter "ipython"))              
+     (when (executable-find "ipython3")   
+       (setq python-shell-interpreter "ipython3")))
+ #+END_SRC
 
 * Org Mode
 
