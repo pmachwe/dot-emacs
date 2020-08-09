@@ -45,6 +45,7 @@
 - [[#programming][Programming]]
   - [[#dtrt-indent][Dtrt-Indent]]
   - [[#smartparens][Smartparens]]
+  - [[#paredit][Paredit]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#perforce][Perforce]]
   - [[#expand-region][Expand Region]]
@@ -770,8 +771,7 @@ inserted. This is nice but does not work well together with =smartparens=.
 #+BEGIN_SRC emacs-lisp
 
   (use-package elec-pair
-    :disabled
-    :hook (prog-mode . electric-pair-mode)
+    :hook prog-mode
     :config
     (setq electric-pair-pairs
           '(
@@ -1064,6 +1064,7 @@ Trying out company mode.
   ;; Smart Parens
 
   (use-package smartparens
+    :disabled t
     :hook (prog-mode . smartparens-mode)
     :config
     (smartparens-mode t)
@@ -1074,6 +1075,17 @@ Trying out company mode.
                    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
                    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                                              ("* ||\n[i]" "RET")))))
+
+#+END_SRC
+
+** Paredit
+
+Using this instead of Smartparens.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :ensure t
+    :hook emacs-lisp-mode)
 
 #+END_SRC
 
@@ -1187,9 +1199,9 @@ Its goal is to provide a nice set of features operating on a project level.
 
      (defun my/elisp-prog-settings()
        "Specific settings for Elisp."
-       (require 'smartparens-config)
-       (sp-use-smartparens-bindings)
-       (smartparens-strict-mode)
+       ;; (require 'smartparens-config)
+       ;; (sp-use-smartparens-bindings)
+       ;; (smartparens-strict-mode)
        (prettify-symbols-mode))
 
      (defun my/python-prog-settings()
