@@ -34,6 +34,7 @@
   - [[#imenu-anywhere][Imenu-Anywhere]]
   - [[#multi-occur][Multi-occur]]
   - [[#emamux][Emamux]]
+  - [[#god-mode][God Mode]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -686,6 +687,9 @@ Nice suggestions for key completions in the minibuffer.
            ("M-g g" . avy-goto-line)
            ("C-'" . avy-isearch)))
 
+  (use-package avy-zap
+    :bind (("M-z" . avy-zap-to-char-dwim)
+           ("M-Z" . avy-zap-up-to-char-dwim)))
 #+END_SRC
 
 ** Anzu
@@ -860,6 +864,20 @@ Utility to control TMUX panes from Emacs.
              ("C-c m s" . emamux:send-command)
              ("C-c m n" . emamux:new-window)
              ("C-c m h" . emamux:split-window)))
+
+#+END_SRC
+
+** God Mode
+
+Modal mode especially useful while surfing logs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package god-mode
+    :bind (("<escape>" . god-local-mode)
+           :map god-local-mode-map
+           ("i" . god-local-mode)
+           ("." . repeat)
+           ("z" . scroll-down-command)))
 
 #+END_SRC
 
