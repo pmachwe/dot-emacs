@@ -881,6 +881,7 @@ Modal mode especially useful while surfing logs.
 
 #+END_SRC
 
+
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
@@ -1247,6 +1248,7 @@ Its goal is to provide a nice set of features operating on a project level.
        (setq python-shell-interpreter "ipython3")))
  #+END_SRC
 
+
 * Org Mode
 
 Other than the usual settings, adding a package =toc-org= to export a
@@ -1400,7 +1402,7 @@ This section includes some custom keybindings for useful functions.
 #+BEGIN_SRC emacs-lisp
 
   (use-package emacs
-    :bind (("C-h" . backward-delete-char)
+    :bind (;; ("C-h" . backward-delete-char)
            ("M-h" . backward-kill-word)
            ("S-<f5>" . eshell)
            ("C-c M-!" . eshell-command)
@@ -1408,7 +1410,7 @@ This section includes some custom keybindings for useful functions.
            ("M-K" . kill-buffer)
            ("C-c ," . highlight-symbol-at-point)
            ("C-c C-," . unhighlight-regexp)
-           ("C-?" . help-map)
+           ("C-c h" . help-map)
            ("C-M-o" . mode-line-other-window)))
 
 #+END_SRC
