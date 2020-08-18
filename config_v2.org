@@ -684,6 +684,7 @@ Nice suggestions for key completions in the minibuffer.
 
   (use-package avy
     :bind (("C-;" . avy-goto-word-1)
+           ("C-c ;" . avy-goto-word-1)
            ("C-:" . avy-goto-char)
            ("M-g g" . avy-goto-line)
            ("C-'" . avy-isearch)))
@@ -1168,9 +1169,11 @@ Its goal is to provide a nice set of features operating on a project level.
     :config
     (projectile-mode 1)
     (setq projectile-completion-system 'ido)
+    (setq projectile-enable-caching t)
     :delight '(:eval (concat " " (projectile-project-name))))
 
   (use-package counsel-projectile
+    :disabled t
     :requires (counsel projectile)
     :config
     (counsel-projectile-mode 1))
