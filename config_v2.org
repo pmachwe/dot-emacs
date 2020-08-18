@@ -777,7 +777,7 @@ inserted. This is nice but does not work well together with =smartparens=.
 #+BEGIN_SRC emacs-lisp
 
   (use-package elec-pair
-    :hook prog-mode
+    :hook (prog-mode . electric-pair-mode)
     :config
     (setq electric-pair-pairs
           '(
@@ -1113,8 +1113,7 @@ Using this instead of Smartparens.
 
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
-    :ensure t
-    :hook emacs-lisp-mode)
+    :hook (emacs-lisp-mode . paredit-mode))
 
 #+END_SRC
 
