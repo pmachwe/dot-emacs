@@ -35,6 +35,7 @@
   - [[#multi-occur][Multi-occur]]
   - [[#emamux][Emamux]]
   - [[#god-mode][God Mode]]
+  - [[#xclip][Xclip]]
 - [[#buffers-windows-and-frames][Buffers, Windows and Frames]]
   - [[#ace-window][Ace Window]]
   - [[#ibuffer][Ibuffer]]
@@ -881,7 +882,15 @@ Modal mode especially useful while surfing logs.
 
 #+END_SRC
 
+** Xclip
 
+This is helpful to interact with system clipboard on linux.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package xclip
+    :config
+    (xclip-mode 1))
+#+END_SRC
 * Buffers, Windows and Frames
 
 This section setups up packages and options to help with buffer, window, frame
