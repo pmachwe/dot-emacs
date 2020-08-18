@@ -1395,11 +1395,11 @@ using the =telephone-line= modeline which is configured well with the
     :hook (after-init . doom-modeline-mode))
 
   (use-package modus-operandi-theme
-    :disabled t
     :config
     (load-theme 'modus-operandi t))
 
   (use-package telephone-line
+    :if window-system
     :requires modus-operandi-theme
     :init
     (telephone-line-mode t))
