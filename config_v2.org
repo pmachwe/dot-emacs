@@ -400,6 +400,7 @@ provide any great usable feature over =ido-mode=. Hence, going back to
     (ido-everywhere 1)
     (setq ido-show-dot-for-dired t)       ; pwd as first candidate
     (setq ido-enable-dot-prefix t)        ; show hidden files when . entered
+    (setq ido-auto-merge-work-directories-length -1) ; disable searching in recent dirs
 
     (defun pm/ido-kill-ring()
       "Show the kill-ring through ido interface."
