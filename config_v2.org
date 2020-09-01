@@ -479,8 +479,6 @@ everytime but ask for a name when universal argument is supplied.
 
   (use-package shell
     :config
-    ;; -i gets alias definitions from .bash_profile
-    (setq shell-command-switch "-ic")
 
     (defun shell-same-window-advice (orig-fn &optional buffer)
       "Advice to make `shell' reuse the current window. Intended as :around advice."
@@ -503,6 +501,8 @@ everytime but ask for a name when universal argument is supplied.
        (if current-prefix-arg
            (list (read-string "Shell name: "))
          (list "shell")))
+      ;; -i gets alias definitions from .bash_profile
+      (setq-local shell-command-switch "-ic")
       (shell (generate-new-buffer-name name)))
 
     ;; Use Git Bash as shell on Windows.
